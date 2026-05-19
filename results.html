@@ -210,7 +210,7 @@
           <div class="gene-field"><span class="gene-label">Gene Name</span><span id="modal-gene-name" class="gene-value"></span></div>
         </div>
         <div class="gene-actions">
-          <button type="button" class="pill-small" id="modal-link-expression">Expression matches in ZFIN</button>
+          <button type="button" class="pill-small" id="modal-link-expression" class="btn-primary btn-block">Expression matches in ZFIN</button>
         </div>
       </div>
 
@@ -240,7 +240,7 @@
       </div>
 
       <div class="detail-section">
-        <div class="detail-title">Tissues (super-structures)</div>
+        <div class="detail-title">Expressed in</div>
         <ul id="modal-tissues" class="facet-list"></ul>
       </div>
 
@@ -354,11 +354,25 @@
 
     function toStr(v){ return v==null ? '' : String(v).trim(); }
 
+    function normaliseStageLabel(raw){
+      let v = toStr(raw);
+      if (!v) return '';
+      if (v.includes(':')) return v.split(':')[0].trim();
+      if (v.includes('(')) return v.split('(')[0].trim();
+      return v;
+    }
+
     function buildStageOrder(sheet){
       const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
       const order=[]; const idxMap=new Map();
       rows.forEach(row=>{
         row.forEach(cell=>{
+          const name = normaliseStageLabel(cell);
+          if (!name) return;
+          if (!idxMap.has(name)) { idxMap.set(name, order.length); order.push(name); }
+        });
+      });
+       row.forEach(cell=>{
           const v=toStr(cell);
           if(!v) return;
           const name=v.split(':')[0].trim();
@@ -397,8 +411,8 @@
         fishName: toStr(r['Fish Name']),
         superStructure: toStr(r['Super Structure Name']),
         subStructure: toStr(r['Sub Structure Name']),
-        startStage: toStr(r['Start Stage']),
-        endStage: toStr(r['End Stage']),
+        startStage: normaliseStageLabel(r['Start Stage']),
+        endStage: normaliseStageLabel(r['End Stage']),
         assay: toStr(r['Assay']),
         assayMmoId: toStr(r['Assay MMO ID']),
         publicationId: toStr(r['Publication ID']),
@@ -553,7 +567,7 @@
       const frag=document.createDocumentFragment();
       const structFilter = elFilterStruct.value.trim().toLowerCase();
 
-      rows.slice(0,200).forEach(row=>{
+      rows.slice(0,100).forEach(row=>{
         const hasDisease=(state.geneToDisease.get(row.geneSymbol)||[]).length>0;
         const hasGo=(state.geneToGo.get(row.geneSymbol)||[]).length>0;
         const summaryList = state.summaryByGene.get(row.geneSymbol)||[];
@@ -593,7 +607,7 @@
         frag.appendChild(el);
       });
       elBody.appendChild(frag);
-      elNote.textContent = `Showing ${Math.min(rows.length,200)} of ${state.rowsExpression.length} genes with expression rows.`;
+      elNote.textContent = `Showing ${Math.min(rows.length,100)} of ${state.rowsExpression.length} genes with expression rows.`;
     }
 
     function openModal(geneSymbol, exampleRow){
@@ -750,3 +764,5 @@
   </script>
 </body>
 </html>
+
+    .btn-block { display:block; width:100%; text-align:center; margin-top:0.75rem; }

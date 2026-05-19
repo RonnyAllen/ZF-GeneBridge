@@ -228,78 +228,24 @@
     async function loadHints() {
       if (hintState.loaded) return;
       try {
-        const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
+        const resp = await fetch('hints.json');
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const buf = await resp.arrayBuffer();
-        const wb = XLSX.read(buf, { type: 'array' });
+        const data = await resp.json();
 
-        // Summary sheet: gene symbols & tissues
-        const sheet = wb.Sheets['20260518_wtexpression_Summary'];
-        if (sheet) {
-          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
-          const header = rows[0].map(v => v == null ? '' : String(v).trim());
-          const idxSym = header.indexOf('Gene Symbol');
-          const idxStruct = header.indexOf('Super Structure Name');
-          for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            if (!row) continue;
-            if (idxSym >= 0) {
-              const s = row[idxSym];
-              if (s) {
-                const sym = String(s).trim();
-                hintState.symbols.add(sym);
-                hintState.geneSymbols.add(sym.toLowerCase());
-              }
-            }
-            if (idxStruct >= 0) {
-              const t = row[idxStruct];
-              if (t) hintState.tissues.add(String(t).trim());
-            }
-          }
-        }
+        (data.geneSymbols || []).forEach(sym => {
+          const s = String(sym).trim();
+          if (!s) return;
+          hintState.symbols.add(s);
+          hintState.geneSymbols.add(s.toLowerCase());
+        });
 
-        // GO sheet: marker names (full gene names)
-        const sheetGo = wb.Sheets['20260519_GeneOntology'];
-        if (sheetGo) {
-          const rowsGo = XLSX.utils.sheet_to_json(sheetGo, { header: 1, defval: null });
-          const hGo = rowsGo[0].map(v => v == null ? '' : String(v).trim());
-          const idxGeneSym = hGo.indexOf('Gene Symbol');
-          const idxMarker = hGo.indexOf('Marker Name');
-          for (let i = 1; i < rowsGo.length; i++) {
-            const row = rowsGo[i];
-            if (!row) continue;
-            const sym = idxGeneSym >= 0 ? row[idxGeneSym] : null;
-            const name = idxMarker >= 0 ? row[idxMarker] : null;
-            if (sym && name) {
-              const symStr = String(sym).trim();
-              const nameStr = String(name).trim();
-              hintState.symbols.add(nameStr);
-              hintState.nameToSymbol[nameStr.toLowerCase()] = symStr;
-            }
-          }
-        }
+        (data.tissues || []).forEach(t => {
+          const s = String(t).trim();
+          if (!s) return;
+          hintState.tissues.add(s);
+        });
 
-        // Orthology sheet: human ortholog symbols
-        const sheetOrth = wb.Sheets['20260519_gene2DiseaseOrthology'];
-        if (sheetOrth) {
-          const rowsO = XLSX.utils.sheet_to_json(sheetOrth, { header: 1, defval: null });
-          const hO = rowsO[0].map(v => v == null ? '' : String(v).trim());
-          const idxZSym = hO.indexOf('Zebrafish Gene Symbol');
-          const idxHumanSym = hO.indexOf('Human Ortholog Symbol');
-          for (let i = 1; i < rowsO.length; i++) {
-            const row = rowsO[i];
-            if (!row) continue;
-            const zSym = idxZSym >= 0 ? row[idxZSym] : null;
-            const hSym = idxHumanSym >= 0 ? row[idxHumanSym] : null;
-            if (zSym && hSym) {
-              const zStr = String(zSym).trim();
-              const hStr = String(hSym).trim();
-              hintState.symbols.add(hStr);
-              hintState.nameToSymbol[hStr.toLowerCase()] = zStr;
-            }
-          }
-        }
-
+        hintState.nameToSymbol = data.nameToSymbol || {};
         hintState.loaded = true;
       } catch (e) {
         console.error(e);
@@ -311,6 +257,10 @@
       btnLoadHints.textContent = 'Loading suggestions…';
       loadHints().then(() => {
         btnLoadHints.textContent = 'Suggestions loaded';
+      });
+    });
+
+ent = 'Suggestions loaded';
       });
     });
 
