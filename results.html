@@ -485,20 +485,56 @@ function normaliseExpression(sheet){
         if(!resp.ok) throw new Error('HTTP '+resp.status);
         const buf = await resp.arrayBuffer();
         const wb = XLSX.read(buf,{type:'array'});
-        buildStageOrder(wb.Sheets['Stage Order']);
-        normaliseExpression(wb.Sheets['20260518_zf_wt_expression']);
-        buildSummaryByGene(wb.Sheets['20260518_wtexpression_Summary']);
-        normaliseDisease(wb.Sheets['20260519_gene2DiseaseOrthology']);
-        normaliseGo(wb.Sheets['20260519_GeneOntology']);
+
+        const stageSheet   = wb.Sheets['Stage Order'] || wb.Sheets['Stage_Order'] || wb.Sheets['StageOrder'];
+        const exprSheet    = wb.Sheets['20260518_zf_wt_expression'];
+        const summarySheet = wb.Sheets['20260518_wtexpression_Summary'];
+        const disSheet     = wb.Sheets['20260519_gene2DiseaseOrthology'];
+        const goSheet      = wb.Sheets['20260519_GeneOntology'];
+
+        if (stageSheet) {
+          buildStageOrder(stageSheet);
+        } else {
+          console.warn('Stage Order sheet not found');
+        }
+
+        if (!exprSheet) {
+          throw new Error('Expression sheet 20260518_zf_wt_expression not found');
+        }
+        normaliseExpression(exprSheet);
+
+        if (summarySheet) {
+          buildSummaryByGene(summarySheet);
+        } else {
+          console.warn('Summary sheet 20260518_wtexpression_Summary not found');
+        }
+
+        if (disSheet) {
+          normaliseDisease(disSheet);
+        } else {
+          console.warn('Disease orthology sheet 20260519_gene2DiseaseOrthology not found');
+        }
+
+        if (goSheet) {
+          normaliseGo(goSheet);
+        } else {
+          console.warn('GeneOntology sheet 20260519_GeneOntology not found');
+        }
+
         renderResults();
+
         if (focusParam === 'gene' && qParam) {
           const sym = qParam;
           const row = state.rowsExpression.find(r => r.geneSymbol === sym);
           if (row) openModal(sym, row);
         }
-      }catch(e){console.error(e); elNote.textContent='Failed to load Excel file.';}
+      }catch(e){
+        console.error(e);
+        elNote.textContent='Failed to load Excel file.';
+      }
     }
 
+    
     function matchesFilters(row){
       const q = elFilterGene.value.trim().toLowerCase();
       const s = elFilterStruct.value.trim().toLowerCase();
