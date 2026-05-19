@@ -89,59 +89,72 @@
 
     main{flex:1;max-width:var(--content-width);margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-6);}
     .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.18em;color:var(--color-text-muted);margin-bottom:var(--space-3);font-weight:700;}
-    .page-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.04;margin-bottom:var(--space-3);font-weight:700;}
-    .page-lede{color:var(--color-text-muted);margin-bottom:var(--space-4);font-weight:500;}
+    .page-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.05;margin-bottom:0.3rem;font-weight:700;}
+    .page-lede{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);}
 
-    .filters-row{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:flex-end;margin-bottom:var(--space-4);}
-    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.3rem;font-weight:700;}
-    .input,select{width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);padding:0.6rem 0.85rem;font-size:var(--text-sm);background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);font-weight:500;}
+    .filters-row{display:flex;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-4);align-items:flex-end;}
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.2rem;font-weight:600;}
+    .input,select{width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);padding:0.55rem 0.75rem;font-size:var(--text-sm);background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);}
     .input:focus,select:focus{outline:2px solid var(--color-accent);outline-offset:2px;}
+    .btn-primary{border-radius:var(--radius-full);padding:0.6rem 1.4rem;font-size:var(--text-sm);border:1px solid transparent;background:var(--btn-primary-bg);color:var(--btn-primary-fg);cursor:pointer;font-weight:600;box-shadow:var(--shadow-md);}
+    .btn-primary:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
 
-    .btn-primary{border-radius:var(--radius-full);padding:0.6rem 1.2rem;border:1px solid var(--btn-primary-bg);background:var(--btn-primary-bg);color:var(--btn-primary-fg);font-size:var(--text-sm);cursor:pointer;font-weight:600;box-shadow:var(--shadow-md);}
-
-    .results-panel{background:var(--color-surface);border-radius:1rem;padding:var(--space-4);box-shadow:var(--shadow-md);}
-    .table-shell{border-radius:0.8rem;border:1px solid var(--color-border);overflow:hidden;background:var(--color-surface-2);}
-    .table-header-row,.table-row{display:grid;grid-template-columns:1.2fr 1.2fr 0.9fr 0.8fr 0.9fr;gap:var(--space-3);padding:0.5rem 0.9rem;align-items:center;font-size:var(--text-sm);}
-    .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.04);font-weight:600;}
-    .table-body{max-height:460px;overflow:auto;font-size:var(--text-sm);}
-    .table-row{border-top:1px solid rgba(0,0,0,0.05);cursor:pointer;transition:background var(--transition-fast);font-weight:500;}
+    .results-panel .table-shell{border-radius:1rem;border:1px solid var(--color-border);overflow:hidden;background:var(--color-surface-2);}
+    .table-header-row,.table-row{display:grid;grid-template-columns:1.3fr 1.1fr 0.9fr 0.8fr 1fr;gap:var(--space-3);padding:0.5rem 0.9rem;align-items:center;}
+    .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.03);}
+    .table-body{max-height:420px;overflow-y:auto;font-size:var(--text-sm);}
+    .table-row{border-top:1px solid rgba(0,0,0,0.03);cursor:pointer;transition:background var(--transition-fast);text-align:left;}
     .table-row:nth-child(odd){background:rgba(0,0,0,0.01);}
-    .table-row:hover{background:rgba(0,0,0,0.08);}
-    .sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:500;}
-    .badge-assay{font-size:var(--text-xs);padding:0.15rem 0.55rem;border-radius:var(--radius-full);background:rgba(0,0,0,0.06);color:var(--color-text);font-weight:600;}
-    .pill-small{font-size:var(--text-xs);padding:0.1rem 0.5rem;border-radius:var(--radius-full);border:1px solid var(--color-border);font-weight:600;}
-    .note{margin-top:var(--space-3);font-size:var(--text-xs);color:var(--color-text-faint);font-weight:500;}
+    .table-row:hover{background:rgba(1,105,111,0.08);}
+    .sub{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .badge-assay{font-size:var(--text-xs);padding:0.15rem 0.5rem;border-radius:var(--radius-full);background:rgba(1,105,111,0.08);color:var(--color-accent);display:inline-flex;align-items:center;gap:0.3rem;}
+    .pill-small{font-size:var(--text-xs);padding:0.1rem 0.5rem;border-radius:var(--radius-full);border:1px solid rgba(0,0,0,0.12);background:transparent;}
+    .note{margin-top:0.4rem;font-size:var(--text-xs);color:var(--color-text-faint);}
 
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:40;}
-    .modal{width:80vw;max-width:960px;max-height:80vh;background:var(--color-surface);border-radius:1.2rem;box-shadow:var(--shadow-lg);padding:var(--space-4);overflow:auto;position:relative;}
-    .modal-close{position:absolute;top:0.75rem;right:0.9rem;border:none;background:transparent;font-size:1.5rem;cursor:pointer;color:var(--color-text-muted);}
-    .modal-title-main{font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:0.25rem;font-weight:700;}
-    .modal-title-sub{font-size:var(--text-sm);color:var(--color-text-muted);font-weight:600;margin-bottom:var(--space-3);}
-    .detail-section{margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px dashed rgba(0,0,0,0.18);}
-    .detail-title{font-size:var(--text-sm);font-weight:700;margin-bottom:0.4rem;}
-    .detail-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.5fr);gap:var(--space-3);font-size:var(--text-xs);}
-    .facet-list{display:flex;flex-direction:column;gap:0.45rem;font-size:var(--text-xs);}
-    .facet-item{display:flex;justify-content:space-between;gap:var(--space-3);}
-    .timeline-track{position:relative;height:6px;border-radius:999px;background:rgba(0,0,0,0.12);overflow:hidden;margin-bottom:0.45rem;}
-    .timeline-fill{position:absolute;top:0;bottom:0;left:0;right:0;border-radius:inherit;background:linear-gradient(to right,var(--color-text),var(--color-accent));}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:flex-start;justify-content:center;padding:var(--space-6) var(--space-4);z-index:40;}
+    .modal-backdrop.visible{display:flex;}
+    .modal{max-width:900px;width:100%;background:var(--color-surface);border-radius:1rem;padding:var(--space-4);box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow:auto;}
+    .modal-close{position:absolute;top:0.75rem;right:0.75rem;border-radius:var(--radius-full);width:28px;height:28px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;font-size:1rem;line-height:1;}
+
+    .gene-header{display:flex;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);align-items:flex-start;}
+    .gene-header-main{display:flex;flex-direction:column;gap:0.4rem;}
+    .gene-field{font-size:var(--text-sm);}
+    .gene-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.12em;color:var(--color-text-muted);display:block;margin-bottom:0.1rem;}
+    .gene-value{font-weight:600;}
+    .gene-value-link{font-weight:600;color:var(--color-accent);text-decoration:underline;}
+    .gene-actions{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;}
+    .divider{border:none;border-top:1px solid var(--color-border);margin:var(--space-3) 0;}
+
+    .detail-section{margin-top:var(--space-2);}
+    .detail-title{font-size:var(--text-sm);font-weight:600;margin-bottom:0.4rem;}
+
+    .timeline-track{position:relative;height:6px;border-radius:999px;background:rgba(0,0,0,0.08);overflow:hidden;margin-bottom:0.4rem;}
+    .timeline-fill{position:absolute;top:0;bottom:0;left:0;right:0;border-radius:inherit;background:linear-gradient(to right,var(--color-accent),#4f98a3);}
     .timeline-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-muted);}
-    .stage-detail-row{font-size:var(--text-xs);display:flex;justify-content:space-between;gap:var(--space-3);font-weight:500;}
 
-    footer{border-top:1px solid rgba(0,0,0,0.12);padding:var(--space-4);font-size:var(--text-xs);color:var(--color-text-faint);}
-    .footer-inner{max-width:var(--content-width);margin:0 auto;display:flex;flex-direction:column;gap:0.3rem;font-weight:500;}
+    .facet-list li{list-style:none;}
+
+    .go-table-wrapper,.expr-table-wrapper{max-height:260px;overflow:auto;border-radius:0.5rem;border:1px solid var(--color-border);background:var(--color-surface-2);}
+    table.go-table,table.expr-table{width:100%;border-collapse:collapse;font-size:var(--text-xs);}
+    .go-table th,.go-table td,.expr-table th,.expr-table td{padding:0.35rem 0.5rem;border-bottom:1px solid rgba(0,0,0,0.05);text-align:left;vertical-align:top;}
+    .go-table thead,.expr-table thead{background:rgba(0,0,0,0.03);}
+    .go-table tbody tr:nth-child(odd),.expr-table tbody tr:nth-child(odd){background:rgba(0,0,0,0.015);}
+
+    .footer-inner{max-width:var(--content-width);margin:0 auto;padding:var(--space-4);border-top:1px solid var(--color-border);font-size:var(--text-xs);color:var(--color-text-faint);display:flex;flex-direction:column;gap:0.2rem;}
   </style>
 </head>
 <body>
   <header>
     <div class="brand-group">
       <div class="brand-title">Z-connectome</div>
-      <div class="brand-sub">Result view</div>
+      <div class="brand-sub">Zebrafish wild-type gene expression · disease orthology · GO</div>
     </div>
     <div class="header-actions">
-      <button class="btn-ghost" type="button" onclick="window.location.href='index.html'">Back to home</button>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">☾</button>
+      <a href="index.html" class="btn-ghost">New query</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">☾</button>
     </div>
   </header>
+
   <main>
     <section>
       <div class="eyebrow">Results</div>
@@ -156,10 +169,10 @@
       </div>
       <div style="flex:0.6 1 160px;">
         <div class="field-label">Stage</div>
-        <select id="filter-stage"></select>
+        <select id="filter-stage" class="input"></select>
       </div>
       <div style="flex:0.8 1 200px;">
-        <div class="field-label">Structure</div>
+        <div class="field-label">Tissue</div>
         <input id="filter-structure" class="input" type="search" />
       </div>
       <div style="flex:0.8 1 200px;">
@@ -175,7 +188,7 @@
       <div class="table-shell">
         <div class="table-header-row" aria-hidden="true">
           <div>Gene · fish line</div>
-          <div>Super-structure</div>
+          <div>Tissue</div>
           <div>Stage (summary)</div>
           <div>Assay</div>
           <div>Evidence</div>
@@ -187,37 +200,78 @@
   </main>
 
   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-main">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-gene-symbol">
       <button class="modal-close" type="button" aria-label="Close" id="modal-close">×</button>
-      <h2 id="modal-title-main" class="modal-title-main"></h2>
-      <div id="modal-title-sub" class="modal-title-sub"></div>
+
+      <div class="gene-header">
+        <div class="gene-header-main">
+          <div class="gene-field"><span class="gene-label">Gene ID</span><a id="modal-gene-id" href="#" target="_blank" rel="noopener noreferrer" class="gene-value-link"></a></div>
+          <div class="gene-field"><span class="gene-label">Gene Symbol</span><span id="modal-gene-symbol" class="gene-value"></span></div>
+          <div class="gene-field"><span class="gene-label">Gene Name</span><span id="modal-gene-name" class="gene-value"></span></div>
+        </div>
+        <div class="gene-actions">
+          <button type="button" class="pill-small" id="modal-link-expression">Expression matches in ZFIN</button>
+        </div>
+      </div>
+
+      <hr class="divider" />
 
       <div class="detail-section">
-        <div class="detail-title">Developmental span (summary sheet)</div>
+        <div class="detail-title">Gene Ontology annotations</div>
+        <div class="go-table-wrapper">
+          <table class="go-table">
+            <thead>
+              <tr>
+                <th>GO term</th>
+                <th>Aspect</th>
+                <th>Evidence</th>
+                <th>Definition (QuickGO)</th>
+              </tr>
+            </thead>
+            <tbody id="modal-go-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-section">
+        <div class="detail-title">Developmental span</div>
         <div class="timeline-track"><div class="timeline-fill" id="modal-timeline"></div></div>
-        <div class="timeline-labels"><span id="modal-stage-start">Earliest stage</span><span id="modal-stage-end">Latest stage</span></div>
+        <div class="timeline-labels"><span id="modal-stage-start">Zygote (1-cell)</span><span id="modal-stage-end">Adult</span></div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-title">Stage-specific evidence (summary sheet)</div>
-        <div id="modal-stage-details" class="facet-list"></div>
+        <div class="detail-title">Tissues (super-structures)</div>
+        <ul id="modal-tissues" class="facet-list"></ul>
       </div>
 
-      <div class="detail-section">
-        <div class="detail-title">Disease orthology snapshot</div>
-        <div id="modal-disease" class="facet-list"></div>
-      </div>
+      <hr class="divider" />
 
       <div class="detail-section">
-        <div class="detail-title">GO annotations</div>
-        <div id="modal-go" class="facet-list"></div>
+        <div class="detail-title">Known human orthologs &amp; diseases</div>
+        <div id="modal-disease-body" class="facet-list"></div>
       </div>
 
+      <hr class="divider" />
+
       <div class="detail-section">
-        <div class="detail-title">External links</div>
-        <div class="facet-list">
-          <button type="button" class="pill-small" id="modal-link-gene">Open gene in ZFIN</button>
-          <button type="button" class="pill-small" id="modal-link-expression">View expression matches in ZFIN</button>
+        <div class="detail-title">Detailed developmental expression</div>
+        <div class="expr-table-wrapper">
+          <table class="expr-table">
+            <thead>
+              <tr>
+                <th>Stage start</th>
+                <th>Stage end</th>
+                <th>Tissue</th>
+                <th>Sub-structure</th>
+                <th>Assay</th>
+                <th>Fish line</th>
+                <th>Publication</th>
+              </tr>
+            </thead>
+            <tbody id="modal-expr-body"></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -227,7 +281,6 @@
     <div class="footer-inner">
       <div>All data sources from <a href="https://zfin.org" target="_blank" rel="noopener noreferrer">ZFIN.ORG</a>; Database Last Updated on <span id="footer-date">2026-05-19</span>.</div>
       <div>Created by Rohan Alag, PhD Scholar, Prof. Mahendra Sonawane Lab, TIFR Mumbai.</div>
-      <div>Contact: <a href="mailto:alag.rohan@gmail.com">alag.rohan@gmail.com</a>; <a href="mailto:rohan.alag@tifr.res.in">rohan.alag@tifr.res.in</a></div>
     </div>
   </footer>
 
@@ -260,10 +313,13 @@
 
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get('q') || '';
+    const focusParam = params.get('focus') || '';
     const modeParam = params.get('mode') || 'expression';
 
     document.getElementById('filter-gene').value = decodeURIComponent(qParam);
-    document.getElementById('page-lede').textContent = qParam ? `Query = "${decodeURIComponent(qParam)}" (mode: ${modeParam})` : 'Showing all expression rows (no initial query).';
+    document.getElementById('page-lede').textContent = qParam
+      ? `Query = "${decodeURIComponent(qParam)}" (mode: ${modeParam})`
+      : 'Showing all expression rows (no initial query).';
 
     const state = {
       stageOrder: [],
@@ -286,34 +342,50 @@
 
     const modalBackdrop = document.getElementById('modal-backdrop');
     const modalClose = document.getElementById('modal-close');
-    const modalTitleMain = document.getElementById('modal-title-main');
-    const modalTitleSub = document.getElementById('modal-title-sub');
+    const modalGeneId = document.getElementById('modal-gene-id');
+    const modalGeneSymbol = document.getElementById('modal-gene-symbol');
+    const modalGeneName = document.getElementById('modal-gene-name');
     const modalTimeline = document.getElementById('modal-timeline');
     const modalStageStart = document.getElementById('modal-stage-start');
     const modalStageEnd = document.getElementById('modal-stage-end');
-    const modalStageDetails = document.getElementById('modal-stage-details');
-    const modalDisease = document.getElementById('modal-disease');
-    const modalGo = document.getElementById('modal-go');
-    const modalLinkGene = document.getElementById('modal-link-gene');
-    const modalLinkExpr = document.getElementById('modal-link-expression');
+    const modalTissues = document.getElementById('modal-tissues');
+    const modalGoBody = document.getElementById('modal-go-body');
+    const modalDiseaseBody = document.getElementById('modal-disease-body');
+    const modalExprBody = document.getElementById('modal-expr-body');
+    const modalLinkExpression = document.getElementById('modal-link-expression');
 
-    function toStr(v){return v==null?'':String(v).trim();}
+    function toStr(v){ return v==null ? '' : String(v).trim(); }
 
     function buildStageOrder(sheet){
       const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
-      const order=[];const idx=new Map();
-      rows.forEach(row=>{row.forEach(cell=>{const v=toStr(cell);if(!v)return;const name=v.split(':')[0].trim();if(name && !idx.has(name)){idx.set(name,order.length);order.push(name);}});});
-      state.stageOrder=order;state.stageIndex=idx;
-      const select = elFilterStage;select.innerHTML = '<option value="">Any stage</option>' + order.map(s=>`<option value="${s}">${s}</option>`).join('');
+      const order=[]; const idxMap=new Map();
+      rows.forEach(row=>{
+        row.forEach(cell=>{
+          const v=toStr(cell);
+          if(!v) return;
+          const name=v.split(':')[0].trim();
+          if(name && !idxMap.has(name)){
+            idxMap.set(name,order.length);
+            order.push(name);
+          }
+        });
+      });
+      state.stageOrder=order;
+      state.stageIndex=idxMap;
+      // populate stage filter
+      elFilterStage.innerHTML = '<option value="">Any stage</option>' +
+        order.map(s => `<option value="${s}">${s}</option>`).join('');
     }
 
     function rowsFromSheet(sheet){
       const arr = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
       const header = (arr[0]||[]).map(toStr);
-      const out=[];
-      for(let i=1;i<arr.length;i++){
-        const row = arr[i]; if(!row || row.every(v=>v==null || String(v).trim()==='')) continue;
-        const obj={}; header.forEach((h,idx)=>{obj[h||`col_${idx}`]=row[idx];});
+      const out = [];
+      for(let r=1;r<arr.length;r++){
+        const row = arr[r];
+        if(!row || row.every(v => v==null || String(v).trim()==='')) continue;
+        const obj={};
+        header.forEach((h,i)=>{ obj[h||`col_${i}`] = row[i]; });
         out.push(obj);
       }
       return out;
@@ -321,67 +393,91 @@
 
     function normaliseExpression(sheet){
       const rows = rowsFromSheet(sheet);
-      state.rowsExpression = rows.map(r=>({
-        geneId:toStr(r['Gene ID']),
-        geneSymbol:toStr(r['Gene Symbol']),
-        fishName:toStr(r['Fish Name']),
-        superStructure:toStr(r['Super Structure Name']),
-        subStructure:toStr(r['Sub Structure Name']),
-        startStage:toStr(r['Start Stage']),
-        endStage:toStr(r['End Stage']),
-        assay:toStr(r['Assay']),
-        publicationId:toStr(r['Publication ID'])
-      })).filter(r=>r.geneSymbol);
+      state.rowsExpression = rows.map(r => ({
+        geneId: toStr(r['Gene ID']),
+        geneSymbol: toStr(r['Gene Symbol']),
+        fishName: toStr(r['Fish Name']),
+        superStructure: toStr(r['Super Structure Name']),
+        subStructure: toStr(r['Sub Structure Name']),
+        startStage: toStr(r['Start Stage']),
+        endStage: toStr(r['End Stage']),
+        assay: toStr(r['Assay']),
+        assayMmoId: toStr(r['Assay MMO ID']),
+        publicationId: toStr(r['Publication ID']),
+        probeId: toStr(r['Probe ID']),
+        antibodyId: toStr(r['Antibody ID']),
+        fishId: toStr(r['Fish ID'])
+      })).filter(r => r.geneSymbol);
+
+      // populate fish dropdown
+      const fishSet = new Set();
+      state.rowsExpression.forEach(r => { if (r.fishName) fishSet.add(r.fishName); });
+      const sortedFish = Array.from(fishSet).sort((a,b) => a.localeCompare(b));
+      elFilterFish.innerHTML = '<option value="">Any line</option>' +
+        sortedFish.map(f => `<option value="${f}">${f}</option>`).join('');
     }
 
     function buildSummaryByGene(sheet){
       const rows = rowsFromSheet(sheet);
       const map = new Map();
-      rows.forEach(r=>{
-        const sym = toStr(r['Gene Symbol']); if(!sym) return;
+      rows.forEach(r => {
+        const sym = toStr(r['Gene Symbol']);
+        if (!sym) return;
         const rec = {
-          geneSymbol:sym,
-          superStructure:toStr(r['Super Structure Name']),
-          startStage:toStr(r['Start Stage']),
-          endStage:toStr(r['End Stage']),
-          assay:toStr(r['Assay'])
+          geneSymbol: sym,
+          superStructure: toStr(r['Super Structure Name']),
+          startStage: toStr(r['Start Stage']),
+          endStage: toStr(r['End Stage']),
+          assay: toStr(r['Assay'])
         };
-        if(!map.has(sym)) map.set(sym,[]);
+        if (!map.has(sym)) map.set(sym, []);
         map.get(sym).push(rec);
       });
       state.summaryByGene = map;
     }
 
     function normaliseDisease(sheet){
-      const rows = rowsFromSheet(sheet); const map=new Map();
-      rows.forEach(r=>{
-        const sym = toStr(r['Zebrafish Gene Symbol']); if(!sym) return;
+      const rows = rowsFromSheet(sheet);
+      const map = new Map();
+      rows.forEach(r => {
+        const sym = toStr(r['Zebrafish Gene Symbol']);
+        if (!sym) return;
         const rec = {
-          doName:toStr(r['DO Term Name']),
-          doId:toStr(r['DO Term ID']),
-          omimName:toStr(r['OMIM Term Name']),
-          omimId:toStr(r['OMIM ID']),
-          evidence:toStr(r['Evidence Code'])
+          zebrafishGeneId: toStr(r['Zebrafish Gene ID']),
+          geneSymbol: sym,
+          humanGeneId: toStr(r['Human Ortholog Entrez Gene Id']),
+          humanGeneSymbol: toStr(r['Human Ortholog Symbol']),
+          doName: toStr(r['DO Term Name']),
+          doId: toStr(r['DO Term ID']),
+          omimName: toStr(r['OMIM Term Name']),
+          omimId: toStr(r['OMIM ID']),
+          evidenceCode: toStr(r['Evidence Code']),
+          publication: toStr(r['Publication'])
         };
-        if(!map.has(sym)) map.set(sym,[]);
+        if (!map.has(sym)) map.set(sym, []);
         map.get(sym).push(rec);
       });
       state.geneToDisease = map;
     }
 
     function normaliseGo(sheet){
-      const rows = rowsFromSheet(sheet); const map=new Map(); const markerMap=new Map();
-      rows.forEach(r=>{
-        const sym = toStr(r['Gene Symbol']); if(!sym) return;
-        const rec={
-          goId:toStr(r['GO Term ID']),
-          ontology:toStr(r['Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component']),
-          evidence:toStr(r['GO Evidence Code'])
+      const rows = rowsFromSheet(sheet);
+      const map = new Map();
+      const markerMap = new Map();
+      rows.forEach(r => {
+        const sym = toStr(r['Gene Symbol']);
+        if (!sym) return;
+        const rec = {
+          geneSymbol: sym,
+          goId: toStr(r['GO Term ID']),
+          evidence: toStr(r['GO Evidence Code']),
+          refId: toStr(r['Reference ID']),
+          ontology: toStr(r['Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component']),
+          markerName: toStr(r['Marker Name'])
         };
-        if(!map.has(sym)) map.set(sym,[]);
+        if (!map.has(sym)) map.set(sym, []);
         map.get(sym).push(rec);
-        const markerName = toStr(r['Marker Name']);
-        if(markerName && !markerMap.has(sym)) markerMap.set(sym, markerName);
+        if (rec.markerName && !markerMap.has(sym)) markerMap.set(sym, rec.markerName);
       });
       state.geneToGo = map;
       state.markerNameByGene = markerMap;
@@ -400,13 +496,18 @@
         normaliseDisease(wb.Sheets['20260519_gene2DiseaseOrthology']);
         normaliseGo(wb.Sheets['20260519_GeneOntology']);
         renderResults();
+        if (focusParam === 'gene' && qParam) {
+          const sym = qParam;
+          const row = state.rowsExpression.find(r => r.geneSymbol === sym);
+          if (row) openModal(sym, row);
+        }
       }catch(e){console.error(e); elNote.textContent='Failed to load Excel file.';}
     }
 
     function matchesFilters(row){
       const q = elFilterGene.value.trim().toLowerCase();
       const s = elFilterStruct.value.trim().toLowerCase();
-      const f = elFilterFish.value;  // exact match from dropdown
+      const f = elFilterFish.value;  // exact from dropdown
       const stage = elFilterStage.value;
       if(q){
         const t=(row.geneSymbol+' '+row.geneId+' '+row.fishName).toLowerCase();
@@ -422,7 +523,7 @@
       if(stage && state.summaryByGene.size){
         const summaries = state.summaryByGene.get(row.geneSymbol) || [];
         const idxStage = state.stageIndex.get(stage);
-        if(idxStage!=null){
+        if (idxStage != null) {
           let ok=false;
           summaries.forEach(rec=>{
             const a = state.stageIndex.get(rec.startStage);
@@ -441,19 +542,41 @@
       const filtered = state.rowsExpression.filter(matchesFilters).slice(0,200);
       if(!filtered.length){elNote.textContent='No rows match these filters.';return;}
       const frag=document.createDocumentFragment();
+      const structFilter = elFilterStruct.value.trim().toLowerCase();
+
       filtered.forEach(row=>{
         const hasDisease=(state.geneToDisease.get(row.geneSymbol)||[]).length>0;
         const hasGo=(state.geneToGo.get(row.geneSymbol)||[]).length>0;
         const summaryList = state.summaryByGene.get(row.geneSymbol)||[];
+
+        const tissueSet = new Set();
+        summaryList.forEach(s => { if (s.superStructure) tissueSet.add(s.superStructure); });
+        const tissueList = Array.from(tissueSet);
+        if (structFilter) {
+          tissueList.sort((a,b) => {
+            const aHas = a.toLowerCase().includes(structFilter);
+            const bHas = b.toLowerCase().includes(structFilter);
+            if (aHas && !bHas) return -1;
+            if (!aHas && bHas) return 1;
+            return a.localeCompare(b);
+          });
+        } else {
+          tissueList.sort();
+        }
+        const topThree = tissueList.slice(0,3);
+        const extraCount = tissueList.length - topThree.length;
+        const tissueLabel = topThree.join(', ') + (extraCount>0 ? ` (+${extraCount} more)` : '');
+
         const firstSummary = summaryList[0];
         const stageLabel = firstSummary ? `${firstSummary.startStage} → ${firstSummary.endStage}` : `${row.startStage} → ${row.endStage}`;
+
         const el=document.createElement('button');
         el.type='button';
         el.className='table-row';
         el.dataset.gene = row.geneSymbol;
         el.innerHTML=`
           <div><div>${row.geneSymbol||'–'}</div><div class="sub">${row.fishName||''}</div></div>
-          <div><div>${row.superStructure||'–'}</div><div class="sub">${row.subStructure||''}</div></div>
+          <div><div>${tissueLabel || row.superStructure || '–'}</div><div class="sub">${row.subStructure||''}</div></div>
           <div><div>${stageLabel||'–'}</div><div class="sub">summary sheet</div></div>
           <div><span class="badge-assay">${row.assay||'Assay'}</span></div>
           <div><div class="sub">${row.publicationId||''}</div><div class="sub">${hasDisease?'<span class="pill-small">Disease</span>':''} ${hasGo?'<span class="pill-small">GO</span>':''}</div></div>`;
@@ -467,84 +590,145 @@
     function openModal(geneSymbol, exampleRow){
       state.activeGene = geneSymbol;
       const fullName = state.markerNameByGene.get(geneSymbol) || '';
-      modalTitleMain.textContent = geneSymbol;
-      modalTitleSub.textContent = fullName ? fullName : (exampleRow.geneId ? `ZFIN gene ID: ${exampleRow.geneId}` : '');
-
-      const summaries = state.summaryByGene.get(geneSymbol)||[];
-      if(summaries.length && state.stageOrder.length){
-        let minIdx=Infinity,maxIdx=-Infinity,sName='',eName='';
-        summaries.forEach(rec=>{
-          const a = state.stageIndex.get(rec.startStage);
-          const b = state.stageIndex.get(rec.endStage);
-          if(a!=null && a<minIdx){minIdx=a;sName=rec.startStage;}
-          if(b!=null && b>maxIdx){maxIdx=b;eName=rec.endStage;}
-        });
-        if(minIdx!==Infinity && maxIdx!==-Infinity){
-          const total=state.stageOrder.length;
-          const left=(minIdx/total)*100;
-          const right=100-((maxIdx+1)/total)*100;
-          modalTimeline.style.left = left.toFixed(1)+'%';
-          modalTimeline.style.right = right.toFixed(1)+'%';
-          modalStageStart.textContent = sName||'Earliest stage';
-          modalStageEnd.textContent = eName||'Latest stage';
-        }
+      modalGeneSymbol.textContent = geneSymbol;
+      modalGeneName.textContent = fullName || '—';
+      const geneId = exampleRow.geneId || '';
+      modalGeneId.textContent = geneId || '—';
+      if(geneId && geneId.startsWith('ZDB-')){
+        modalGeneId.href = `https://zfin.org/${geneId}`;
+      } else if(geneId){
+        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneId)}&fq=type%3Agene`;
+      } else {
+        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
       }
 
-      modalStageDetails.innerHTML = summaries.length ? summaries.map(rec=>`
-        <div class="stage-detail-row">
-          <span>${rec.startStage} → ${rec.endStage}</span>
-          <span>${rec.superStructure}</span>
-          <span>${rec.assay}</span>
-        </div>`).join('') : '<div class="stage-detail-row"><span>No summary rows for this gene.</span></div>';
+      const goListRaw = state.geneToGo.get(geneSymbol)||[];
+      const goById = new Map();
+      goListRaw.forEach(g=>{
+        const key = g.goId || g.ontology || 'other';
+        if(!goById.has(key)) goById.set(key,[]);
+        goById.get(key).push(g);
+      });
+      modalGoBody.innerHTML = '';
+      goById.forEach((list,key)=>{
+        const first=list[0];
+        const aspect = (first.ontology||'').includes('Biological Process') ? 'Biological Process'
+                     : (first.ontology||'').includes('Molecular Function') ? 'Molecular Function'
+                     : (first.ontology||'').includes('Cellular Component') ? 'Cellular Component'
+                     : '';
+        const evid = Array.from(new Set(list.map(x=>x.evidence).filter(Boolean))).join(', ');
+        const defUrl = first.goId ? `https://www.ebi.ac.uk/QuickGO/term/${first.goId}` : '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${first.goId||''}</td>
+          <td>${aspect}</td>
+          <td>${evid}</td>
+          <td>${defUrl?`<a href="${defUrl}" target="_blank" rel="noopener noreferrer">View in QuickGO</a>`:''}</td>`;
+        modalGoBody.appendChild(tr);
+      });
+
+      const allExpr = state.rowsExpression.filter(r=>r.geneSymbol===geneSymbol);
+      let minIdx=0,maxIdx=state.stageOrder.length-1;
+      let sName='Zygote (1-cell)', eName='Adult';
+      const exprSpanIndices=[];
+      const tissueSet=new Set();
+      allExpr.forEach(r=>{
+        if(r.superStructure) tissueSet.add(r.superStructure);
+        const a=state.stageIndex.get(r.startStage);
+        const b=state.stageIndex.get(r.endStage);
+        if(a!=null && b!=null) exprSpanIndices.push([a,b]);
+      });
+      if(exprSpanIndices.length){
+        minIdx=Math.min(...exprSpanIndices.map(p=>p[0]));
+        maxIdx=Math.max(...exprSpanIndices.map(p=>p[1]));
+        sName=state.stageOrder[minIdx]||sName;
+        eName=state.stageOrder[maxIdx]||eName;
+      }
+      const total=state.stageOrder.length||1;
+      const left=(minIdx/total)*100;
+      const right=100-((maxIdx+1)/total)*100;
+      modalTimeline.style.left=left.toFixed(1)+'%';
+      modalTimeline.style.right=right.toFixed(1)+'%';
+      modalStageStart.textContent=sName;
+      modalStageEnd.textContent=eName;
+
+      modalTissues.innerHTML='';
+      Array.from(tissueSet).sort().forEach(t=>{
+        const li=document.createElement('li');
+        li.textContent=t;
+        modalTissues.appendChild(li);
+      });
 
       const dList = state.geneToDisease.get(geneSymbol)||[];
-      if(dList.length){
-        const byKey=new Map();
-        dList.forEach(d=>{const k=d.doId||d.omimId||d.doName||d.omimName;if(!k)return;if(!byKey.has(k))byKey.set(k,[]);byKey.get(k).push(d);});
-        const items=[];byKey.forEach((list,k)=>{const f=list[0];items.push({label:f.doName||f.omimName||k,n:list.length,evidence:Array.from(new Set(list.map(x=>x.evidence).filter(Boolean)))});});
-        items.sort((a,b)=>b.n-a.n);
-        modalDisease.innerHTML = items.slice(0,6).map(it=>`<div class="facet-item"><span>${it.label}</span><span>n=${it.n}${it.evidence.length?' · '+it.evidence.join(','):''}</span></div>`).join('');
-      }else{modalDisease.innerHTML='<div class="facet-item"><span>No disease associations in this snapshot.</span></div>';}
+      const humanSet=new Set();
+      const diseaseMap=new Map();
+      dList.forEach(d=>{
+        if(d.humanGeneSymbol) humanSet.add(d.humanGeneSymbol);
+        const key=d.doName||d.omimName||'other';
+        if(!diseaseMap.has(key)) diseaseMap.set(key,[]);
+        diseaseMap.get(key).push(d);
+      });
+      const humans=Array.from(humanSet).sort();
+      const diseaseLines=[];
+      diseaseMap.forEach((list,key)=>{
+        const first=list[0];
+        const label=first.doName||first.omimName||key;
+        const omim=first.omimName?` (${first.omimName})`:'';
+        diseaseLines.push(label+omim);
+      });
+      modalDiseaseBody.innerHTML='';
+      const humanRow=document.createElement('div');
+      humanRow.className='facet-item';
+      humanRow.innerHTML=`<span class="facet-label">Known human orthologs</span><span>${humans.join(', ')||'—'}</span>`;
+      modalDiseaseBody.appendChild(humanRow);
+      const diseaseRow=document.createElement('div');
+      diseaseRow.className='facet-item';
+      diseaseRow.innerHTML=`<span class="facet-label">Known diseases</span><span>${diseaseLines.join('; ')||'—'}</span>`;
+      modalDiseaseBody.appendChild(diseaseRow);
 
-      const gList = state.geneToGo.get(geneSymbol)||[];
-      if(gList.length){
-        const byId=new Map();
-        gList.forEach(g=>{const k=g.goId||g.ontology;if(!k)return;if(!byId.has(k))byId.set(k,[]);byId.get(k).push(g);});
-        const items=[];byId.forEach((list,k)=>{const f=list[0];items.push({label:k,n:list.length,cat:f.ontology||''});});
-        items.sort((a,b)=>b.n-a.n);
-        modalGo.innerHTML = items.slice(0,8).map(it=>`<div class="facet-item"><span>${it.label}</span><span>${it.cat} · n=${it.n}</span></div>`).join('');
-      }else{modalGo.innerHTML='<div class="facet-item"><span>No GO annotations captured here.</span></div>';}
+      modalExprBody.innerHTML='';
+      allExpr.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+          <td>${r.startStage||''}</td>
+          <td>${r.endStage||''}</td>
+          <td>${r.superStructure||''}</td>
+          <td>${r.subStructure||''}</td>
+          <td>${r.assay||''}</td>
+          <td>${r.fishName||''}</td>
+          <td>${r.publicationId||''}</td>`;
+        modalExprBody.appendChild(tr);
+      });
 
-      modalLinkGene.onclick = ()=>{
-        const id = exampleRow.geneId;
-        const base='https://zfin.org';
-        const url = id && id.startsWith('ZDB-') ? `${base}/${id}` : `${base}/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
+      modalLinkExpression.onclick=()=>{
+        const url=`https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"&category=Expression`;
         window.open(url,'_blank','noopener');
       };
-      modalLinkExpr.onclick = ()=>{
-        const base='https://zfin.org';
-        const url = `${base}/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"&category=Expression`;
-        window.open(url,'_blank','noopener');
-      };
 
-      modalBackdrop.style.display='flex';
+      modalBackdrop.classList.add('visible');
       modalBackdrop.setAttribute('aria-hidden','false');
     }
 
     function closeModal(){
-      modalBackdrop.style.display='none';
+      modalBackdrop.classList.remove('visible');
       modalBackdrop.setAttribute('aria-hidden','true');
     }
 
-    modalClose.addEventListener('click',closeModal);
-    modalBackdrop.addEventListener('click',ev=>{if(ev.target===modalBackdrop) closeModal();});
-    document.addEventListener('keydown',ev=>{if(ev.key==='Escape') closeModal();});
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', e=>{ if(e.target===modalBackdrop) closeModal(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
     elFilterGene.addEventListener('input',renderResults);
     elFilterStage.addEventListener('change',renderResults);
     elFilterStruct.addEventListener('input',renderResults);
     elFilterFish.addEventListener('change',renderResults);
-    elBtnClear.addEventListener('click',()=>{elFilterGene.value='';elFilterStage.value='';elFilterStruct.value='';elFilterFish.value='';renderResults();});
+    elBtnClear.addEventListener('click',()=>{
+      elFilterGene.value='';
+      elFilterStage.value='';
+      elFilterStruct.value='';
+      elFilterFish.value='';
+      renderResults();
+    });
 
     loadWorkbook();
   </script>

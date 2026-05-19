@@ -92,80 +92,60 @@
 
     .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.18em;color:var(--color-text-muted);margin-top:var(--space-6);margin-bottom:var(--space-3);font-weight:700;}
     .hero-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.04;margin-bottom:var(--space-3);font-weight:700;}
-    .hero-lede{color:var(--color-text-muted);max-width:52ch;margin-bottom:var(--space-6);font-weight:500;}
+    .hero-lede{color:var(--color-text-muted);max-width:52ch;margin-bottom:var(--space-4);}
 
-    .query-card{
-      background:var(--color-surface);border-radius:1rem;padding:var(--space-5);
-      box-shadow:var(--shadow-md);
+    .hero-panel{
+      margin-top:var(--space-4);padding:var(--space-4);border-radius:1rem;
+      background:var(--color-surface);box-shadow:var(--shadow-md);
     }
-    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.3rem;font-weight:700;}
-    .input{
-      width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);
-      padding:0.7rem 0.85rem;font-size:var(--text-sm);background:var(--color-surface-2);
-      color:var(--color-text);box-shadow:var(--shadow-sm);font-weight:500;
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.2rem;font-weight:600;}
+    .input{width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);
+      padding:0.55rem 0.75rem;font-size:var(--text-sm);background:var(--color-surface-2);
+      color:var(--color-text);box-shadow:var(--shadow-sm);
     }
     .input:focus{outline:2px solid var(--color-accent);outline-offset:2px;}
+    .mode-row{display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3);}
+    .mode-group{display:inline-flex;padding:0.2rem;border-radius:var(--radius-full);background:var(--color-surface-2);border:1px solid rgba(0,0,0,0.08);}
+    .mode-pill{border-radius:var(--radius-full);padding:0.25rem 0.8rem;font-size:var(--text-xs);border:none;background:transparent;color:var(--color-text-muted);cursor:pointer;font-weight:600;}
+    .mode-pill[data-active="true"]{background:var(--color-accent);color:var(--btn-primary-fg);}
 
-    .suggestions{margin-top:0.35rem;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-surface-2);max-height:220px;overflow-y:auto;}
-    .suggestion-item{padding:0.45rem 0.85rem;font-size:var(--text-sm);display:flex;justify-content:space-between;gap:0.5rem;cursor:pointer;font-weight:500;}
-    .suggestion-item:hover{background:rgba(0,0,0,0.06);}
-    .suggestion-meta{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;}
-
-    .mode-row{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;margin-top:var(--space-5);}
-    .mode-label{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;}
-    .mode-group{display:inline-flex;padding:0.2rem;border-radius:var(--radius-full);background:var(--color-surface-2);border:1px solid var(--color-border);}
-    .mode-pill{border-radius:var(--radius-full);padding:0.25rem 0.9rem;border:none;background:transparent;font-size:var(--text-xs);cursor:pointer;color:var(--color-text-faint);font-weight:600;}
-    .mode-pill[data-active="true"]{background:var(--color-accent);color:#fdfdfd;box-shadow:var(--shadow-sm);}
-
-    .cta-row{margin-top:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;}
-    .btn-primary{
-      border-radius:var(--radius-full);padding:0.7rem 1.4rem;border:1px solid var(--btn-primary-bg);
-      background:var(--btn-primary-bg);color:var(--btn-primary-fg);font-size:var(--text-sm);
-      display:inline-flex;align-items:center;gap:0.4rem;cursor:pointer;font-weight:600;
-      box-shadow:var(--shadow-md);transition:background var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast),color var(--transition-fast);
-    }
+    .cta-row{margin-top:var(--space-4);display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;}
+    .btn-primary,.btn-ghost{border-radius:var(--radius-full);padding:0.6rem 1.4rem;font-size:var(--text-sm);border:1px solid transparent;cursor:pointer;font-weight:600;transition:background var(--transition-fast),color var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}
+    .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg);box-shadow:var(--shadow-md);}
     .btn-primary:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+    .btn-ghost{background:transparent;color:var(--color-text);border-color:var(--color-text);}
+    .btn-ghost:hover{background:rgba(0,0,0,0.04);}
 
-    .btn-ghost{
-      border-radius:var(--radius-full);padding:0.7rem 1.4rem;border:1px solid var(--color-text);
-      background:transparent;color:var(--color-text);font-size:var(--text-sm);cursor:pointer;font-weight:600;
-    }
-
-    .helper-text{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:0.45rem;font-weight:500;}
-
-    footer{border-top:1px solid rgba(0,0,0,0.12);padding:var(--space-4);font-size:var(--text-xs);color:var(--color-text-faint);}
-    .footer-inner{max-width:var(--content-width);margin:0 auto;display:flex;flex-direction:column;gap:0.3rem;font-weight:500;}
+    .hint-note{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:0.4rem;}
+    .footer-inner{max-width:var(--content-width);margin:0 auto;padding:var(--space-4);border-top:1px solid var(--color-border);font-size:var(--text-xs);color:var(--color-text-faint);display:flex;flex-direction:column;gap:0.2rem;}
   </style>
 </head>
 <body>
   <header>
     <div class="brand-group">
       <div class="brand-title">Z-connectome</div>
-      <div class="brand-sub">Wild-type expression · Disease orthology · Gene ontology</div>
+      <div class="brand-sub">Zebrafish wild-type gene expression · disease orthology · GO</div>
     </div>
-    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">☾</button>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">☾</button>
   </header>
+
   <main>
     <section>
-      <div class="eyebrow">Home</div>
-      <h1 class="hero-title">Search zebrafish genes by symbol, stage, or tissue.</h1>
+      <div class="eyebrow">Interactive atlas</div>
+      <h1 class="hero-title">Query Z-connectome by gene, tissue, or disease.</h1>
       <p class="hero-lede">
-        Use the query box below to discover genes in the Z-connectome atlas. Suggestions appear as you type;
-        press Enter or click “View results” to inspect stage-resolved expression summaries.
+        Enter a zebrafish gene symbol, full gene name, human ortholog symbol, or free text.
+        Exact gene matches open the gene context view directly; other queries show an expression table.
       </p>
     </section>
 
-    <section class="query-card" aria-label="Query form">
-      <form id="query-form" autocomplete="off">
-        <label>
-          <div class="field-label">Gene symbol or keyword</div>
-          <input id="query-input" class="input" type="search" placeholder="e.g. pparg, sox10, intestine" />
-          <div id="suggestions" class="suggestions" hidden></div>
-          <div class="helper-text">Suggestions are inferred locally from the expression summary sheet once the data are loaded.</div>
-        </label>
+    <section class="hero-panel" aria-label="Query form">
+      <form id="query-form">
+        <div class="field-label">Query</div>
+        <input id="query-input" class="input" type="search" placeholder="e.g. pparg, peroxisome proliferator activated receptor gamma, TP53, intestine" autocomplete="off" />
 
         <div class="mode-row">
-          <span class="mode-label">Query mode</span>
+          <span class="field-label" style="margin-bottom:0;">Mode</span>
           <div class="mode-group" role="tablist" aria-label="Query mode">
             <button class="mode-pill" type="button" data-mode="expression" data-active="true">Expression-centric</button>
             <button class="mode-pill" type="button" data-mode="disease">Disease-centric</button>
@@ -177,9 +157,11 @@
           <button class="btn-primary" type="submit">View results</button>
           <button class="btn-ghost" type="button" id="btn-load-hints">Preload suggestion vocabulary</button>
         </div>
+        <p class="hint-note">Suggestions include zebrafish symbols, full gene names, tissues, and human ortholog symbols.</p>
       </form>
     </section>
   </main>
+
   <footer>
     <div class="footer-inner">
       <div>All data sources from <a href="https://zfin.org" target="_blank" rel="noopener noreferrer">ZFIN.ORG</a>; Database Last Updated on <span id="footer-date">2026-05-19</span>.</div>
@@ -216,84 +198,146 @@
     footerDate.textContent = '2026-05-19';
 
     const queryInput = document.getElementById('query-input');
-    const suggestionsBox = document.getElementById('suggestions');
+    const suggestionsBox = null; // placeholder if you later add UI
     const modeButtons = document.querySelectorAll('.mode-pill');
     const form = document.getElementById('query-form');
     const btnLoadHints = document.getElementById('btn-load-hints');
 
-    const hintState = { loaded:false, symbols:new Set(), tissues:new Set() };
+    const hintState = {
+      loaded: false,
+      symbols: new Set(),
+      tissues: new Set(),
+      geneSymbols: new Set(),
+      nameToSymbol: {}
+    };
 
     function setMode(mode) {
-      modeButtons.forEach(btn=>{
+      modeButtons.forEach(btn => {
         const active = btn.dataset.mode === mode;
-        btn.dataset.active = active ? 'true':'false';
+        btn.dataset.active = active ? 'true' : 'false';
       });
       localStorage.setItem('zconnect_mode', mode);
     }
 
     const savedMode = localStorage.getItem('zconnect_mode') || 'expression';
     setMode(savedMode);
-
-    modeButtons.forEach(btn=>{ btn.addEventListener('click',()=>setMode(btn.dataset.mode)); });
+    modeButtons.forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    });
 
     async function loadHints() {
       if (hintState.loaded) return;
       try {
         const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
-        if(!resp.ok) throw new Error('HTTP '+resp.status);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const buf = await resp.arrayBuffer();
-        const wb = XLSX.read(buf,{type:'array'});
+        const wb = XLSX.read(buf, { type: 'array' });
+
+        // Summary sheet: gene symbols & tissues
         const sheet = wb.Sheets['20260518_wtexpression_Summary'];
-        const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
-        const header = rows[0].map(v=>v==null?'':String(v).trim());
-        const idxSym = header.indexOf('Gene Symbol');
-        const idxStruct = header.indexOf('Super Structure Name');
-        for(let i=1;i<rows.length;i++){
-          const row = rows[i];
-          if(!row) continue;
-          if(idxSym>=0){ const s=row[idxSym]; if(s) hintState.symbols.add(String(s).trim()); }
-          if(idxStruct>=0){ const t=row[idxStruct]; if(t) hintState.tissues.add(String(t).trim()); }
+        if (sheet) {
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
+          const header = rows[0].map(v => v == null ? '' : String(v).trim());
+          const idxSym = header.indexOf('Gene Symbol');
+          const idxStruct = header.indexOf('Super Structure Name');
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row) continue;
+            if (idxSym >= 0) {
+              const s = row[idxSym];
+              if (s) {
+                const sym = String(s).trim();
+                hintState.symbols.add(sym);
+                hintState.geneSymbols.add(sym.toLowerCase());
+              }
+            }
+            if (idxStruct >= 0) {
+              const t = row[idxStruct];
+              if (t) hintState.tissues.add(String(t).trim());
+            }
+          }
         }
+
+        // GO sheet: marker names (full gene names)
+        const sheetGo = wb.Sheets['20260519_GeneOntology'];
+        if (sheetGo) {
+          const rowsGo = XLSX.utils.sheet_to_json(sheetGo, { header: 1, defval: null });
+          const hGo = rowsGo[0].map(v => v == null ? '' : String(v).trim());
+          const idxGeneSym = hGo.indexOf('Gene Symbol');
+          const idxMarker = hGo.indexOf('Marker Name');
+          for (let i = 1; i < rowsGo.length; i++) {
+            const row = rowsGo[i];
+            if (!row) continue;
+            const sym = idxGeneSym >= 0 ? row[idxGeneSym] : null;
+            const name = idxMarker >= 0 ? row[idxMarker] : null;
+            if (sym && name) {
+              const symStr = String(sym).trim();
+              const nameStr = String(name).trim();
+              hintState.symbols.add(nameStr);
+              hintState.nameToSymbol[nameStr.toLowerCase()] = symStr;
+            }
+          }
+        }
+
+        // Orthology sheet: human ortholog symbols
+        const sheetOrth = wb.Sheets['20260519_gene2DiseaseOrthology'];
+        if (sheetOrth) {
+          const rowsO = XLSX.utils.sheet_to_json(sheetOrth, { header: 1, defval: null });
+          const hO = rowsO[0].map(v => v == null ? '' : String(v).trim());
+          const idxZSym = hO.indexOf('Zebrafish Gene Symbol');
+          const idxHumanSym = hO.indexOf('Human Ortholog Symbol');
+          for (let i = 1; i < rowsO.length; i++) {
+            const row = rowsO[i];
+            if (!row) continue;
+            const zSym = idxZSym >= 0 ? row[idxZSym] : null;
+            const hSym = idxHumanSym >= 0 ? row[idxHumanSym] : null;
+            if (zSym && hSym) {
+              const zStr = String(zSym).trim();
+              const hStr = String(hSym).trim();
+              hintState.symbols.add(hStr);
+              hintState.nameToSymbol[hStr.toLowerCase()] = zStr;
+            }
+          }
+        }
+
         hintState.loaded = true;
-      }catch(e){ console.error(e); }
+      } catch (e) {
+        console.error(e);
+      }
     }
 
-    btnLoadHints.addEventListener('click',()=>{
+    btnLoadHints.addEventListener('click', () => {
       btnLoadHints.disabled = true;
       btnLoadHints.textContent = 'Loading suggestions…';
-      loadHints().then(()=>{ btnLoadHints.textContent = 'Suggestions ready'; });
+      loadHints().then(() => {
+        btnLoadHints.textContent = 'Suggestions loaded';
+      });
     });
 
-    function updateSuggestions() {
-      const q = queryInput.value.trim().toLowerCase();
-      if(!q || !hintState.loaded) { suggestionsBox.hidden = true; return; }
-      const items = [];
-      for(const s of hintState.symbols){ if(s.toLowerCase().startsWith(q)) items.push({label:s,meta:'gene'}); if(items.length>10) break; }
-      for(const t of hintState.tissues){ if(t.toLowerCase().includes(q)) items.push({label:t,meta:'tissue'}); if(items.length>20) break; }
-      if(!items.length){ suggestionsBox.hidden = true; return; }
-      suggestionsBox.innerHTML = items.map(it=>`<div class="suggestion-item" data-label="${it.label}"><span>${it.label}</span><span class="suggestion-meta">${it.meta}</span></div>`).join('');
-      suggestionsBox.hidden = false;
+    function handleSubmit(e) {
+      e.preventDefault();
+      const q = queryInput.value.trim();
+      if (!q) return;
+      const qLower = q.toLowerCase();
+      const mode = localStorage.getItem('zconnect_mode') || 'expression';
+
+      // Exact zebrafish gene symbol
+      if (hintState.geneSymbols && hintState.geneSymbols.has(qLower)) {
+        window.location.href = `results.html?q=${encodeURIComponent(q)}&focus=gene`;
+        return;
+      }
+
+      // Exact full name or human ortholog symbol
+      if (hintState.nameToSymbol && hintState.nameToSymbol[qLower]) {
+        const sym = hintState.nameToSymbol[qLower];
+        window.location.href = `results.html?q=${encodeURIComponent(sym)}&focus=gene`;
+        return;
+      }
+
+      window.location.href = `results.html?q=${encodeURIComponent(q)}&mode=${mode}`;
     }
 
-    queryInput.addEventListener('input',()=>{
-      if(!hintState.loaded) loadHints().then(updateSuggestions);
-      else updateSuggestions();
-    });
-
-    suggestionsBox.addEventListener('click',ev=>{
-      const item = ev.target.closest('.suggestion-item');
-      if(!item) return;
-      queryInput.value = item.dataset.label;
-      suggestionsBox.hidden = true;
-    });
-
-    form.addEventListener('submit',ev=>{
-      ev.preventDefault();
-      const q = encodeURIComponent(queryInput.value.trim());
-      const mode = Array.from(modeButtons).find(b=>b.dataset.active==='true').dataset.mode;
-      const url = `results.html?q=${q}&mode=${mode}`;
-      window.location.href = url;
-    });
+    form.addEventListener('submit', handleSubmit);
   </script>
 </body>
 </html>
