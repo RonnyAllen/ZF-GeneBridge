@@ -228,24 +228,40 @@
     async function loadHints() {
       if (hintState.loaded) return;
       try {
-        const resp = await fetch('hints.json');
+        const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const data = await resp.json();
+        const buf = await resp.arrayBuffer();
+        const wb = XLSX.read(buf, { type: 'array' });
 
-        (data.geneSymbols || []).forEach(sym => {
-          const s = String(sym).trim();
-          if (!s) return;
-          hintState.symbols.add(s);
-          hintState.geneSymbols.add(s.toLowerCase());
-        });
+        const sheet = wb.Sheets['20260518_wtexpression_Summary'];
+        if (sheet) {
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
+          const header = rows[0].map(v => v == null ? '' : String(v).trim());
+          const idxSym = header.indexOf('Gene Symbol');
+          const idxStruct = header.indexOf('Super Structure Name');
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row) continue;
+            if (idxSym >= 0) {
+              const s = row[idxSym];
+              if (s) {
+                const sym = String(s).trim();
+                if (sym) {
+                  hintState.symbols.add(sym);
+                  hintState.geneSymbols.add(sym.toLowerCase());
+                }
+              }
+            }
+            if (idxStruct >= 0) {
+              const t = row[idxStruct];
+              if (t) {
+                const tissue = String(t).trim();
+                if (tissue) hintState.tissues.add(tissue);
+              }
+            }
+          }
+        }
 
-        (data.tissues || []).forEach(t => {
-          const s = String(t).trim();
-          if (!s) return;
-          hintState.tissues.add(s);
-        });
-
-        hintState.nameToSymbol = data.nameToSymbol || {};
         hintState.loaded = true;
       } catch (e) {
         console.error(e);
