@@ -223,8 +223,6 @@
             <thead>
               <tr>
                 <th>GO term</th>
-                <th>Aspect</th>
-                <th>Evidence</th>
                 <th>Definition (QuickGO)</th>
               </tr>
             </thead>
@@ -538,13 +536,24 @@
 
     function renderResults(){
       elBody.innerHTML='';
-      if(!state.rowsExpression.length){elNote.textContent='No rows loaded yet.';return;}
-      const filtered = state.rowsExpression.filter(matchesFilters).slice(0,200);
-      if(!filtered.length){elNote.textContent='No rows match these filters.';return;}
+      if(!state.rowsExpression.length){
+        elNote.textContent='No rows loaded yet.';
+        return;
+      }
+      const byGene = new Map();
+      state.rowsExpression.forEach(row => {
+        if (!matchesFilters(row)) return;
+        if (!byGene.has(row.geneSymbol)) byGene.set(row.geneSymbol, row);
+      });
+      const rows = Array.from(byGene.values());
+      if(!rows.length){
+        elNote.textContent='No rows match these filters.';
+        return;
+      }
       const frag=document.createDocumentFragment();
       const structFilter = elFilterStruct.value.trim().toLowerCase();
 
-      filtered.forEach(row=>{
+      rows.slice(0,200).forEach(row=>{
         const hasDisease=(state.geneToDisease.get(row.geneSymbol)||[]).length>0;
         const hasGo=(state.geneToGo.get(row.geneSymbol)||[]).length>0;
         const summaryList = state.summaryByGene.get(row.geneSymbol)||[];
@@ -579,12 +588,12 @@
           <div><div>${tissueLabel || row.superStructure || '–'}</div><div class="sub">${row.subStructure||''}</div></div>
           <div><div>${stageLabel||'–'}</div><div class="sub">summary sheet</div></div>
           <div><span class="badge-assay">${row.assay||'Assay'}</span></div>
-          <div><div class="sub">${row.publicationId||''}</div><div class="sub">${hasDisease?'<span class="pill-small">Disease</span>':''} ${hasGo?'<span class="pill-small">GO</span>':''}</div></div>`;
+          <div><div class="sub">${row.publicationId||''}</div><div class="sub">${hasDisease?'&lt;span class=\"pill-small\"&gt;Disease&lt;/span&gt;':''} ${hasGo?'&lt;span class=\"pill-small\"&gt;GO&lt;/span&gt;':''}</div></div>`;
         el.addEventListener('click',()=>openModal(row.geneSymbol,row));
         frag.appendChild(el);
       });
       elBody.appendChild(frag);
-      elNote.textContent = `Showing ${filtered.length} of ${state.rowsExpression.length} expression rows.`;
+      elNote.textContent = `Showing ${Math.min(rows.length,200)} of ${state.rowsExpression.length} genes with expression rows.`;
     }
 
     function openModal(geneSymbol, exampleRow){
@@ -602,6 +611,7 @@
         modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
       }
 
+      // GO table: term + QuickGO link only
       const goListRaw = state.geneToGo.get(geneSymbol)||[];
       const goById = new Map();
       goListRaw.forEach(g=>{
@@ -612,22 +622,25 @@
       modalGoBody.innerHTML = '';
       goById.forEach((list,key)=>{
         const first=list[0];
-        const aspect = (first.ontology||'').includes('Biological Process') ? 'Biological Process'
-                     : (first.ontology||'').includes('Molecular Function') ? 'Molecular Function'
-                     : (first.ontology||'').includes('Cellular Component') ? 'Cellular Component'
-                     : '';
-        const evid = Array.from(new Set(list.map(x=>x.evidence).filter(Boolean))).join(', ');
         const defUrl = first.goId ? `https://www.ebi.ac.uk/QuickGO/term/${first.goId}` : '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${first.goId||''}</td>
-          <td>${aspect}</td>
-          <td>${evid}</td>
           <td>${defUrl?`<a href="${defUrl}" target="_blank" rel="noopener noreferrer">View in QuickGO</a>`:''}</td>`;
         modalGoBody.appendChild(tr);
       });
 
+      // Detailed expression rows for this gene, sorted by start stage order
       const allExpr = state.rowsExpression.filter(r=>r.geneSymbol===geneSymbol);
+      const idx = s => state.stageIndex.has(s) ? state.stageIndex.get(s) : Number.MAX_SAFE_INTEGER;
+      allExpr.sort((a,b)=>{
+        const da = idx(a.startStage); const db = idx(b.startStage);
+        if (da !== db) return da - db;
+        const ea = idx(a.endStage); const eb = idx(b.endStage);
+        return ea - eb;
+      });
+
+      // Developmental span bar
       let minIdx=0,maxIdx=state.stageOrder.length-1;
       let sName='Zygote (1-cell)', eName='Adult';
       const exprSpanIndices=[];
@@ -652,6 +665,7 @@
       modalStageStart.textContent=sName;
       modalStageEnd.textContent=eName;
 
+      // Tissues list
       modalTissues.innerHTML='';
       Array.from(tissueSet).sort().forEach(t=>{
         const li=document.createElement('li');
@@ -659,6 +673,7 @@
         modalTissues.appendChild(li);
       });
 
+      // Human orthologs & diseases with em dash + not known
       const dList = state.geneToDisease.get(geneSymbol)||[];
       const humanSet=new Set();
       const diseaseMap=new Map();
@@ -679,13 +694,14 @@
       modalDiseaseBody.innerHTML='';
       const humanRow=document.createElement('div');
       humanRow.className='facet-item';
-      humanRow.innerHTML=`<span class="facet-label">Known human orthologs</span><span>${humans.join(', ')||'—'}</span>`;
+      humanRow.innerHTML=`<span class="facet-label">Known human orthologs —</span><span>${humans.length?humans.join(', '):'not known'}</span>`;
       modalDiseaseBody.appendChild(humanRow);
       const diseaseRow=document.createElement('div');
       diseaseRow.className='facet-item';
-      diseaseRow.innerHTML=`<span class="facet-label">Known diseases</span><span>${diseaseLines.join('; ')||'—'}</span>`;
+      diseaseRow.innerHTML=`<span class="facet-label">Known diseases —</span><span>${diseaseLines.length?diseaseLines.join('; '):'not known'}</span>`;
       modalDiseaseBody.appendChild(diseaseRow);
 
+      // Detailed developmental expression table
       modalExprBody.innerHTML='';
       allExpr.forEach(r=>{
         const tr=document.createElement('tr');
