@@ -164,7 +164,7 @@
       </div>
       <div style="flex:0.8 1 200px;">
         <div class="field-label">Fish line</div>
-        <input id="filter-fish" class="input" type="search" />
+        <select id="filter-fish" class="input"></select>
       </div>
       <div style="flex:0 0 auto;">
         <button id="btn-clear" class="btn-primary" type="button">Clear filters</button>
@@ -406,7 +406,7 @@
     function matchesFilters(row){
       const q = elFilterGene.value.trim().toLowerCase();
       const s = elFilterStruct.value.trim().toLowerCase();
-      const f = elFilterFish.value.trim().toLowerCase();
+      const f = elFilterFish.value;  // exact match from dropdown
       const stage = elFilterStage.value;
       if(q){
         const t=(row.geneSymbol+' '+row.geneId+' '+row.fishName).toLowerCase();
@@ -417,8 +417,7 @@
         if(!t.includes(s)) return false;
       }
       if(f){
-        const t=(row.fishName||'').toLowerCase();
-        if(!t.includes(f)) return false;
+        if((row.fishName||'') !== f) return false;
       }
       if(stage && state.summaryByGene.size){
         const summaries = state.summaryByGene.get(row.geneSymbol) || [];
@@ -544,7 +543,7 @@
     elFilterGene.addEventListener('input',renderResults);
     elFilterStage.addEventListener('change',renderResults);
     elFilterStruct.addEventListener('input',renderResults);
-    elFilterFish.addEventListener('input',renderResults);
+    elFilterFish.addEventListener('change',renderResults);
     elBtnClear.addEventListener('click',()=>{elFilterGene.value='';elFilterStage.value='';elFilterStruct.value='';elFilterFish.value='';renderResults();});
 
     loadWorkbook();
