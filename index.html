@@ -2,34 +2,23 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>Zebrafish Gene Expression Atlas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Fonts -->
+  <title>Zebrafish Gene Atlas – Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
-  <!-- SheetJS (XLSX parser) -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root {
-      /* type */
       --text-xs:   clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
       --text-sm:   clamp(0.875rem,0.80rem + 0.35vw, 1rem);
       --text-base: clamp(1rem,   0.95rem + 0.25vw, 1.125rem);
       --text-lg:   clamp(1.125rem,1rem + 0.75vw, 1.5rem);
-      --text-xl:   clamp(1.5rem, 1.20rem + 1.25vw, 2.25rem);
       --text-2xl:  clamp(2rem,   1.20rem + 2.50vw, 3.5rem);
-
-      /* spacing */
-      --space-2: 0.5rem;
       --space-3: 0.75rem;
       --space-4: 1rem;
       --space-5: 1.25rem;
       --space-6: 1.5rem;
       --space-8: 2rem;
-      --space-10: 2.5rem;
-
-      /* colours (light) */
       --color-bg:       #f7f6f2;
       --color-surface:  #f9f8f5;
       --color-surface-2:#fbfbf9;
@@ -41,23 +30,16 @@
       --color-primary:  #01696f;
       --color-primary-hover:#0c4e54;
       --color-primary-active:#0f3638;
-
       --radius-md: 0.5rem;
       --radius-lg: 0.75rem;
       --radius-full: 999px;
-
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
-
       --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-
-      --content-width: 1040px;
-
+      --content-width: 960px;
       --font-body: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-display: 'Instrument Serif', 'Georgia', serif;
     }
-
     [data-theme="dark"] {
       --color-bg:       #171614;
       --color-surface:  #1c1b19;
@@ -72,456 +54,77 @@
       --color-primary-active:#1a626b;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.20);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.40);
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; text-rendering: optimizeLegibility; }
-    body {
-      min-height: 100vh;
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      color: var(--color-text);
-      background: var(--color-bg);
-      line-height: 1.6;
-    }
-    img, svg { max-width: 100%; display: block; }
-
-    header {
-      position: sticky; top: 0; z-index: 10;
-      backdrop-filter: blur(14px);
-      background: rgba(247,246,242,0.95);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    [data-theme="dark"] header {
-      background: rgba(23,22,20,0.95);
-      border-bottom-color: rgba(255,255,255,0.08);
-    }
-    .header-inner {
-      max-width: var(--content-width);
-      margin: 0 auto;
-      padding: var(--space-3) var(--space-4);
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .brand-title {
-      font-family: var(--font-display);
-      font-size: var(--text-lg);
-      letter-spacing: 0.03em;
-    }
-    .brand-sub {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-    }
-    .header-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-    }
-    .chip {
-      font-size: var(--text-xs);
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-full);
-      background: rgba(1,105,111,0.08);
-      color: var(--color-primary);
-    }
-    .theme-toggle {
-      width: 32px; height: 32px;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(0,0,0,0.1);
-      background: var(--color-surface);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-    }
-    .theme-toggle:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-
-    main {
-      max-width: var(--content-width);
-      margin: 0 auto;
-      padding: var(--space-8) var(--space-4) var(--space-10);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.6fr);
-      gap: var(--space-6);
-      margin-bottom: var(--space-6);
-    }
-    @media (max-width: 900px) {
-      .hero-grid { grid-template-columns: minmax(0,1fr); }
-    }
-
-    .eyebrow {
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--color-text-muted);
-      margin-bottom: var(--space-2);
-    }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: var(--text-2xl);
-      line-height: 1.08;
-      margin-bottom: var(--space-3);
-    }
-    .hero-lede {
-      color: var(--color-text-muted);
-      margin-bottom: var(--space-3);
-      max-width: 52ch;
-    }
-    .hero-meta {
-      display: flex; flex-wrap: wrap; gap: var(--space-3);
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-    }
-    .hero-meta strong { color: var(--color-text); }
-
-    .hero-cta-row {
-      margin-top: var(--space-4);
-      display: flex; flex-wrap: wrap;
-      gap: var(--space-3);
-    }
-    .btn-primary, .btn-ghost {
-      border-radius: var(--radius-full);
-      padding: 0.6rem 1.2rem;
-      border: 1px solid transparent;
-      font-size: var(--text-sm);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      transition: background var(--transition-fast),
-                  color var(--transition-fast),
-                  border-color var(--transition-fast),
-                  box-shadow var(--transition-fast),
-                  transform var(--transition-fast);
-    }
-    .btn-primary {
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-      box-shadow: var(--shadow-md);
-    }
-    .btn-primary:hover {
-      background: var(--color-primary-hover);
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--color-primary);
-      border-color: rgba(1,105,111,0.4);
-    }
-    .btn-ghost:hover {
-      background: rgba(1,105,111,0.08);
-    }
-
-    .hero-panel {
-      background: var(--color-surface);
-      border-radius: 1rem;
-      padding: var(--space-4);
-      box-shadow: var(--shadow-lg);
-    }
-    .mode-toggle-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      margin-bottom: var(--space-3);
-      flex-wrap: wrap;
-    }
-    .mode-label {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-    }
-    .mode-group {
-      display: inline-flex;
-      padding: 0.2rem;
-      border-radius: var(--radius-full);
-      background: var(--color-surface-2);
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-    .mode-pill {
-      border-radius: var(--radius-full);
-      padding: 0.25rem 0.8rem;
-      font-size: var(--text-xs);
-      border: none;
-      background: transparent;
-      color: var(--color-text-muted);
-      cursor: pointer;
-    }
-    .mode-pill[data-active="true"] {
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: var(--space-3);
-      margin-bottom: var(--space-3);
-    }
-    @media (max-width: 900px) {
-      .filters { grid-template-columns: minmax(0,1fr); }
-    }
-    .field-label {
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--color-text-muted);
-      margin-bottom: 0.3rem;
-    }
-    .input, select {
-      width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(0,0,0,0.15);
-      padding: 0.5rem 0.75rem;
-      font-size: var(--text-sm);
-      background: var(--color-surface-2);
-      color: var(--color-text);
-      box-shadow: var(--shadow-sm);
-    }
-    .input:focus, select:focus {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-    .pill-row {
-      margin-top: 0.3rem;
-      display: flex; flex-wrap: wrap;
-      gap: 0.3rem;
-      font-size: var(--text-xs);
-    }
-    .pill {
-      padding: 0.15rem 0.6rem;
-      border-radius: var(--radius-full);
-      border: none;
-      background: rgba(1,105,111,0.08);
-      color: var(--color-primary);
-      cursor: pointer;
-    }
-
-    .layout-main {
-      display: grid;
-      grid-template-columns: minmax(0,2.1fr) minmax(0,1.9fr);
-      gap: var(--space-6);
-    }
-    @media (max-width: 1000px) {
-      .layout-main { grid-template-columns: minmax(0,1fr); }
-    }
-
-    .panel {
-      background: var(--color-surface);
-      border-radius: 1rem;
-      padding: var(--space-4);
-      box-shadow: var(--shadow-md);
-    }
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      gap: var(--space-3);
-      align-items: center;
-      margin-bottom: var(--space-3);
-    }
-    .panel-title {
-      font-size: var(--text-lg);
-      font-weight: 600;
-    }
-    .panel-subtitle {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-    }
-
-    .tabs {
-      display: inline-flex;
-      padding: 0.2rem;
-      border-radius: var(--radius-full);
-      background: var(--color-surface-2);
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-    .tab {
-      border-radius: var(--radius-full);
-      padding: 0.2rem 0.8rem;
-      border: none;
-      background: transparent;
-      font-size: var(--text-xs);
-      cursor: pointer;
-      color: var(--color-text-muted);
-    }
-    .tab[data-active="true"] {
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-    }
-
-    .table-shell {
-      border-radius: 0.8rem;
-      border: 1px solid var(--color-border);
-      overflow: hidden;
-      background: var(--color-surface-2);
-    }
-    .table-header-row, .table-row {
-      display: grid;
-      grid-template-columns: 1.3fr 1.1fr 0.9fr 0.8fr 1fr;
-      gap: var(--space-3);
-      padding: 0.5rem 0.9rem;
-      align-items: center;
-    }
-    .table-header-row {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      background: rgba(0,0,0,0.03);
-    }
-    .table-body {
-      max-height: 360px;
-      overflow-y: auto;
-      font-size: var(--text-sm);
-    }
-    .table-row {
-      border-top: 1px solid rgba(0,0,0,0.03);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-    }
-    .table-row:nth-child(odd) {
-      background: rgba(0,0,0,0.01);
-    }
-    .table-row:hover {
-      background: rgba(1,105,111,0.08);
-    }
-    .sub {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-    }
-    .badge-assay {
-      font-size: var(--text-xs);
-      padding: 0.15rem 0.5rem;
-      border-radius: var(--radius-full);
-      background: rgba(1,105,111,0.08);
-      color: var(--color-primary);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .pill-small {
-      font-size: var(--text-xs);
-      padding: 0.1rem 0.5rem;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(0,0,0,0.12);
-    }
-
-    .detail-empty {
-      font-size: var(--text-sm);
-      color: var(--color-text-muted);
-    }
-    .detail-section {
-      margin-top: var(--space-3);
-      padding-top: var(--space-3);
-      border-top: 1px dashed rgba(0,0,0,0.15);
-    }
-    .detail-title {
-      font-size: var(--text-sm);
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,1.5fr);
-      gap: var(--space-3);
-      font-size: var(--text-xs);
-    }
-    @media (max-width: 800px) {
-      .detail-grid { grid-template-columns: minmax(0,1fr); }
-    }
-    .detail-key {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      margin-bottom: 0.15rem;
-    }
-    .facet-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      font-size: var(--text-xs);
-    }
-    .facet-item {
-      display: flex;
-      justify-content: space-between;
-      gap: var(--space-3);
-    }
-    .timeline {
-      margin-top: var(--space-2);
-      font-size: var(--text-xs);
-    }
-    .timeline-track {
-      position: relative;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.08);
-      overflow: hidden;
-      margin-bottom: 0.4rem;
-    }
-    .timeline-fill {
-      position: absolute;
-      top: 0; bottom: 0;
-      left: 0; right: 0;
-      border-radius: inherit;
-      background: linear-gradient(to right, var(--color-primary), #4f98a3);
-    }
-    .timeline-labels {
-      display: flex;
-      justify-content: space-between;
-      color: var(--color-text-muted);
-    }
-
-    .footer-note {
-      margin-top: var(--space-4);
-      font-size: var(--text-xs);
-      color: var(--color-text-faint);
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;text-rendering:optimizeLegibility;}
+    body{
+      min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);
+      color:var(--color-text);background:var(--color-bg);line-height:1.6;
+      display:flex;flex-direction:column;
+    }
+    main{flex:1;max-width:var(--content-width);margin:0 auto;padding:var(--space-8) var(--space-4) var(--space-6);}
+    header{
+      padding:var(--space-4) var(--space-4) 0;max-width:var(--content-width);margin:0 auto;
+    }
+    .brand-title{font-family:var(--font-display);font-size:var(--text-lg);letter-spacing:0.03em;}
+    .brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.16em;color:var(--color-text-muted);margin-top:var(--space-6);margin-bottom:var(--space-3);}
+    .hero-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.08;margin-bottom:var(--space-3);}
+    .hero-lede{color:var(--color-text-muted);max-width:52ch;margin-bottom:var(--space-6);}
+    .query-card{
+      background:var(--color-surface);border-radius:1rem;padding:var(--space-5);
+      box-shadow:var(--shadow-md);
+    }
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.12em;color:var(--color-text-muted);margin-bottom:0.3rem;}
+    .input{
+      width:100%;border-radius:var(--radius-md);border:1px solid rgba(0,0,0,0.15);
+      padding:0.6rem 0.8rem;font-size:var(--text-sm);background:var(--color-surface-2);
+      color:var(--color-text);box-shadow:var(--shadow-sm);
+    }
+    .input:focus{outline:2px solid var(--color-primary);outline-offset:2px;}
+    .suggestions{margin-top:0.3rem;border-radius:var(--radius-md);border:1px solid rgba(0,0,0,0.12);background:var(--color-surface-2);max-height:220px;overflow-y:auto;}
+    .suggestion-item{padding:0.4rem 0.8rem;font-size:var(--text-sm);display:flex;justify-content:space-between;gap:0.5rem;cursor:pointer;}
+    .suggestion-item:hover{background:rgba(1,105,111,0.08);}    
+    .suggestion-meta{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .mode-row{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;margin-top:var(--space-5);}
+    .mode-label{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .mode-group{display:inline-flex;padding:0.2rem;border-radius:var(--radius-full);background:var(--color-surface-2);border:1px solid rgba(0,0,0,0.06);}
+    .mode-pill{border-radius:var(--radius-full);padding:0.25rem 0.8rem;border:none;background:transparent;font-size:var(--text-xs);cursor:pointer;color:var(--color-text-muted);}    
+    .mode-pill[data-active="true"]{background:var(--color-primary);color:var(--color-text-inverse);box-shadow:var(--shadow-sm);}    
+    .cta-row{margin-top:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;}
+    .btn-primary{border-radius:var(--radius-full);padding:0.6rem 1.25rem;border:1px solid transparent;background:var(--color-primary);color:var(--color-text-inverse);font-size:var(--text-sm);display:inline-flex;align-items:center;gap:0.4rem;cursor:pointer;box-shadow:var(--shadow-md);transition:background var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}    
+    .btn-primary:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md);transform:translateY(-1px);}    
+    .btn-ghost{border-radius:var(--radius-full);padding:0.6rem 1.25rem;border:1px solid rgba(1,105,111,0.4);background:transparent;color:var(--color-primary);font-size:var(--text-sm);cursor:pointer;}    
+    .helper-text{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:0.4rem;}
+    footer{border-top:1px solid rgba(0,0,0,0.08);padding:var(--space-4);font-size:var(--text-xs);color:var(--color-text-faint);}
+    .footer-inner{max-width:var(--content-width);margin:0 auto;display:flex;flex-direction:column;gap:0.3rem;}
   </style>
 </head>
 <body>
   <header>
-    <div class="header-inner">
-      <div>
-        <div class="brand-title">ZF Dev Atlas</div>
-        <div class="brand-sub">Wild-type expression · Disease orthology · GO</div>
-      </div>
-      <div class="header-right">
-        <span class="chip">Masters &amp; PhD focus</span>
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
-          ☼
-        </button>
-      </div>
-    </div>
+    <div class="brand-title">Z-Connectome</div>
+    <div class="brand-sub">Wild-type expression · Disease orthology · Gene ontology</div>
   </header>
-
   <main>
-    <!-- HERO -->
-    <section class="hero-grid">
-      <div>
-        <div class="eyebrow">Interactive zebrafish atlas</div>
-        <h1 class="hero-title">Explore wild-type gene expression across development.</h1>
-        <p class="hero-lede">
-          Search by gene, stage, tissue, or assay to see where genes are expressed, which human
-          diseases they map to, and how they are annotated in GO.
-        </p>
-        <div class="hero-meta">
-          <span>Updated <strong id="meta-last">2026-05-19</strong></span>
-          <span><strong id="meta-genes">–</strong> genes</span>
-          <span><strong id="meta-diseases">–</strong> disease terms</span>
-          <span><strong id="meta-go">–</strong> GO terms</span>
-        </div>
-        <div class="hero-cta-row">
-          <button class="btn-primary" type="button" id="btn-load">Load latest dataset</button>
-          <button class="btn-ghost" type="button" onclick="document.getElementById('docs').scrollIntoView({behavior:'smooth'});">
-            How this atlas is structured
-          </button>
-        </div>
-      </div>
-      <aside class="hero-panel" aria-label="Query mode and filters">
-        <div class="mode-toggle-row">
+    <section>
+      <div class="eyebrow">Home</div>
+      <h1 class="hero-title">Search zebrafish genes by symbol, stage, or tissue.</h1>
+      <p class="hero-lede">
+        Use the query box below to find genes of interest. You will see suggestions as you type.
+        Press Enter or click “View results” to open a full results table with stage-resolved expression.
+      </p>
+    </section>
+
+    <section class="query-card" aria-label="Query form">
+      <form id="query-form" autocomplete="off">
+        <label>
+          <div class="field-label">Gene symbol or keyword</div>
+          <input id="query-input" class="input" type="search" placeholder="e.g. pparg, sox10, intestine" />
+          <div id="suggestions" class="suggestions" hidden></div>
+          <div class="helper-text">Suggestions are inferred locally from the expression summary sheet once the data are loaded.</div>
+        </label>
+
+        <div class="mode-row">
           <span class="mode-label">Query mode</span>
           <div class="mode-group" role="tablist" aria-label="Query mode">
             <button class="mode-pill" type="button" data-mode="expression" data-active="true">Expression-centric</button>
@@ -529,567 +132,113 @@
             <button class="mode-pill" type="button" data-mode="go">GO-centric</button>
           </div>
         </div>
-        <form class="filters" onsubmit="return false;">
-          <label>
-            <div class="field-label">Gene or symbol</div>
-            <input class="input" type="search" id="filter-gene" placeholder="e.g. pparg, sox10" autocomplete="off" />
-            <div class="pill-row" id="recent-genes"></div>
-          </label>
-          <label>
-            <div class="field-label">Developmental stage</div>
-            <select id="filter-stage"></select>
-            <div class="pill-row" id="stage-shortcuts"></div>
-          </label>
-          <label>
-            <div class="field-label">Anatomical structure</div>
-            <input class="input" type="search" id="filter-structure" placeholder="e.g. intestine, forebrain" autocomplete="off" />
-          </label>
-        </form>
-        <p class="footer-note">
-          Data are loaded from <code>Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx</code> in this repo.
-          Click a gene to open its page on ZFIN.
-        </p>
-      </aside>
-    </section>
 
-    <!-- MAIN LAYOUT -->
-    <section class="layout-main" aria-label="Results and details">
-      <section class="panel" aria-label="Expression table">
-        <header class="panel-header">
-          <div>
-            <h2 class="panel-title">Expression hits</h2>
-            <p class="panel-subtitle">Each row is a wild-type gene × structure × stage observation.</p>
-          </div>
-          <div class="tabs" role="tablist">
-            <button class="tab" type="button" data-view="expression" data-active="true">Expression</button>
-            <button class="tab" type="button" data-view="disease">Disease</button>
-            <button class="tab" type="button" data-view="go">GO</button>
-          </div>
-        </header>
-        <div class="table-shell">
-          <div class="table-header-row" aria-hidden="true">
-            <div>Gene · fish line</div>
-            <div>Structure</div>
-            <div>Stages</div>
-            <div>Assay</div>
-            <div>Evidence</div>
-          </div>
-          <div class="table-body" id="results-body"></div>
+        <div class="cta-row">
+          <button class="btn-primary" type="submit">View results</button>
+          <button class="btn-ghost" type="button" id="btn-load-hints">Preload suggestion vocabulary</button>
         </div>
-        <p class="footer-note" id="results-note">
-          Click “Load latest dataset” to populate results.
-        </p>
-      </section>
-
-      <aside class="panel" aria-label="Gene-centric details">
-        <header class="panel-header">
-          <div>
-            <h2 class="panel-title">Gene context</h2>
-            <p class="panel-subtitle">Disease orthology, GO annotations, and temporal span for the selected gene.</p>
-          </div>
-        </header>
-        <div id="detail-empty" class="detail-empty">
-          Select a row from the table to see details for that gene.
-        </div>
-        <div id="detail-content" hidden>
-          <div class="detail-section">
-            <div class="detail-grid">
-              <div>
-                <div class="detail-key">Gene</div>
-                <div id="detail-gene-main" style="font-size: var(--text-sm); font-weight: 600;"></div>
-                <div id="detail-gene-secondary" style="font-size: var(--text-xs); color: var(--color-text-muted);"></div>
-              </div>
-              <div>
-                <div class="detail-key">Links</div>
-                <div class="facet-list">
-                  <button type="button" class="pill" id="link-zfin-gene">Open gene in ZFIN</button>
-                  <button type="button" class="pill" id="link-zfin-expression">View expression matches</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-section">
-            <div class="detail-title">Disease orthology</div>
-            <div class="facet-list" id="detail-disease-list"></div>
-          </div>
-          <div class="detail-section">
-            <div class="detail-title">GO annotations</div>
-            <div class="facet-list" id="detail-go-list"></div>
-          </div>
-          <div class="detail-section">
-            <div class="detail-title">Developmental span</div>
-            <div class="timeline">
-              <div class="timeline-track">
-                <div class="timeline-fill" id="timeline-fill"></div>
-              </div>
-              <div class="timeline-labels">
-                <span id="timeline-start">Earliest stage</span>
-                <span id="timeline-end">Latest stage</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- DOCUMENTATION -->
-    <section class="panel" id="docs" style="margin-top: var(--space-6);">
-      <header class="panel-header">
-        <div>
-          <h2 class="panel-title">How this atlas is structured</h2>
-          <p class="panel-subtitle">Short orientation for MSc/PhD users building hypotheses from this view.</p>
-        </div>
-      </header>
-      <p style="font-size: var(--text-sm); margin-bottom: var(--space-3);">
-        Wild-type expression data, disease orthology, and GO annotations are exported from ZFIN and
-        collated into a single Excel file. This interface lets you slice that file by gene, stage,
-        anatomy, disease, and GO term. For full curation context, always follow through to ZFIN.
-      </p>
-      <!-- you can expand this section as you like -->
+      </form>
     </section>
   </main>
+  <footer>
+    <div class="footer-inner">
+      <div>All data sources from <a href="https://zfin.org" target="_blank" rel="noopener noreferrer">ZFIN.ORG</a>; Database Last Updated on <span id="footer-date">2026-05-19</span>.</div>
+      <div>Created by Rohan Alag, PhD Scholar, Prof. Mahendra Sonawane Lab, TIFR Mumbai.</div>
+      <div>Contact: <a href="mailto:alag.rohan@gmail.com">alag.rohan@gmail.com</a>; <a href="mailto:rohan.alag@tifr.res.in">rohan.alag@tifr.res.in</a></div>
+    </div>
+  </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
-    // Simple theme toggle
-    (function(){
-      const root = document.documentElement;
-      const btn = document.querySelector('[data-theme-toggle]');
-      let theme = window.matchMedia &&
-                  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', theme);
-      if (btn) {
-        btn.addEventListener('click', () => {
-          theme = theme === 'dark' ? 'light' : 'dark';
-          root.setAttribute('data-theme', theme);
-        });
-      }
-    })();
+    const footerDate = document.getElementById('footer-date');
+    footerDate.textContent = '2026-05-19';
 
-    const META = {
-      lastUpdated: '2026-05-19',
-      zfinBase: 'https://zfin.org'
-    };
-    document.getElementById('meta-last').textContent = META.lastUpdated;
+    const queryInput = document.getElementById('query-input');
+    const suggestionsBox = document.getElementById('suggestions');
+    const modeButtons = document.querySelectorAll('.mode-pill');
+    const form = document.getElementById('query-form');
+    const btnLoadHints = document.getElementById('btn-load-hints');
 
-    const state = {
-      mode: 'expression',    // expression | disease | go
-      view: 'expression',
-      stageOrder: [],
-      stageIndex: new Map(),
-      rowsExpression: [],
-      geneToDisease: new Map(),
-      geneToGo: new Map(),
-      recentGenes: [],
-      activeGene: null
+    const hintState = {
+      loaded:false,
+      symbols:new Set(),
+      tissues:new Set()
     };
 
-    const elBody = document.getElementById('results-body');
-    const elNote = document.getElementById('results-note');
-    const elFilterGene = document.getElementById('filter-gene');
-    const elFilterStage = document.getElementById('filter-stage');
-    const elFilterStruct = document.getElementById('filter-structure');
-    const elRecent = document.getElementById('recent-genes');
-    const elStageShort = document.getElementById('stage-shortcuts');
-
-    const elMetaGenes = document.getElementById('meta-genes');
-    const elMetaDiseases = document.getElementById('meta-diseases');
-    const elMetaGo = document.getElementById('meta-go');
-
-    const elDetailEmpty = document.getElementById('detail-empty');
-    const elDetailContent = document.getElementById('detail-content');
-    const elDetailGeneMain = document.getElementById('detail-gene-main');
-    const elDetailGeneSecondary = document.getElementById('detail-gene-secondary');
-    const elDetailDiseaseList = document.getElementById('detail-disease-list');
-    const elDetailGoList = document.getElementById('detail-go-list');
-    const elTimelineFill = document.getElementById('timeline-fill');
-    const elTimelineStart = document.getElementById('timeline-start');
-    const elTimelineEnd = document.getElementById('timeline-end');
-    const elLinkZfinGene = document.getElementById('link-zfin-gene');
-    const elLinkZfinExpr = document.getElementById('link-zfin-expression');
-
-    function toStr(v) { return v == null ? '' : String(v).trim(); }
-
-    function buildStageOrder(sheet) {
-      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
-      const order = [];
-      const idx = new Map();
-      rows.forEach(row => {
-        row.forEach(cell => {
-          const v = toStr(cell);
-          if (!v) return;
-          const name = v.split(':')[0].trim();
-          if (name && !idx.has(name)) {
-            idx.set(name, order.length);
-            order.push(name);
-          }
-        });
+    function setMode(mode){
+      modeButtons.forEach(btn=>{
+        const active = btn.dataset.mode === mode;
+        btn.dataset.active = active ? 'true':'false';
       });
-      state.stageOrder = order;
-      state.stageIndex = idx;
-
-      // populate stage filter
-      elFilterStage.innerHTML = '<option value="">Any stage</option>' +
-        order.map(s => `<option value="${s}">${s}</option>`).join('');
-      // simple shortcuts
-      const shortcuts = [order[0], order[Math.floor(order.length/2)], order[order.length-1]].filter(Boolean);
-      elStageShort.innerHTML = shortcuts.map(s => `<button type="button" class="pill" data-stage-shortcut="${s}">${s}</button>`).join('');
+      localStorage.setItem('zf_atlas_mode', mode);
     }
 
-    function rowsFromSheet(sheet, headerRow=0) {
-      const arr = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
-      const header = (arr[headerRow] || []).map(toStr);
-      const out = [];
-      for (let r = headerRow+1; r < arr.length; r++) {
-        const row = arr[r];
-        if (!row || row.every(v => v == null || String(v).trim() === '')) continue;
-        const obj = {};
-        header.forEach((h, i) => { obj[h || `col_${i}`] = row[i]; });
-        out.push(obj);
-      }
-      return out;
-    }
+    const savedMode = localStorage.getItem('zf_atlas_mode') || 'expression';
+    setMode(savedMode);
 
-    function normaliseExpression(sheet) {
-      const rows = rowsFromSheet(sheet);
-      state.rowsExpression = rows.map(r => ({
-        geneId: toStr(r['Gene ID']),
-        geneSymbol: toStr(r['Gene Symbol']),
-        fishName: toStr(r['Fish Name']),
-        superStructure: toStr(r['Super Structure Name']),
-        subStructure: toStr(r['Sub Structure Name']),
-        startStage: toStr(r['Start Stage']),
-        endStage: toStr(r['End Stage']),
-        assay: toStr(r['Assay']),
-        assayMmoId: toStr(r['Assay MMO ID']),
-        publicationId: toStr(r['Publication ID']),
-        probeId: toStr(r['Probe ID']),
-        antibodyId: toStr(r['Antibody ID']),
-        fishId: toStr(r['Fish ID'])
-      })).filter(r => r.geneSymbol);
-    }
+    modeButtons.forEach(btn=>{
+      btn.addEventListener('click',()=>setMode(btn.dataset.mode));
+    });
 
-    function normaliseDisease(sheet) {
-      const rows = rowsFromSheet(sheet);
-      const map = new Map();
-      rows.forEach(r => {
-        const sym = toStr(r['Zebrafish Gene Symbol']);
-        if (!sym) return;
-        const rec = {
-          zebrafishGeneId: toStr(r['Zebrafish Gene ID']),
-          geneSymbol: sym,
-          humanGeneId: toStr(r['Human Ortholog Entrez Gene Id']),
-          humanGeneSymbol: toStr(r['Human Ortholog Symbol']),
-          doName: toStr(r['DO Term Name']),
-          doId: toStr(r['DO Term ID']),
-          omimName: toStr(r['OMIM Term Name']),
-          omimId: toStr(r['OMIM ID']),
-          evidenceCode: toStr(r['Evidence Code']),
-          publication: toStr(r['Publication'])
-        };
-        if (!map.has(sym)) map.set(sym, []);
-        map.get(sym).push(rec);
-      });
-      state.geneToDisease = map;
-
-      const doSet = new Set();
-      map.forEach(list => list.forEach(d => { if (d.doId) doSet.add(d.doId); }));
-      elMetaDiseases.textContent = doSet.size || '–';
-    }
-
-    function normaliseGo(sheet) {
-      const rows = rowsFromSheet(sheet);
-      const map = new Map();
-      rows.forEach(r => {
-        const sym = toStr(r['Gene Symbol']);
-        if (!sym) return;
-        const rec = {
-          geneSymbol: sym,
-          goId: toStr(r['GO Term ID']),
-          evidence: toStr(r['GO Evidence Code']),
-          refId: toStr(r['Reference ID']),
-          ontology: toStr(r['Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component']),
-          markerName: toStr(r['Marker Name'])
-        };
-        if (!map.has(sym)) map.set(sym, []);
-        map.get(sym).push(rec);
-      });
-      state.geneToGo = map;
-
-      const goSet = new Set();
-      map.forEach(list => list.forEach(g => { if (g.goId) goSet.add(g.goId); }));
-      elMetaGo.textContent = goSet.size || '–';
-    }
-
-    async function loadWorkbook() {
-      elNote.textContent = 'Loading Excel file…';
-      try {
+    async function loadHints(){
+      if (hintState.loaded) return;
+      try{
         const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        if(!resp.ok) throw new Error('HTTP '+resp.status);
         const buf = await resp.arrayBuffer();
-        const wb = XLSX.read(buf, { type: 'array' });
-
-        buildStageOrder(wb.Sheets['Stage Order']);
-        normaliseExpression(wb.Sheets['20260518_zf_wt_expression']);
-        normaliseDisease(wb.Sheets['20260519_gene2DiseaseOrthology']);
-        normaliseGo(wb.Sheets['20260519_GeneOntology']);
-
-        const uniqGenes = new Set(state.rowsExpression.map(r => r.geneSymbol));
-        elMetaGenes.textContent = uniqGenes.size || '–';
-
-        seedRecentGenes();
-        renderResults();
-        elNote.textContent = 'Showing up to 150 expression rows. Refine filters to narrow down.';
-      } catch (err) {
-        console.error(err);
-        elNote.textContent = 'Failed to load Excel file. Check that it is committed to the repo.';
-      }
-    }
-
-    function seedRecentGenes() {
-      const seen = new Set();
-      const arr = [];
-      for (const r of state.rowsExpression) {
-        if (seen.has(r.geneSymbol)) continue;
-        seen.add(r.geneSymbol);
-        arr.push(r.geneSymbol);
-        if (arr.length >= 6) break;
-      }
-      state.recentGenes = arr;
-      elRecent.innerHTML = arr.map(g => `<button type="button" class="pill" data-gene="${g}">${g}</button>`).join('');
-    }
-
-    function matchesFilters(row) {
-      const qGene = toStr(elFilterGene.value).toLowerCase();
-      const qStruct = toStr(elFilterStruct.value).toLowerCase();
-      const stage = toStr(elFilterStage.value);
-
-      if (qGene) {
-        const text = (row.geneSymbol + ' ' + row.geneId + ' ' + row.fishName).toLowerCase();
-        if (!text.includes(qGene)) return false;
-      }
-      if (qStruct) {
-        const text = (row.superStructure + ' ' + row.subStructure).toLowerCase();
-        if (!text.includes(qStruct)) return false;
-      }
-      if (stage && state.stageIndex.size) {
-        const idxStage = state.stageIndex.get(stage);
-        const idxStart = state.stageIndex.get(row.startStage);
-        const idxEnd = state.stageIndex.get(row.endStage);
-        if (idxStage != null && idxStart != null && idxEnd != null) {
-          if (!(idxStage >= idxStart && idxStage <= idxEnd)) return false;
+        const wb = XLSX.read(buf,{type:'array'});
+        const sheet = wb.Sheets['20260518_wtexpression_Summary'];
+        const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
+        const header = rows[0].map(v=>v==null?'':String(v).trim());
+        const idxSym = header.indexOf('Gene Symbol');
+        const idxStruct = header.indexOf('Super Structure Name');
+        for(let i=1;i<rows.length;i++){
+          const row = rows[i];
+          if(!row) continue;
+          if(idxSym>=0){ const s = row[idxSym]; if(s) hintState.symbols.add(String(s).trim()); }
+          if(idxStruct>=0){ const t = row[idxStruct]; if(t) hintState.tissues.add(String(t).trim()); }
         }
-      }
-      return true;
+        hintState.loaded = true;
+      }catch(e){ console.error(e); }
     }
 
-    function renderResults() {
-      elBody.innerHTML = '';
-      if (!state.rowsExpression.length) return;
-
-      const filtered = state.rowsExpression.filter(matchesFilters).slice(0, 150);
-      if (!filtered.length) {
-        elNote.textContent = 'No rows match current filters.';
-        return;
-      }
-
-      const frag = document.createDocumentFragment();
-      filtered.forEach(row => {
-        const hasDisease = (state.geneToDisease.get(row.geneSymbol) || []).length > 0;
-        const hasGo = (state.geneToGo.get(row.geneSymbol) || []).length > 0;
-
-        const el = document.createElement('button');
-        el.type = 'button';
-        el.className = 'table-row';
-        el.dataset.gene = row.geneSymbol;
-        el.innerHTML = `
-          <div>
-            <div>${row.geneSymbol || '–'}</div>
-            <div class="sub">${row.fishName || ''}</div>
-          </div>
-          <div>
-            <div>${row.superStructure || '–'}</div>
-            <div class="sub">${row.subStructure || ''}</div>
-          </div>
-          <div>
-            <div>${row.startStage || '–'} → ${row.endStage || '–'}</div>
-            <div class="sub">Stage span</div>
-          </div>
-          <div><span class="badge-assay">${row.assay || 'Assay'}</span></div>
-          <div>
-            <div class="sub">${row.publicationId || ''}</div>
-            <div class="sub">
-              ${hasDisease ? '<span class="pill-small">Disease links</span>' : ''}
-              ${hasGo ? '<span class="pill-small">GO terms</span>' : ''}
-            </div>
-          </div>
-        `;
-        el.addEventListener('click', () => {
-          state.activeGene = row.geneSymbol;
-          updateDetail(row.geneSymbol, row);
-          rememberGene(row.geneSymbol);
-        });
-        frag.appendChild(el);
-      });
-      elBody.appendChild(frag);
-      elNote.textContent = `Showing ${filtered.length} of ${state.rowsExpression.length} expression rows.`;
-    }
-
-    function rememberGene(gene) {
-      const arr = state.recentGenes.filter(g => g !== gene);
-      arr.unshift(gene);
-      state.recentGenes = arr.slice(0, 8);
-      elRecent.innerHTML = state.recentGenes.map(g => `<button type="button" class="pill" data-gene="${g}">${g}</button>`).join('');
-    }
-
-    function updateDetail(geneSymbol, exampleRow) {
-      elDetailEmpty.hidden = true;
-      elDetailContent.hidden = false;
-
-      elDetailGeneMain.textContent = geneSymbol;
-      const bits = [];
-      if (exampleRow.geneId) bits.push(`ZFIN gene ID: ${exampleRow.geneId}`);
-      if (exampleRow.fishName) bits.push(`Fish line: ${exampleRow.fishName}`);
-      elDetailGeneSecondary.textContent = bits.join(' · ');
-
-      // disease
-      const dList = state.geneToDisease.get(geneSymbol) || [];
-      if (dList.length) {
-        const byKey = new Map();
-        dList.forEach(d => {
-          const key = d.doId || d.omimId || d.doName || d.omimName;
-          if (!key) return;
-          if (!byKey.has(key)) byKey.set(key, []);
-          byKey.get(key).push(d);
-        });
-        const items = [];
-        byKey.forEach((list, key) => {
-          const first = list[0];
-          items.push({
-            label: first.doName || first.omimName || key,
-            n: list.length,
-            evidence: Array.from(new Set(list.map(x => x.evidenceCode).filter(Boolean)))
-          });
-        });
-        items.sort((a,b) => b.n - a.n);
-        elDetailDiseaseList.innerHTML = items.slice(0,6).map(item => `
-          <div class="facet-item">
-            <span>${item.label}</span>
-            <span>n=${item.n}${item.evidence.length ? ' · ' + item.evidence.join(',') : ''}</span>
-          </div>
-        `).join('');
-      } else {
-        elDetailDiseaseList.innerHTML = '<div class="facet-item"><span>No disease associations in this snapshot.</span></div>';
-      }
-
-      // GO
-      const gList = state.geneToGo.get(geneSymbol) || [];
-      if (gList.length) {
-        const byId = new Map();
-        gList.forEach(g => {
-          const key = g.goId || g.ontology;
-          if (!key) return;
-          if (!byId.has(key)) byId.set(key, []);
-          byId.get(key).push(g);
-        });
-        const items = [];
-        byId.forEach((list, key) => {
-          const first = list[0];
-          items.push({ label: key, n: list.length, cat: first.ontology || '' });
-        });
-        items.sort((a,b) => b.n - a.n);
-        elDetailGoList.innerHTML = items.slice(0,8).map(item => `
-          <div class="facet-item">
-            <span>${item.label}</span>
-            <span>${item.cat} · n=${item.n}</span>
-          </div>
-        `).join('');
-      } else {
-        elDetailGoList.innerHTML = '<div class="facet-item"><span>No GO annotations captured here.</span></div>';
-      }
-
-      // timeline
-      const exprForGene = state.rowsExpression.filter(r => r.geneSymbol === geneSymbol);
-      if (exprForGene.length && state.stageOrder.length) {
-        let minIdx = Infinity, maxIdx = -Infinity;
-        let sName = '', eName = '';
-        exprForGene.forEach(r => {
-          const si = state.stageIndex.get(r.startStage);
-          const ei = state.stageIndex.get(r.endStage);
-          if (si != null && si < minIdx) { minIdx = si; sName = r.startStage; }
-          if (ei != null && ei > maxIdx) { maxIdx = ei; eName = r.endStage; }
-        });
-        if (minIdx !== Infinity && maxIdx !== -Infinity) {
-          const total = state.stageOrder.length;
-          const left = (minIdx / total) * 100;
-          const right = 100 - ((maxIdx + 1) / total) * 100;
-          elTimelineFill.style.left = left.toFixed(1) + '%';
-          elTimelineFill.style.right = right.toFixed(1) + '%';
-          elTimelineStart.textContent = sName || 'Earliest stage';
-          elTimelineEnd.textContent = eName || 'Latest stage';
-        }
-      }
-
-      // ZFIN links
-      elLinkZfinGene.onclick = () => {
-        const id = exampleRow.geneId;
-        const url = id && id.startsWith('ZDB-') ?
-          `${META.zfinBase}/${id}` :
-          `${META.zfinBase}/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
-        window.open(url, '_blank', 'noopener');
-      };
-      elLinkZfinExpr.onclick = () => {
-        const url = `${META.zfinBase}/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Aexpression`;
-        window.open(url, '_blank', 'noopener');
-      };
-    }
-
-    // Event wiring
-    document.getElementById('btn-load').addEventListener('click', loadWorkbook);
-
-    document.querySelectorAll('.mode-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.mode = btn.dataset.mode;
-        document.querySelectorAll('.mode-pill').forEach(b => {
-          const active = b === btn;
-          b.dataset.active = active ? 'true' : 'false';
-        });
-        // For now the mode only changes the note; you can later change filter semantics per mode.
-        if (state.mode === 'expression') {
-          elNote.textContent = 'Expression-centric mode: filter by gene, stage, structure.';
-        } else if (state.mode === 'disease') {
-          elNote.textContent = 'Disease-centric mode: type disease/DO/OMIM text in the gene box.';
-        } else {
-          elNote.textContent = 'GO-centric mode: type GO ID or term substring in the gene box.';
-        }
-        renderResults();
+    btnLoadHints.addEventListener('click',()=>{
+      btnLoadHints.disabled = true;
+      btnLoadHints.textContent = 'Loading suggestions…';
+      loadHints().then(()=>{
+        btnLoadHints.textContent = 'Suggestions ready';
       });
     });
 
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        state.view = tab.dataset.view;
-        document.querySelectorAll('.tab').forEach(t => {
-          t.dataset.active = t === tab ? 'true' : 'false';
-        });
-        renderResults();
-      });
+    function updateSuggestions(){
+      const q = queryInput.value.trim().toLowerCase();
+      if(!q || !hintState.loaded){ suggestionsBox.hidden = true; return; }
+      const items = [];
+      for(const s of hintState.symbols){ if(s.toLowerCase().startsWith(q)) items.push({label:s,meta:'gene'}); if(items.length>10) break; }
+      for(const t of hintState.tissues){ if(t.toLowerCase().includes(q)) items.push({label:t,meta:'tissue'}); if(items.length>20) break; }
+      if(!items.length){ suggestionsBox.hidden = true; return; }
+      suggestionsBox.innerHTML = items.map(it=>`<div class="suggestion-item" data-label="${it.label}"><span>${it.label}</span><span class="suggestion-meta">${it.meta}</span></div>`).join('');
+      suggestionsBox.hidden = false;
+    }
+
+    queryInput.addEventListener('input',()=>{
+      if(!hintState.loaded) loadHints().then(updateSuggestions);
+      else updateSuggestions();
     });
 
-    elFilterGene.addEventListener('input', renderResults);
-    elFilterStage.addEventListener('change', renderResults);
-    elFilterStruct.addEventListener('input', renderResults);
-
-    elStageShort.addEventListener('click', ev => {
-      const btn = ev.target.closest('[data-stage-shortcut]');
-      if (!btn) return;
-      elFilterStage.value = btn.dataset.stageShortcut;
-      renderResults();
+    suggestionsBox.addEventListener('click',ev=>{
+      const item = ev.target.closest('.suggestion-item');
+      if(!item) return;
+      queryInput.value = item.dataset.label;
+      suggestionsBox.hidden = true;
     });
-    elRecent.addEventListener('click', ev => {
-      const btn = ev.target.closest('[data-gene]');
-      if (!btn) return;
-      elFilterGene.value = btn.dataset.gene;
-      renderResults();
+
+    form.addEventListener('submit',ev=>{
+      ev.preventDefault();
+      const q = encodeURIComponent(queryInput.value.trim());
+      const mode = Array.from(modeButtons).find(b=>b.dataset.active==='true').dataset.mode;
+      const url = `results.html?q=${q}&mode=${mode}`;
+      window.location.href = url;
     });
   </script>
 </body>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zebrafish Gene Atlas – Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text-xs:   clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem,0.80rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem,   0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem,1rem + 0.75vw, 1.5rem);
+      --text-2xl:  clamp(2rem,   1.20rem + 2.50vw, 3.5rem);
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --color-bg:       #f7f6f2;
+      --color-surface:  #f9f8f5;
+      --color-surface-2:#fbfbf9;
+      --color-border:   #d4d1ca;
+      --color-text:     #28251d;
+      --color-text-muted:#7a7974;
+      --color-text-faint:#bab9b4;
+      --color-text-inverse:#f9f8f4;
+      --color-primary:  #01696f;
+      --color-primary-hover:#0c4e54;
+      --color-primary-active:#0f3638;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+      --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --content-width: 1100px;
+      --font-body: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'Instrument Serif', 'Georgia', serif;
+    }
+    [data-theme="dark"] {
+      --color-bg:       #171614;
+      --color-surface:  #1c1b19;
+      --color-surface-2:#201f1d;
+      --color-border:   #393836;
+      --color-text:     #cdccca;
+      --color-text-muted:#797876;
+      --color-text-faint:#5a5957;
+      --color-text-inverse:#2b2a28;
+      --color-primary:  #4f98a3;
+      --color-primary-hover:#227f8b;
+      --color-primary-active:#1a626b;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.20);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.40);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;text-rendering:optimizeLegibility;}
+    body{
+      min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);
+      color:var(--color-text);background:var(--color-bg);line-height:1.6;
+      display:flex;flex-direction:column;
+    }
+    header{padding:var(--space-4) var(--space-4) 0;max-width:var(--content-width);margin:0 auto;display:flex;justify-content:space-between;gap:var(--space-3);align-items:center;}
+    .brand-title{font-family:var(--font-display);font-size:var(--text-lg);letter-spacing:0.03em;}
+    .brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .btn-ghost{border-radius:var(--radius-full);padding:0.5rem 1.1rem;border:1px solid rgba(1,105,111,0.4);background:transparent;color:var(--color-primary);font-size:var(--text-sm);cursor:pointer;}
+    main{flex:1;max-width:var(--content-width);margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-6);}
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.16em;color:var(--color-text-muted);margin-bottom:var(--space-3);}
+    .page-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.1;margin-bottom:var(--space-3);}
+    .page-lede{color:var(--color-text-muted);margin-bottom:var(--space-4);}    
+    .filters-row{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:flex-end;margin-bottom:var(--space-4);}    
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.12em;color:var(--color-text-muted);margin-bottom:0.3rem;}
+    .input,select{width:100%;border-radius:var(--radius-md);border:1px solid rgba(0,0,0,0.15);padding:0.5rem 0.8rem;font-size:var(--text-sm);background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);}    
+    .btn-primary{border-radius:var(--radius-full);padding:0.55rem 1.1rem;border:1px solid transparent;background:var(--color-primary);color:var(--color-text-inverse);font-size:var(--text-sm);cursor:pointer;box-shadow:var(--shadow-md);}    
+    .results-panel{background:var(--color-surface);border-radius:1rem;padding:var(--space-4);box-shadow:var(--shadow-md);}    
+    .table-shell{border-radius:0.8rem;border:1px solid var(--color-border);overflow:hidden;background:var(--color-surface-2);}    
+    .table-header-row,.table-row{display:grid;grid-template-columns:1.2fr 1.2fr 0.9fr 0.8fr 0.9fr;gap:var(--space-3);padding:0.5rem 0.9rem;align-items:center;font-size:var(--text-sm);}    
+    .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.03);}    
+    .table-body{max-height:460px;overflow:auto;font-size:var(--text-sm);}    
+    .table-row{border-top:1px solid rgba(0,0,0,0.03);cursor:pointer;transition:background var(--transition-fast);}    
+    .table-row:nth-child(odd){background:rgba(0,0,0,0.01);}    
+    .table-row:hover{background:rgba(1,105,111,0.08);}    
+    .sub{font-size:var(--text-xs);color:var(--color-text-muted);}    
+    .badge-assay{font-size:var(--text-xs);padding:0.15rem 0.5rem;border-radius:var(--radius-full);background:rgba(1,105,111,0.08);color:var(--color-primary);}    
+    .pill-small{font-size:var(--text-xs);padding:0.1rem 0.5rem;border-radius:var(--radius-full);border:1px solid rgba(0,0,0,0.12);}    
+    .note{margin-top:var(--space-3);font-size:var(--text-xs);color:var(--color-text-faint);}    
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:40;}    
+    .modal{width:80vw;max-width:960px;max-height:80vh;background:var(--color-surface);border-radius:1.2rem;box-shadow:var(--shadow-lg);padding:var(--space-4);overflow:auto;position:relative;}    
+    .modal-close{position:absolute;top:0.75rem;right:0.9rem;border:none;background:transparent;font-size:1.4rem;cursor:pointer;color:var(--color-text-muted);}    
+    .detail-section{margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px dashed rgba(0,0,0,0.16);}    
+    .detail-title{font-size:var(--text-sm);font-weight:600;margin-bottom:0.4rem;}    
+    .detail-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.5fr);gap:var(--space-3);font-size:var(--text-xs);}    
+    .facet-list{display:flex;flex-direction:column;gap:0.4rem;font-size:var(--text-xs);}    
+    .facet-item{display:flex;justify-content:space-between;gap:var(--space-3);}    
+    .timeline-track{position:relative;height:6px;border-radius:999px;background:rgba(0,0,0,0.08);overflow:hidden;margin-bottom:0.4rem;}    
+    .timeline-fill{position:absolute;top:0;bottom:0;left:0;right:0;border-radius:inherit;background:linear-gradient(to right,var(--color-primary),#4f98a3);}    
+    .timeline-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-muted);}    
+    .stage-detail-row{font-size:var(--text-xs);display:flex;justify-content:space-between;gap:var(--space-3);}    
+    footer{border-top:1px solid rgba(0,0,0,0.08);padding:var(--space-4);font-size:var(--text-xs);color:var(--color-text-faint);}    
+    .footer-inner{max-width:var(--content-width);margin:0 auto;display:flex;flex-direction:column;gap:0.3rem;}    
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="brand-title">Z-Connectome</div>
+      <div class="brand-sub">Result view</div>
+    </div>
+    <button class="btn-ghost" type="button" onclick="window.location.href='index.html'">Back to home</button>
+  </header>
+  <main>
+    <section>
+      <div class="eyebrow">Results</div>
+      <h1 class="page-title">Expression hits for your query</h1>
+      <p class="page-lede" id="page-lede"></p>
+    </section>
+
+    <section class="filters-row" aria-label="Result filters">
+      <div style="flex:1 1 220px;">
+        <div class="field-label">Gene / free text</div>
+        <input id="filter-gene" class="input" type="search" />
+      </div>
+      <div style="flex:0.6 1 160px;">
+        <div class="field-label">Stage</div>
+        <select id="filter-stage"></select>
+      </div>
+      <div style="flex:0.8 1 200px;">
+        <div class="field-label">Structure</div>
+        <input id="filter-structure" class="input" type="search" />
+      </div>
+      <div style="flex:0 0 auto;">
+        <button id="btn-clear" class="btn-primary" type="button">Clear filters</button>
+      </div>
+    </section>
+
+    <section class="results-panel" aria-label="Expression table">
+      <div class="table-shell">
+        <div class="table-header-row" aria-hidden="true">
+          <div>Gene · fish line</div>
+          <div>Super-structure</div>
+          <div>Stage (summary)</div>
+          <div>Assay</div>
+          <div>Evidence</div>
+        </div>
+        <div class="table-body" id="results-body"></div>
+      </div>
+      <p class="note" id="results-note">Loading…</p>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" type="button" aria-label="Close" id="modal-close">×</button>
+      <h2 id="modal-title" style="font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-3);"></h2>
+      <div id="modal-gene-meta" style="font-size:var(--text-xs);color:var(--color-text-muted);"></div>
+
+      <div class="detail-section">
+        <div class="detail-title">Developmental span (summary sheet)</div>
+        <div class="timeline-track"><div class="timeline-fill" id="modal-timeline"></div></div>
+        <div class="timeline-labels"><span id="modal-stage-start">Earliest stage</span><span id="modal-stage-end">Latest stage</span></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-title">Stage-specific evidence (summary sheet)</div>
+        <div id="modal-stage-details" class="facet-list"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-title">Disease orthology snapshot</div>
+        <div id="modal-disease" class="facet-list"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-title">GO annotations</div>
+        <div id="modal-go" class="facet-list"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-title">External links</div>
+        <div class="facet-list">
+          <button type="button" class="pill-small" id="modal-link-gene">Open gene in ZFIN</button>
+          <button type="button" class="pill-small" id="modal-link-expression">View expression matches in ZFIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div>All data sources from <a href="https://zfin.org" target="_blank" rel="noopener noreferrer">ZFIN.ORG</a>; Database Last Updated on <span id="footer-date">2026-05-19</span>.</div>
+      <div>Created by Rohan Alag, PhD Scholar, Prof. Mahendra Sonawane Lab, TIFR Mumbai.</div>
+      <div>Contact: <a href="mailto:alag.rohan@gmail.com">alag.rohan@gmail.com</a>; <a href="mailto:rohan.alag@tifr.res.in">rohan.alag@tifr.res.in</a></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script>
+    const footerDate = document.getElementById('footer-date');
+    footerDate.textContent = '2026-05-19';
+
+    const params = new URLSearchParams(window.location.search);
+    const qParam = params.get('q') || '';
+    const modeParam = params.get('mode') || 'expression';
+
+    document.getElementById('filter-gene').value = decodeURIComponent(qParam);
+    document.getElementById('page-lede').textContent = qParam ? `Query = "${decodeURIComponent(qParam)}" (mode: ${modeParam})` : 'Showing all expression rows (no initial query).';
+
+    const state = {
+      stageOrder: [],
+      stageIndex: new Map(),
+      rowsExpression: [],
+      summaryByGene: new Map(),
+      geneToDisease: new Map(),
+      geneToGo: new Map(),
+      activeGene: null
+    };
+
+    const elBody = document.getElementById('results-body');
+    const elNote = document.getElementById('results-note');
+    const elFilterGene = document.getElementById('filter-gene');
+    const elFilterStage = document.getElementById('filter-stage');
+    const elFilterStruct = document.getElementById('filter-structure');
+    const elBtnClear = document.getElementById('btn-clear');
+
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalClose = document.getElementById('modal-close');
+    const modalTitle = document.getElementById('modal-title');
+    const modalGeneMeta = document.getElementById('modal-gene-meta');
+    const modalTimeline = document.getElementById('modal-timeline');
+    const modalStageStart = document.getElementById('modal-stage-start');
+    const modalStageEnd = document.getElementById('modal-stage-end');
+    const modalStageDetails = document.getElementById('modal-stage-details');
+    const modalDisease = document.getElementById('modal-disease');
+    const modalGo = document.getElementById('modal-go');
+    const modalLinkGene = document.getElementById('modal-link-gene');
+    const modalLinkExpr = document.getElementById('modal-link-expression');
+
+    function toStr(v){return v==null?'':String(v).trim();}
+
+    function buildStageOrder(sheet){
+      const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
+      const order=[];const idx=new Map();
+      rows.forEach(row=>{row.forEach(cell=>{const v=toStr(cell);if(!v)return;const name=v.split(':')[0].trim();if(name && !idx.has(name)){idx.set(name,order.length);order.push(name);}})});
+      state.stageOrder=order;state.stageIndex=idx;
+      const select = elFilterStage;select.innerHTML = '<option value="">Any stage</option>' + order.map(s=>`<option value="${s}">${s}</option>`).join('');
+    }
+
+    function rowsFromSheet(sheet){
+      const arr = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
+      const header = (arr[0]||[]).map(toStr);
+      const out=[];
+      for(let i=1;i<arr.length;i++){
+        const row = arr[i]; if(!row || row.every(v=>v==null || String(v).trim()==='')) continue;
+        const obj={}; header.forEach((h,idx)=>{obj[h||`col_${idx}`]=row[idx];});
+        out.push(obj);
+      }
+      return out;
+    }
+
+    function normaliseExpression(sheet){
+      const rows = rowsFromSheet(sheet);
+      state.rowsExpression = rows.map(r=>({
+        geneId:toStr(r['Gene ID']),
+        geneSymbol:toStr(r['Gene Symbol']),
+        fishName:toStr(r['Fish Name']),
+        superStructure:toStr(r['Super Structure Name']),
+        subStructure:toStr(r['Sub Structure Name']),
+        startStage:toStr(r['Start Stage']),
+        endStage:toStr(r['End Stage']),
+        assay:toStr(r['Assay']),
+        publicationId:toStr(r['Publication ID'])
+      })).filter(r=>r.geneSymbol);
+    }
+
+    function buildSummaryByGene(sheet){
+      const rows = rowsFromSheet(sheet);
+      const map = new Map();
+      rows.forEach(r=>{
+        const sym = toStr(r['Gene Symbol']); if(!sym) return;
+        const rec = {
+          geneSymbol:sym,
+          superStructure:toStr(r['Super Structure Name']),
+          startStage:toStr(r['Start Stage']),
+          endStage:toStr(r['End Stage']),
+          assay:toStr(r['Assay'])
+        };
+        if(!map.has(sym)) map.set(sym,[]);
+        map.get(sym).push(rec);
+      });
+      state.summaryByGene = map;
+    }
+
+    function normaliseDisease(sheet){
+      const rows = rowsFromSheet(sheet); const map=new Map();
+      rows.forEach(r=>{
+        const sym = toStr(r['Zebrafish Gene Symbol']); if(!sym) return;
+        const rec = {
+          doName:toStr(r['DO Term Name']),
+          doId:toStr(r['DO Term ID']),
+          omimName:toStr(r['OMIM Term Name']),
+          omimId:toStr(r['OMIM ID']),
+          evidence:toStr(r['Evidence Code'])
+        };
+        if(!map.has(sym)) map.set(sym,[]);
+        map.get(sym).push(rec);
+      });
+      state.geneToDisease = map;
+    }
+
+    function normaliseGo(sheet){
+      const rows = rowsFromSheet(sheet); const map=new Map();
+      rows.forEach(r=>{
+        const sym = toStr(r['Gene Symbol']); if(!sym) return;
+        const rec={
+          goId:toStr(r['GO Term ID']),
+          ontology:toStr(r['Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component']),
+          evidence:toStr(r['GO Evidence Code'])
+        };
+        if(!map.has(sym)) map.set(sym,[]);
+        map.get(sym).push(rec);
+      });
+      state.geneToGo = map;
+    }
+
+    async function loadWorkbook(){
+      elNote.textContent = 'Loading Excel file…';
+      try{
+        const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
+        if(!resp.ok) throw new Error('HTTP '+resp.status);
+        const buf = await resp.arrayBuffer();
+        const wb = XLSX.read(buf,{type:'array'});
+        buildStageOrder(wb.Sheets['Stage Order']);
+        normaliseExpression(wb.Sheets['20260518_zf_wt_expression']);
+        buildSummaryByGene(wb.Sheets['20260518_wtexpression_Summary']);
+        normaliseDisease(wb.Sheets['20260519_gene2DiseaseOrthology']);
+        normaliseGo(wb.Sheets['20260519_GeneOntology']);
+        renderResults();
+      }catch(e){console.error(e); elNote.textContent='Failed to load Excel file.';}
+    }
+
+    function matchesFilters(row){
+      const q = elFilterGene.value.trim().toLowerCase();
+      const s = elFilterStruct.value.trim().toLowerCase();
+      const stage = elFilterStage.value;
+      if(q){
+        const t=(row.geneSymbol+' '+row.geneId+' '+row.fishName).toLowerCase();
+        if(!t.includes(q)) return false;
+      }
+      if(s){
+        const t=(row.superStructure+' '+row.subStructure).toLowerCase();
+        if(!t.includes(s)) return false;
+      }
+      if(stage && state.summaryByGene.size){
+        const summaries = state.summaryByGene.get(row.geneSymbol) || [];
+        const idxStage = state.stageIndex.get(stage);
+        if(idxStage!=null){
+          let ok=false;
+          summaries.forEach(rec=>{
+            const a = state.stageIndex.get(rec.startStage);
+            const b = state.stageIndex.get(rec.endStage);
+            if(a!=null && b!=null && idxStage>=a && idxStage<=b) ok=true;
+          });
+          if(!ok) return false;
+        }
+      }
+      return true;
+    }
+
+    function renderResults(){
+      elBody.innerHTML='';
+      if(!state.rowsExpression.length){elNote.textContent='No rows loaded yet.';return;}
+      const filtered = state.rowsExpression.filter(matchesFilters).slice(0,200);
+      if(!filtered.length){elNote.textContent='No rows match these filters.';return;}
+      const frag=document.createDocumentFragment();
+      filtered.forEach(row=>{
+        const hasDisease=(state.geneToDisease.get(row.geneSymbol)||[]).length>0;
+        const hasGo=(state.geneToGo.get(row.geneSymbol)||[]).length>0;
+        const summaryList = state.summaryByGene.get(row.geneSymbol)||[];
+        const firstSummary = summaryList[0];
+        const stageLabel = firstSummary ? `${firstSummary.startStage} → ${firstSummary.endStage}` : `${row.startStage} → ${row.endStage}`;
+        const el=document.createElement('button');
+        el.type='button';
+        el.className='table-row';
+        el.dataset.gene = row.geneSymbol;
+        el.innerHTML=`
+          <div><div>${row.geneSymbol||'–'}</div><div class="sub">${row.fishName||''}</div></div>
+          <div><div>${row.superStructure||'–'}</div><div class="sub">${row.subStructure||''}</div></div>
+          <div><div>${stageLabel||'–'}</div><div class="sub">summary sheet</div></div>
+          <div><span class="badge-assay">${row.assay||'Assay'}</span></div>
+          <div><div class="sub">${row.publicationId||''}</div><div class="sub">${hasDisease?'<span class="pill-small">Disease</span>':''} ${hasGo?'<span class="pill-small">GO</span>':''}</div></div>`;
+        el.addEventListener('click',()=>openModal(row.geneSymbol,row));
+        frag.appendChild(el);
+      });
+      elBody.appendChild(frag);
+      elNote.textContent = `Showing ${filtered.length} of ${state.rowsExpression.length} expression rows.`;
+    }
+
+    function openModal(geneSymbol, exampleRow){
+      state.activeGene = geneSymbol;
+      modalTitle.textContent = geneSymbol;
+      modalGeneMeta.textContent = exampleRow.geneId ? `ZFIN gene ID: ${exampleRow.geneId}` : '';
+
+      const summaries = state.summaryByGene.get(geneSymbol)||[];
+      if(summaries.length && state.stageOrder.length){
+        let minIdx=Infinity,maxIdx=-Infinity,sName='',eName='';
+        summaries.forEach(rec=>{
+          const a = state.stageIndex.get(rec.startStage);
+          const b = state.stageIndex.get(rec.endStage);
+          if(a!=null && a<minIdx){minIdx=a;sName=rec.startStage;}
+          if(b!=null && b>maxIdx){maxIdx=b;eName=rec.endStage;}
+        });
+        if(minIdx!==Infinity && maxIdx!==-Infinity){
+          const total=state.stageOrder.length;
+          const left=(minIdx/total)*100;
+          const right=100-((maxIdx+1)/total)*100;
+          modalTimeline.style.left = left.toFixed(1)+'%';
+          modalTimeline.style.right = right.toFixed(1)+'%';
+          modalStageStart.textContent = sName||'Earliest stage';
+          modalStageEnd.textContent = eName||'Latest stage';
+        }
+      }
+
+      modalStageDetails.innerHTML = summaries.length ? summaries.map(rec=>`
+        <div class="stage-detail-row">
+          <span>${rec.startStage} → ${rec.endStage}</span>
+          <span>${rec.superStructure}</span>
+          <span>${rec.assay}</span>
+        </div>`).join('') : '<div class="stage-detail-row"><span>No summary rows for this gene.</span></div>';
+
+      const dList = state.geneToDisease.get(geneSymbol)||[];
+      if(dList.length){
+        const byKey=new Map();
+        dList.forEach(d=>{const k=d.doId||d.omimId||d.doName||d.omimName;if(!k)return;if(!byKey.has(k))byKey.set(k,[]);byKey.get(k).push(d);});
+        const items=[];byKey.forEach((list,k)=>{const f=list[0];items.push({label:f.doName||f.omimName||k,n:list.length,evidence:Array.from(new Set(list.map(x=>x.evidence).filter(Boolean)))});});
+        items.sort((a,b)=>b.n-a.n);
+        modalDisease.innerHTML = items.slice(0,6).map(it=>`<div class="facet-item"><span>${it.label}</span><span>n=${it.n}${it.evidence.length?' · '+it.evidence.join(','):''}</span></div>`).join('');
+      }else{modalDisease.innerHTML='<div class="facet-item"><span>No disease associations in this snapshot.</span></div>';}
+
+      const gList = state.geneToGo.get(geneSymbol)||[];
+      if(gList.length){
+        const byId=new Map();
+        gList.forEach(g=>{const k=g.goId||g.ontology;if(!k)return;if(!byId.has(k))byId.set(k,[]);byId.get(k).push(g);});
+        const items=[];byId.forEach((list,k)=>{const f=list[0];items.push({label:k,n:list.length,cat:f.ontology||''});});
+        items.sort((a,b)=>b.n-a.n);
+        modalGo.innerHTML = items.slice(0,8).map(it=>`<div class="facet-item"><span>${it.label}</span><span>${it.cat} · n=${it.n}</span></div>`).join('');
+      }else{modalGo.innerHTML='<div class="facet-item"><span>No GO annotations captured here.</span></div>';}
+
+      modalLinkGene.onclick = ()=>{
+        const id = exampleRow.geneId;
+        const base='https://zfin.org';
+        const url = id && id.startsWith('ZDB-') ? `${base}/${id}` : `${base}/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
+        window.open(url,'_blank','noopener');
+      };
+      modalLinkExpr.onclick = ()=>{
+        const base='https://zfin.org';
+        const url = `${base}/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"&category=Expression`;
+        window.open(url,'_blank','noopener');
+      };
+
+      modalBackdrop.style.display='flex';
+      modalBackdrop.setAttribute('aria-hidden','false');
+    }
+
+    function closeModal(){
+      modalBackdrop.style.display='none';
+      modalBackdrop.setAttribute('aria-hidden','true');
+    }
+
+    modalClose.addEventListener('click',closeModal);
+    modalBackdrop.addEventListener('click',ev=>{if(ev.target===modalBackdrop) closeModal();});
+    document.addEventListener('keydown',ev=>{if(ev.key==='Escape') closeModal();});
+
+    elFilterGene.addEventListener('input',renderResults);
+    elFilterStage.addEventListener('change',renderResults);
+    elFilterStruct.addEventListener('input',renderResults);
+    elBtnClear.addEventListener('click',()=>{elFilterGene.value='';elFilterStage.value='';elFilterStruct.value='';renderResults();});
+
+    loadWorkbook();
+  </script>
+</body>
+</html>
