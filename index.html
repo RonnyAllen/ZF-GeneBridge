@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZF-GeneBridge – Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --text-xs:   clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem,0.80rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem,   0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.25rem, 1.1rem + 0.8vw, 1.8rem);
+      --text-2xl:  clamp(2.2rem, 1.8rem + 3vw, 4rem);
+
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+
+      --color-bg:       #f5f4f0; /* Crisp high-contrast off-white */
+      --color-surface:  #ffffff;
+      --color-surface-2:#fbfbfa;
+      --color-border:   #8e8d88; /* Darker border for higher contrast */
+      --color-text:     #000000; /* Pure black for maximum legibility */
+      --color-text-muted:#242422; /* Bolder muted text */
+      --color-text-faint:#4c4c49; /* Bolder faint text */
+      --color-accent:   #015e63; /* Deep premium teal */
+
+      --btn-primary-bg: #000000; /* Black button in light mode */
+      --btn-primary-fg: #ffffff;
+
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 999px;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.15);
+      --shadow-md: 0 4px 18px rgba(0,0,0,0.2);
+
+      --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --content-width: 960px;
+
+      --font-body: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'Instrument Serif', 'Georgia', serif;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --color-bg:       #050506;
+      --color-surface:  #0e0f12; /* Darker surface */
+      --color-surface-2:#15171b;
+      --color-border:   #5b5e66; /* Higher contrast border */
+      --color-text:     #ffffff; /* Pure white in dark mode */
+      --color-text-muted:#e1e1de;
+      --color-text-faint:#b3b3af;
+      --color-accent:   #5db2bf;
+
+      --btn-primary-bg: #ffffff; /* White button in dark mode */
+      --btn-primary-fg: #050506;
+
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.6);
+      --shadow-md: 0 6px 24px rgba(0,0,0,0.7);
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;text-rendering:optimizeLegibility;}
+    body{
+      min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);
+      color:var(--color-text);background:var(--color-bg);line-height:1.6;
+      display:flex;flex-direction:column;font-weight:600; /* Bolder text for high contrast */
+    }
+    button, select, input, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+    option {
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+    ::placeholder {
+      color: var(--color-text-faint);
+      opacity: 0.8;
+    }
+    a{color:var(--color-accent);text-decoration:underline;text-decoration-thickness:1.5px;}
+
+    header{
+      padding:var(--space-6) var(--space-4) 0;max-width:var(--content-width);width:100%;margin:0 auto;
+      display:flex;align-items:center;gap:var(--space-4);
+    }
+    .brand-group{flex:1 1 auto;}
+    .brand-title{font-family:var(--font-display);font-size:var(--text-2xl);letter-spacing:0.02em;font-weight:800;line-height:1.1;color:var(--color-accent);}
+    .brand-sub{font-size:var(--text-sm);color:var(--color-text-muted);font-weight:700;margin-top:0.3rem;}
+    .theme-toggle{
+      border-radius:var(--radius-full);border:2px solid var(--color-border);
+      background:var(--color-surface);width:40px;height:40px;display:flex;
+      align-items:center;justify-content:center;cursor:pointer;font-size:1.3rem;
+      box-shadow:var(--shadow-sm);transition:background var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);
+      color:var(--color-text);
+    }
+    .theme-toggle:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+
+    main{flex:1;max-width:var(--content-width);width:100%;margin:0 auto;padding:var(--space-8) var(--space-4) var(--space-8);}
+
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.18em;color:var(--color-accent);margin-top:var(--space-4);margin-bottom:var(--space-3);font-weight:800;}
+    .hero-title{font-family:var(--font-display);font-size:var(--text-lg);line-height:1.2;margin-bottom:var(--space-3);font-weight:700;}
+    .hero-lede{color:var(--color-text-muted);max-width:56ch;margin-bottom:var(--space-4);font-size:var(--text-base);font-weight:600;}
+
+    .hero-panel{
+      margin-top:var(--space-4);padding:var(--space-6) var(--space-5);border-radius:1rem;
+      background:var(--color-surface);border:2px solid var(--color-border);box-shadow:var(--shadow-md);
+    }
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.4rem;font-weight:700;}
+    
+    .query-container {
+      position: relative;
+      width: 100%;
+      margin-bottom: var(--space-5);
+    }
+    .input{
+      width:100%;border-radius:var(--radius-md);border:2px solid var(--color-border);
+      padding:0.75rem 1rem;font-size:var(--text-sm);background:var(--color-surface-2);
+      color:var(--color-text);box-shadow:var(--shadow-sm);font-weight:600;
+    }
+    .input:focus{outline:3px solid var(--color-accent);outline-offset:1px;}
+    
+    .suggestions-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      z-index: 50;
+      max-height: 260px;
+      overflow-y: auto;
+      margin-top: 0.35rem;
+    }
+    .suggestion-item {
+      padding: 0.7rem 1rem;
+      font-size: var(--text-sm);
+      cursor: pointer;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background var(--transition-fast), color var(--transition-fast);
+      text-align: left;
+      color: var(--color-text);
+    }
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .suggestion-item:hover, .suggestion-item.selected {
+      background: var(--color-accent);
+      color: var(--btn-primary-fg);
+    }
+    .suggestion-type {
+      font-size: var(--text-xs);
+      color: var(--color-text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+    }
+    .suggestion-item:hover .suggestion-type, .suggestion-item.selected .suggestion-type {
+      color: var(--btn-primary-fg);
+      opacity: 0.9;
+    }
+
+
+
+    .cta-row{margin-top:var(--space-5);display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;}
+    .btn-primary,.btn-ghost{border-radius:var(--radius-full);padding:0.75rem 1.6rem;font-size:var(--text-sm);border:2px solid transparent;cursor:pointer;font-weight:700;transition:background var(--transition-fast),color var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}
+    .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg);box-shadow:var(--shadow-md);}
+    .btn-primary:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);filter:brightness(1.1);}
+    .btn-ghost{background:transparent;color:var(--color-text);border-color:var(--color-border);}
+    .btn-ghost:hover{background:var(--color-accent);color:var(--btn-primary-fg);border-color:var(--color-accent);}
+
+    .hint-note{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:0.6rem;font-weight:600;}
+    .footer-inner{max-width:var(--content-width);margin:0 auto;padding:var(--space-6) var(--space-4);border-top:2px solid var(--color-border);font-size:var(--text-xs);color:var(--color-text-faint);display:flex;flex-direction:column;gap:0.3rem;font-weight:700;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-group">
+      <div class="brand-title">ZF-GeneBridge</div>
+      <div class="brand-sub">Zebrafish developmental genetics, wild-type gene expression, disease orthology &amp; GO</div>
+    </div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">☾</button>
+  </header>
+
+  <main>
+    <section>
+      <div class="eyebrow">Interactive atlas</div>
+      <h1 class="hero-title">Query ZF-GeneBridge by gene, tissue, or disease.</h1>
+      <p class="hero-lede">
+        Enter a zebrafish gene symbol, full gene name, human ortholog symbol, or free text.
+        Exact gene matches open the gene context view directly; other queries show an expression table.
+      </p>
+    </section>
+
+    <section class="hero-panel" aria-label="Query form">
+      <form id="query-form">
+        <div class="field-label">Query</div>
+        <div class="query-container">
+          <input id="query-input" class="input" type="search" placeholder="e.g. pparg, peroxisome proliferator activated receptor gamma, TP53, intestine" autocomplete="off" />
+          <div id="suggestions-box" class="suggestions-dropdown" style="display: none;"></div>
+        </div>
+
+
+
+        <div class="cta-row">
+          <button class="btn-primary" type="submit">View results</button>
+          <button class="btn-ghost" type="button" id="btn-load-hints">Preload suggestion vocabulary</button>
+        </div>
+        <p class="hint-note">Suggestions include zebrafish gene symbols, full gene names, tissues, human ortholog symbols, and known diseases.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>All data sources from <a href="https://zfin.org" target="_blank" rel="noopener noreferrer">ZFIN.ORG</a>; Database Last Updated on <span id="footer-date">2026-05-19</span>.</div>
+      <div>Created by Rohan Alag, PhD Scholar, Prof. Mahendra Sonawane Lab, TIFR Mumbai.</div>
+      <div>Contact: <a href="mailto:alag.rohan@gmail.com">alag.rohan@gmail.com</a>; <a href="mailto:rohan.alag@tifr.res.in">rohan.alag@tifr.res.in</a></div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const btn = document.querySelector('[data-theme-toggle]');
+      const stored = localStorage.getItem('zconnect_theme');
+      let theme = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      function applyTheme() {
+        root.setAttribute('data-theme', theme);
+        if (btn) {
+          btn.textContent = theme === 'dark' ? '☀' : '☾';
+          btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+      }
+      applyTheme();
+      if (btn) {
+        btn.addEventListener('click', () => {
+          theme = theme === 'dark' ? 'light' : 'dark';
+          localStorage.setItem('zconnect_theme', theme);
+          applyTheme();
+        });
+      }
+    })();
+
+    const footerDate = document.getElementById('footer-date');
+    footerDate.textContent = '2026-05-19';
+
+    const queryInput = document.getElementById('query-input');
+    const suggestionsBox = document.getElementById('suggestions-box');
+    const form = document.getElementById('query-form');
+    const btnLoadHints = document.getElementById('btn-load-hints');
+
+    const hintState = {
+      loaded: false,
+      symbols: new Set(),
+      tissues: new Set(),
+      diseases: new Set(),
+      orthologs: new Set(),
+      geneSymbols: new Set(),
+      nameToSymbol: {}
+    };
+
+
+
+    async function loadHints() {
+      if (hintState.loaded) return;
+      try {
+        const resp = await fetch('hints.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+
+        hintState.geneSymbols = new Set((data.geneSymbols || []).map(s => s.toLowerCase()));
+        hintState.tissues = new Set(data.tissues || []);
+        hintState.diseases = new Set(data.diseases || []);
+        hintState.orthologs = new Set((data.orthologs || []).map(s => s.toLowerCase()));
+        hintState.nameToSymbol = data.nameToSymbol || {};
+
+        // Build master symbol set for autocomplete
+        hintState.symbols = new Set();
+        (data.geneSymbols || []).forEach(s => hintState.symbols.add(s));
+        (data.tissues || []).forEach(t => hintState.symbols.add(t));
+        (data.orthologs || []).forEach(o => hintState.symbols.add(o));
+        (data.diseases || []).forEach(d => hintState.symbols.add(d));
+        Object.keys(data.nameToSymbol || {}).forEach(k => {
+          hintState.symbols.add(k);
+        });
+
+        hintState.loaded = true;
+      } catch (e) {
+        console.error('Failed to load hints from hints.json', e);
+      }
+    }
+
+    btnLoadHints.addEventListener('click', () => {
+      btnLoadHints.disabled = true;
+      btnLoadHints.textContent = 'Loading suggestions…';
+      loadHints().then(() => {
+        btnLoadHints.textContent = 'Suggestions loaded';
+      });
+    });
+
+    // Dynamic Autocomplete suggestions dropdown
+    queryInput.addEventListener('input', () => {
+      showSuggestions();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!queryInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+
+    let selectedIdx = -1;
+    queryInput.addEventListener('keydown', (e) => {
+      const items = suggestionsBox.querySelectorAll('.suggestion-item');
+      if (suggestionsBox.style.display === 'block' && items.length > 0) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIdx = (selectedIdx + 1) % items.length;
+          highlightItem(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIdx = (selectedIdx - 1 + items.length) % items.length;
+          highlightItem(items);
+        } else if (e.key === 'Enter') {
+          if (selectedIdx >= 0) {
+            e.preventDefault();
+            items[selectedIdx].click();
+          }
+        }
+      }
+    });
+
+    function highlightItem(items) {
+      items.forEach((item, idx) => {
+        if (idx === selectedIdx) {
+          item.classList.add('selected');
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+    }
+
+    function showSuggestions() {
+      if (!hintState.loaded) return;
+      const q = queryInput.value.trim().toLowerCase();
+      if (!q) {
+        suggestionsBox.style.display = 'none';
+        return;
+      }
+
+      const matches = [];
+      for (const s of hintState.symbols) {
+        const sLower = s.toLowerCase();
+        if (sLower.includes(q)) {
+          let type = "Gene Symbol";
+          if (hintState.diseases.has(s)) {
+            type = "Disease";
+          } else if (hintState.tissues.has(s)) {
+            type = "Tissue";
+          } else if (hintState.orthologs.has(sLower)) {
+            type = "Human Ortholog";
+          } else if (hintState.nameToSymbol[sLower]) {
+            const zSym = hintState.nameToSymbol[sLower];
+            if (zSym && zSym.toLowerCase() !== sLower) {
+              type = "Gene Name";
+            }
+          }
+          matches.push({ text: s, type });
+          if (matches.length >= 10) break;
+        }
+      }
+
+      if (matches.length === 0) {
+        suggestionsBox.style.display = 'none';
+        return;
+      }
+
+      selectedIdx = -1;
+      suggestionsBox.innerHTML = matches.map(m => `
+        <div class="suggestion-item" data-val="${m.text}">
+          <span style="font-weight: 700;">${m.text}</span>
+          <span class="suggestion-type">${m.type}</span>
+        </div>
+      `).join('');
+
+      suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          queryInput.value = item.dataset.val;
+          suggestionsBox.style.display = 'none';
+          handleSubmit(new Event('submit'));
+        });
+      });
+
+      suggestionsBox.style.display = 'block';
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const q = queryInput.value.trim();
+      if (!q) return;
+      const qLower = q.toLowerCase();
+
+      // Check if perfect case-insensitive match for a gene symbol
+      if (hintState.geneSymbols && hintState.geneSymbols.has(qLower)) {
+        window.location.href = `results.html?q=${encodeURIComponent(q)}&focus=gene`;
+        return;
+      }
+
+      // Check if perfect match for full gene name or human ortholog symbol
+      if (hintState.nameToSymbol && hintState.nameToSymbol[qLower]) {
+        const sym = hintState.nameToSymbol[qLower];
+        window.location.href = `results.html?q=${encodeURIComponent(sym)}&focus=gene`;
+        return;
+      }
+
+      window.location.href = `results.html?q=${encodeURIComponent(q)}`;
+    }
+
+    form.addEventListener('submit', handleSubmit);
+  </script>
+</body>
+</html>
