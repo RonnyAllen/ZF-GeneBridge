@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Z-connectome – Results</title>
+  <title>ZF-GeneBridge – Results</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --text-xs:   clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
       --text-sm:   clamp(0.875rem,0.80rem + 0.35vw, 1rem);
       --text-base: clamp(1rem,   0.95rem + 0.25vw, 1.125rem);
-      --text-lg:   clamp(1.125rem,1rem + 0.75vw, 1.5rem);
-      --text-2xl:  clamp(2rem,   1.20rem + 2.50vw, 3.5rem);
+      --text-lg:   clamp(1.25rem, 1.1rem + 0.8vw, 1.8rem);
+      --text-2xl:  clamp(2.2rem, 1.8rem + 3vw, 4rem);
 
       --space-3: 0.75rem;
       --space-4: 1rem;
@@ -21,25 +21,25 @@
       --space-6: 1.5rem;
       --space-8: 2rem;
 
-      --color-bg:       #f1f0ec;
+      --color-bg:       #f5f4f0; /* Crisp paper-like off-white */
       --color-surface:  #ffffff;
-      --color-surface-2:#f7f7f4;
-      --color-border:   #b5b3ac;
-      --color-text:     #111111;
-      --color-text-muted:#383835;
-      --color-text-faint:#5e5d59;
-      --color-accent:   #01696f;
+      --color-surface-2:#fbfbfa;
+      --color-border:   #8e8d88; /* High contrast dark gray */
+      --color-text:     #000000; /* Pure black for maximum legibility */
+      --color-text-muted:#242422; /* Bolder muted */
+      --color-text-faint:#4c4c49; /* Bolder faint */
+      --color-accent:   #015e63; /* Deep premium teal */
 
-      --btn-primary-bg: #111111;
-      --btn-primary-fg: #fdfdfd;
+      --btn-primary-bg: #000000; /* Black button in light mode */
+      --btn-primary-fg: #ffffff;
 
       --radius-md: 0.5rem;
       --radius-lg: 0.75rem;
       --radius-full: 999px;
 
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.12);
-      --shadow-md: 0 4px 14px rgba(0,0,0,0.16);
-      --shadow-lg: 0 18px 40px rgba(0,0,0,0.32);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.15);
+      --shadow-md: 0 4px 18px rgba(0,0,0,0.2);
+      --shadow-lg: 0 18px 45px rgba(0,0,0,0.25);
 
       --transition-fast: 180ms cubic-bezier(0.16, 1, 0.3, 1);
       --content-width: 1100px;
@@ -50,20 +50,20 @@
 
     [data-theme="dark"] {
       --color-bg:       #050506;
-      --color-surface:  #111216;
-      --color-surface-2:#17181c;
-      --color-border:   #3c3f45;
-      --color-text:     #f5f5f4;
-      --color-text-muted:#d4d4d2;
-      --color-text-faint:#a0a09c;
-      --color-accent:   #4f98a3;
+      --color-surface:  #0e0f12; /* Deep dark background surface */
+      --color-surface-2:#15171b;
+      --color-border:   #5b5e66; /* High contrast borders */
+      --color-text:     #ffffff; /* Pure white */
+      --color-text-muted:#e1e1de;
+      --color-text-faint:#b3b3af;
+      --color-accent:   #5db2bf;
 
-      --btn-primary-bg: #f5f5f4;
+      --btn-primary-bg: #ffffff; /* White button in dark mode */
       --btn-primary-fg: #050506;
 
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
-      --shadow-md: 0 6px 18px rgba(0,0,0,0.7);
-      --shadow-lg: 0 24px 60px rgba(0,0,0,0.9);
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.6);
+      --shadow-md: 0 6px 24px rgba(0,0,0,0.7);
+      --shadow-lg: 0 24px 60px rgba(0,0,0,0.85);
     }
 
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -71,83 +71,134 @@
     body{
       min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);
       color:var(--color-text);background:var(--color-bg);line-height:1.6;
-      display:flex;flex-direction:column;font-weight:500;
+      display:flex;flex-direction:column;font-weight:600; /* Bolder text for maximum legibility */
     }
-    a{color:inherit;text-decoration:underline;text-decoration-color:rgba(1,105,111,0.6);}
+    a{color:var(--color-accent);text-decoration:underline;text-decoration-thickness:1.5px;}
 
     header{
-      padding:var(--space-4) var(--space-4) 0;max-width:var(--content-width);margin:0 auto;
+      padding:var(--space-6) var(--space-4) 0;max-width:var(--content-width);width:100%;margin:0 auto;
       display:flex;align-items:center;gap:var(--space-4);
     }
     .brand-group{flex:1 1 auto;}
-    .brand-title{font-family:var(--font-display);font-size:var(--text-lg);letter-spacing:0.06em;font-weight:700;}
-    .brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;margin-top:0.1rem;}
+    .brand-title{font-family:var(--font-display);font-size:var(--text-2xl);letter-spacing:0.02em;font-weight:800;line-height:1.1;color:var(--color-accent);}
+    .brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:700;margin-top:0.3rem;}
     .header-actions{display:flex;align-items:center;gap:var(--space-3);}
-    .btn-ghost{border-radius:var(--radius-full);padding:0.5rem 1.1rem;border:1px solid var(--color-text);background:transparent;color:var(--color-text);font-size:var(--text-sm);cursor:pointer;font-weight:600;}
-    .theme-toggle{border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;box-shadow:var(--shadow-sm);transition:background var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}
+    .btn-ghost{border-radius:var(--radius-full);padding:0.6rem 1.3rem;border:2px solid var(--color-border);background:transparent;color:var(--color-text);font-size:var(--text-sm);cursor:pointer;font-weight:700;transition:background var(--transition-fast),color var(--transition-fast),border-color var(--transition-fast);}
+    .btn-ghost:hover{background:var(--color-accent);color:var(--btn-primary-fg);border-color:var(--color-accent);}
+    .theme-toggle{
+      border-radius:var(--radius-full);border:2px solid var(--color-border);
+      background:var(--color-surface);width:40px;height:40px;display:flex;
+      align-items:center;justify-content:center;cursor:pointer;font-size:1.3rem;
+      box-shadow:var(--shadow-sm);transition:background var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);
+      color:var(--color-text);
+    }
     .theme-toggle:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
 
-    main{flex:1;max-width:var(--content-width);margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-6);}
-    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.18em;color:var(--color-text-muted);margin-bottom:var(--space-3);font-weight:700;}
-    .page-title{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.05;margin-bottom:0.3rem;font-weight:700;}
-    .page-lede{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);}
+    main{flex:1;max-width:var(--content-width);width:100%;margin:0 auto;padding:var(--space-8) var(--space-4) var(--space-8);}
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.18em;color:var(--color-accent);margin-bottom:var(--space-3);font-weight:800;}
+    .page-title{font-family:var(--font-display);font-size:var(--text-lg);line-height:1.2;margin-bottom:0.3rem;font-weight:700;}
+    .page-lede{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-5);font-weight:600;}
 
-    .filters-row{display:flex;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-4);align-items:flex-end;}
-    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.2rem;font-weight:600;}
-    .input,select{width:100%;border-radius:var(--radius-md);border:1px solid var(--color-border);padding:0.55rem 0.75rem;font-size:var(--text-sm);background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);}
-    .input:focus,select:focus{outline:2px solid var(--color-accent);outline-offset:2px;}
-    .btn-primary{border-radius:var(--radius-full);padding:0.6rem 1.4rem;font-size:var(--text-sm);border:1px solid transparent;background:var(--btn-primary-bg);color:var(--btn-primary-fg);cursor:pointer;font-weight:600;box-shadow:var(--shadow-md);}
-    .btn-primary:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+    .filters-row{
+      display:flex;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-6);align-items:flex-end;
+      padding:var(--space-4);background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);
+    }
+    .field-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.14em;color:var(--color-text-muted);margin-bottom:0.4rem;font-weight:700;}
+    .input,select{width:100%;border-radius:var(--radius-md);border:2px solid var(--color-border);padding:0.65rem 0.85rem;font-size:var(--text-sm);background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);font-weight:600;}
+    .input:focus,select:focus{outline:3px solid var(--color-accent);outline-offset:1px;}
+    .btn-primary{border-radius:var(--radius-full);padding:0.75rem 1.6rem;font-size:var(--text-sm);border:2px solid transparent;background:var(--btn-primary-bg);color:var(--btn-primary-fg);cursor:pointer;font-weight:700;box-shadow:var(--shadow-md);transition:background var(--transition-fast),transform var(--transition-fast),box-shadow var(--transition-fast);}
+    .btn-primary:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);filter:brightness(1.1);}
 
-    .results-panel .table-shell{border-radius:1rem;border:1px solid var(--color-border);overflow:hidden;background:var(--color-surface-2);}
-    .table-header-row,.table-row{display:grid;grid-template-columns:1.3fr 1.1fr 0.9fr 0.8fr 1fr;gap:var(--space-3);padding:0.5rem 0.9rem;align-items:center;}
-    .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.03);}
-    .table-body{max-height:420px;overflow-y:auto;font-size:var(--text-sm);}
-    .table-row{border-top:1px solid rgba(0,0,0,0.03);cursor:pointer;transition:background var(--transition-fast);text-align:left;}
-    .table-row:nth-child(odd){background:rgba(0,0,0,0.01);}
-    .table-row:hover{background:rgba(1,105,111,0.08);}
-    .sub{font-size:var(--text-xs);color:var(--color-text-muted);}
-    .badge-assay{font-size:var(--text-xs);padding:0.15rem 0.5rem;border-radius:var(--radius-full);background:rgba(1,105,111,0.08);color:var(--color-accent);display:inline-flex;align-items:center;gap:0.3rem;}
-    .pill-small{font-size:var(--text-xs);padding:0.1rem 0.5rem;border-radius:var(--radius-full);border:1px solid rgba(0,0,0,0.12);background:transparent;}
-    .note{margin-top:0.4rem;font-size:var(--text-xs);color:var(--color-text-faint);}
+    .results-panel .table-shell{border-radius:1rem;border:2px solid var(--color-border);overflow:hidden;background:var(--color-surface-2);box-shadow:var(--shadow-md);}
+    .table-header-row,.table-row{display:grid;grid-template-columns:1.2fr 1.8fr 1.2fr 0.9fr 0.9fr;gap:var(--space-4);padding:0.85rem 1.2rem;align-items:center;}
+    .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.04);border-bottom:2px solid var(--color-border);font-weight:800;text-transform:uppercase;letter-spacing:0.08em;}
+    [data-theme="dark"] .table-header-row {background:rgba(255,255,255,0.04);}
+    .table-body{max-height:600px;overflow-y:auto;font-size:var(--text-sm);}
+    .table-row{border-top:1px solid var(--color-border);cursor:pointer;transition:background var(--transition-fast),transform var(--transition-fast);text-align:left;background:var(--color-surface);}
+    .table-row:hover{background:rgba(1,94,99,0.08);transform:translateY(-1px);}
+    [data-theme="dark"] .table-row:hover{background:rgba(93,178,191,0.08);}
+    .gene-symbol-title{font-size:var(--text-base);font-weight:800;color:var(--color-accent);}
+    .sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;}
+    .badge-assay{font-size:var(--text-xs);padding:0.2rem 0.6rem;border-radius:var(--radius-full);background:rgba(1,94,99,0.1);color:var(--color-accent);display:inline-flex;align-items:center;font-weight:700;}
+    [data-theme="dark"] .badge-assay{background:rgba(93,178,191,0.15);}
+    .pill-small{font-size:var(--text-xs);padding:0.2rem 0.6rem;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface-2);font-weight:700;display:inline-block;margin-right:0.2rem;margin-bottom:0.2rem;}
+    .note{margin-top:0.6rem;font-size:var(--text-xs);color:var(--color-text-faint);font-weight:700;}
 
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:flex-start;justify-content:center;padding:var(--space-6) var(--space-4);z-index:40;}
+    /* Beautiful Landscape Oriented Modal Styling */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:var(--space-6) var(--space-4);z-index:100;backdrop-filter:blur(3px);}
     .modal-backdrop.visible{display:flex;}
-    .modal{max-width:900px;width:100%;background:var(--color-surface);border-radius:1rem;padding:var(--space-4);box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow:auto;}
-    .modal-close{position:absolute;top:0.75rem;right:0.75rem;border-radius:var(--radius-full);width:28px;height:28px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;font-size:1rem;line-height:1;}
+    .modal{max-width:1150px;width:100%;background:var(--color-surface);border:2px solid var(--color-border);border-radius:1.25rem;padding:var(--space-6);box-shadow:var(--shadow-lg);position:relative;max-height:92vh;overflow:auto;}
+    .modal-close{position:absolute;top:1rem;right:1rem;border-radius:var(--radius-full);width:36px;height:36px;border:2px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--color-text);transition:background var(--transition-fast);}
+    .modal-close:hover{background:var(--color-accent);color:var(--btn-primary-fg);border-color:var(--color-accent);}
 
-    .gene-header{display:flex;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);align-items:flex-start;}
-    .gene-header-main{display:flex;flex-direction:column;gap:0.4rem;}
-    .gene-field{font-size:var(--text-sm);}
-    .gene-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.12em;color:var(--color-text-muted);display:block;margin-bottom:0.1rem;}
-    .gene-value{font-weight:600;}
-    .gene-value-link{font-weight:600;color:var(--color-accent);text-decoration:underline;}
-    .gene-actions{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;}
-    .divider{border:none;border-top:1px solid var(--color-border);margin:var(--space-3) 0;}
+    .modal-grid{display:grid;grid-template-columns:44% 56%;gap:var(--space-6);align-items:start;}
+    @media(max-width:900px){.modal-grid{grid-template-columns:1fr;gap:var(--space-4);}}
 
-    .detail-section{margin-top:var(--space-2);}
-    .detail-title{font-size:var(--text-sm);font-weight:600;margin-bottom:0.4rem;}
+    .gene-header-main{display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:0.5rem;}
+    .gene-field{display:flex;align-items:baseline;gap:var(--space-3);font-size:var(--text-base);}
+    .gene-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.12em;color:var(--color-text-muted);font-weight:800;min-width:110px;display:inline-block;}
+    .gene-value{font-weight:800;color:var(--color-text);}
+    .gene-value-link{font-weight:800;color:var(--color-accent);text-decoration:underline;text-decoration-thickness:2px;}
+    .divider{border:none;border-top:2px solid var(--color-border);margin:var(--space-4) 0;}
 
-    .timeline-track{position:relative;height:6px;border-radius:999px;background:rgba(0,0,0,0.08);overflow:hidden;margin-bottom:0.4rem;}
-    .timeline-fill{position:absolute;top:0;bottom:0;left:0;right:0;border-radius:inherit;background:linear-gradient(to right,var(--color-accent),#4f98a3);}
-    .timeline-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-muted);}
+    .detail-section{margin-top:0.4rem;}
+    .detail-title{font-size:var(--text-sm);font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-accent);margin-bottom:0.6rem;}
 
-    .facet-list li{list-style:none;}
+    /* Timeline Styling */
+    .timeline-segments{
+      display:grid;grid-template-columns:repeat(auto-fit, minmax(1px,1fr));gap:3px;
+      height:16px;border-radius:6px;overflow:hidden;background:transparent;
+      margin:0.5rem 0;border:2px solid var(--color-border);
+    }
+    .timeline-segment{height:100%;background:rgba(0,0,0,0.06);transition:background var(--transition-fast);cursor:pointer;}
+    [data-theme="dark"] .timeline-segment{background:rgba(255,255,255,0.06);}
+    .timeline-segment.active{background:var(--color-accent);}
+    .timeline-hover-label{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:700;margin-bottom:0.3rem;height:1.2rem;}
+    .timeline-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-faint);font-weight:700;}
 
-    .go-table-wrapper,.expr-table-wrapper{max-height:260px;overflow:auto;border-radius:0.5rem;border:1px solid var(--color-border);background:var(--color-surface-2);}
-    table.go-table,table.expr-table{width:100%;border-collapse:collapse;font-size:var(--text-xs);}
-    .go-table th,.go-table td,.expr-table th,.expr-table td{padding:0.35rem 0.5rem;border-bottom:1px solid rgba(0,0,0,0.05);text-align:left;vertical-align:top;}
-    .go-table thead,.expr-table thead{background:rgba(0,0,0,0.03);}
+    /* Tissues List style */
+    .tissues-list {display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:var(--space-4);padding:0;}
+    .tissues-list li {
+      list-style:none;font-size:var(--text-xs);padding:0.25rem 0.65rem;border-radius:var(--radius-full);
+      border:2px solid var(--color-border);background:var(--color-surface-2);font-weight:700;color:var(--color-text-muted);
+    }
+
+    /* Primary high contrast big button for ZFIN */
+    .btn-primary-large {
+      display:inline-flex;align-items:center;justify-content:center;width:100%;
+      border-radius:var(--radius-md);padding:0.9rem 1.6rem;font-size:var(--text-sm);
+      border:2px solid transparent;background:var(--btn-primary-bg);color:var(--btn-primary-fg);
+      cursor:pointer;font-weight:800;box-shadow:var(--shadow-md);transition:background var(--transition-fast),transform var(--transition-fast),box-shadow var(--transition-fast);
+      text-transform:uppercase;letter-spacing:0.06em;text-align:center;
+    }
+    .btn-primary-large:hover {box-shadow:var(--shadow-lg);transform:translateY(-1px);filter:brightness(1.15);}
+
+    .orthology-section {display:flex;flex-direction:column;gap:0.6rem;font-size:var(--text-sm);}
+    .orth-item {color:var(--color-text);font-weight:600;}
+    .orth-item strong {text-transform:uppercase;font-size:var(--text-xs);letter-spacing:0.08em;color:var(--color-text-muted);min-width:170px;display:inline-block;}
+    .em-dash {margin:0 0.3rem;color:var(--color-text-faint);font-weight:bold;}
+
+    /* Tables in Context Modal Right Column */
+    .go-table-wrapper,.expr-table-wrapper{max-height:300px;overflow:auto;border-radius:0.75rem;border:2px solid var(--color-border);background:var(--color-surface-2);box-shadow:var(--shadow-sm);}
+    table.go-table,table.expr-table{width:100%;border-collapse:collapse;font-size:var(--text-xs);font-weight:600;}
+    .go-table th,.go-table td,.expr-table th,.expr-table td{padding:0.65rem 0.85rem;border-bottom:1.5px solid var(--color-border);text-align:left;vertical-align:top;color:var(--color-text);}
+    .go-table th,.expr-table th{background:rgba(0,0,0,0.04);font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-muted);position:sticky;top:0;z-index:5;}
+    [data-theme="dark"] .go-table th,[data-theme="dark"] .expr-table th{background:rgba(255,255,255,0.05);}
     .go-table tbody tr:nth-child(odd),.expr-table tbody tr:nth-child(odd){background:rgba(0,0,0,0.015);}
+    [data-theme="dark"] .go-table tbody tr:nth-child(odd),[data-theme="dark"] .expr-table tbody tr:nth-child(odd){background:rgba(255,255,255,0.015);}
+    .go-table tbody tr:hover,.expr-table tbody tr:hover{background:rgba(1,94,99,0.04);}
+    [data-theme="dark"] .go-table tbody tr:hover,[data-theme="dark"] .expr-table tbody tr:hover{background:rgba(93,178,191,0.04);}
+    
+    .go-link{color:var(--color-accent);font-weight:700;text-decoration:underline;}
 
-    .footer-inner{max-width:var(--content-width);margin:0 auto;padding:var(--space-4);border-top:1px solid var(--color-border);font-size:var(--text-xs);color:var(--color-text-faint);display:flex;flex-direction:column;gap:0.2rem;}
+    .footer-inner{max-width:var(--content-width);width:100%;margin:0 auto;padding:var(--space-6) var(--space-4);border-top:2px solid var(--color-border);font-size:var(--text-xs);color:var(--color-text-faint);display:flex;flex-direction:column;gap:0.3rem;font-weight:700;}
   </style>
 </head>
 <body>
   <header>
     <div class="brand-group">
-      <div class="brand-title">Z-connectome</div>
-      <div class="brand-sub">Zebrafish wild-type gene expression · disease orthology · GO</div>
+      <div class="brand-title">ZF-GeneBridge</div>
+      <div class="brand-sub">Zebrafish developmental genetics, wild-type gene expression, disease orthology &amp; GO</div>
     </div>
     <div class="header-actions">
       <a href="index.html" class="btn-ghost">New query</a>
@@ -159,13 +210,13 @@
     <section>
       <div class="eyebrow">Results</div>
       <h1 class="page-title">Expression hits for your query</h1>
-      <p class="page-lede" id="page-lede"></p>
+      <p class="page-lede" id="page-lede">Loading database…</p>
     </section>
 
     <section class="filters-row" aria-label="Result filters">
       <div style="flex:1 1 220px;">
         <div class="field-label">Gene / free text</div>
-        <input id="filter-gene" class="input" type="search" />
+        <input id="filter-gene" class="input" type="search" placeholder="Filter by gene symbol/name..." />
       </div>
       <div style="flex:0.6 1 160px;">
         <div class="field-label">Stage</div>
@@ -173,7 +224,7 @@
       </div>
       <div style="flex:0.8 1 200px;">
         <div class="field-label">Tissue</div>
-        <input id="filter-structure" class="input" type="search" />
+        <input id="filter-structure" class="input" type="search" placeholder="Filter by tissue..." />
       </div>
       <div style="flex:0.8 1 200px;">
         <div class="field-label">Fish line</div>
@@ -187,91 +238,121 @@
     <section class="results-panel" aria-label="Expression table">
       <div class="table-shell">
         <div class="table-header-row" aria-hidden="true">
-          <div>Gene · fish line</div>
-          <div>Tissue</div>
-          <div>Stage (summary)</div>
-          <div>Assay</div>
-          <div>Evidence</div>
+          <div>Gene symbol &amp; name</div>
+          <div>Expressed in (Tissue)</div>
+          <div>Developmental span</div>
+          <div>Assay types</div>
+          <div>Annotations</div>
         </div>
         <div class="table-body" id="results-body"></div>
       </div>
-      <p class="note" id="results-note">Loading…</p>
+      <p class="note" id="results-note">Loading summary catalog…</p>
     </section>
   </main>
 
+  <!-- Premium Landscape Oriented Modal -->
   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-gene-symbol">
       <button class="modal-close" type="button" aria-label="Close" id="modal-close">×</button>
 
-      <div class="gene-header">
-        <div class="gene-header-main">
-          <div class="gene-field"><span class="gene-label">Gene ID</span><a id="modal-gene-id" href="#" target="_blank" rel="noopener noreferrer" class="gene-value-link"></a></div>
-          <div class="gene-field"><span class="gene-label">Gene Symbol</span><span id="modal-gene-symbol" class="gene-value"></span></div>
-          <div class="gene-field"><span class="gene-label">Gene Name</span><span id="modal-gene-name" class="gene-value"></span></div>
+      <div class="modal-grid">
+        <!-- LEFT COLUMN (44%) -->
+        <div class="modal-col-left">
+          <div class="gene-header-main">
+            <div class="gene-field">
+              <span class="gene-label">Gene ID</span>
+              <a id="modal-gene-id" href="#" target="_blank" rel="noopener noreferrer" class="gene-value-link">Loading…</a>
+            </div>
+            <div class="gene-field">
+              <span class="gene-label">Gene Symbol</span>
+              <span id="modal-gene-symbol" class="gene-value">Loading…</span>
+            </div>
+            <div class="gene-field">
+              <span class="gene-label">Gene Name</span>
+              <span id="modal-gene-name" class="gene-value">Loading…</span>
+            </div>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="detail-section">
+            <div class="detail-title">Developmental span</div>
+            <div class="timeline-hover-label" id="modal-timeline-hover">Hover over segments to explore stages</div>
+            <div class="timeline-segments" id="modal-timeline-segments"></div>
+            <div class="timeline-labels">
+              <span id="modal-stage-start">Zygote (1-cell)</span>
+              <span id="modal-stage-end">Adult</span>
+            </div>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="detail-section">
+            <div class="detail-title">Expressed in</div>
+            <ul id="modal-tissues" class="tissues-list">
+              <li>Loading…</li>
+            </ul>
+          </div>
+
+          <div class="action-block" style="margin: 1.5rem 0;">
+            <button type="button" class="btn-primary-large" id="modal-link-expression">View Expression Matches in ZFIN</button>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="orthology-section">
+            <div class="orth-item">
+              <strong>Known human orthologs</strong><span class="em-dash">&mdash;</span><span id="modal-human-orth">Loading…</span>
+            </div>
+            <div class="orth-item">
+              <strong>Known diseases</strong><span class="em-dash">&mdash;</span><span id="modal-diseases">Loading…</span>
+            </div>
+          </div>
         </div>
-        <div class="gene-actions">
-          <button type="button" class="pill-small" id="modal-link-expression">Expression matches in ZFIN</button>
-        </div>
-      </div>
 
-      <hr class="divider" />
+        <!-- RIGHT COLUMN (56%) -->
+        <div class="modal-col-right">
+          <div class="detail-section" style="margin-top: 0;">
+            <div class="detail-title">Gene Ontology annotations</div>
+            <div class="go-table-wrapper">
+              <table class="go-table">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">GO Term ID</th>
+                    <th style="width: 50%;">Biological Process / Molecular Function / Cellular Component</th>
+                    <th style="width: 25%;">QuickGO Definition</th>
+                  </tr>
+                </thead>
+                <tbody id="modal-go-body">
+                  <tr><td colspan="3">Loading GO annotations…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-      <div class="detail-section">
-        <div class="detail-title">Gene Ontology annotations</div>
-        <div class="go-table-wrapper">
-          <table class="go-table">
-            <thead>
-              <tr>
-                <th>GO term</th>
-                <th>Aspect</th>
-                <th>Evidence</th>
-                <th>Definition (QuickGO)</th>
-              </tr>
-            </thead>
-            <tbody id="modal-go-body"></tbody>
-          </table>
-        </div>
-      </div>
+          <hr class="divider" />
 
-      <hr class="divider" />
-
-      <div class="detail-section">
-        <div class="detail-title">Developmental span</div>
-        <div class="timeline-track"><div class="timeline-fill" id="modal-timeline"></div></div>
-        <div class="timeline-labels"><span id="modal-stage-start">Zygote (1-cell)</span><span id="modal-stage-end">Adult</span></div>
-      </div>
-
-      <div class="detail-section">
-        <div class="detail-title">Tissues (super-structures)</div>
-        <ul id="modal-tissues" class="facet-list"></ul>
-      </div>
-
-      <hr class="divider" />
-
-      <div class="detail-section">
-        <div class="detail-title">Known human orthologs &amp; diseases</div>
-        <div id="modal-disease-body" class="facet-list"></div>
-      </div>
-
-      <hr class="divider" />
-
-      <div class="detail-section">
-        <div class="detail-title">Detailed developmental expression</div>
-        <div class="expr-table-wrapper">
-          <table class="expr-table">
-            <thead>
-              <tr>
-                <th>Stage start</th>
-                <th>Stage end</th>
-                <th>Tissue</th>
-                <th>Sub-structure</th>
-                <th>Assay</th>
-                <th>Fish line</th>
-                <th>Publication</th>
-              </tr>
-            </thead>
-            <tbody id="modal-expr-body"></tbody>
-          </table>
+          <div class="detail-section">
+            <div class="detail-title">Detailed developmental expression</div>
+            <div class="expr-table-wrapper">
+              <table class="expr-table">
+                <thead>
+                  <tr>
+                    <th>Stage start</th>
+                    <th>Stage end</th>
+                    <th>Tissue</th>
+                    <th>Sub-structure</th>
+                    <th>Assay</th>
+                    <th>Fish line</th>
+                    <th>Publication</th>
+                  </tr>
+                </thead>
+                <tbody id="modal-expr-body">
+                  <tr><td colspan="7">Loading detailed expression rows…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -284,8 +365,8 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
+    // Theme switcher logic
     (function() {
       const root = document.documentElement;
       const btn = document.querySelector('[data-theme-toggle]');
@@ -308,9 +389,6 @@
       }
     })();
 
-    const footerDate = document.getElementById('footer-date');
-    footerDate.textContent = '2026-05-19';
-
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get('q') || '';
     const focusParam = params.get('focus') || '';
@@ -319,17 +397,20 @@
     document.getElementById('filter-gene').value = decodeURIComponent(qParam);
     document.getElementById('page-lede').textContent = qParam
       ? `Query = "${decodeURIComponent(qParam)}" (mode: ${modeParam})`
-      : 'Showing all expression rows (no initial query).';
+      : 'Showing all matching genes (aggregated results).';
 
     const state = {
       stageOrder: [],
       stageIndex: new Map(),
-      rowsExpression: [],
-      summaryByGene: new Map(),
-      geneToDisease: new Map(),
-      geneToGo: new Map(),
-      markerNameByGene: new Map(),
+      summaryCatalog: {},
+      filteredKeys: [],
       activeGene: null
+    };
+
+    const cache = {
+      expression: new Map(),
+      go: new Map(),
+      disease: new Map()
     };
 
     const elBody = document.getElementById('results-body');
@@ -342,218 +423,135 @@
 
     const modalBackdrop = document.getElementById('modal-backdrop');
     const modalClose = document.getElementById('modal-close');
+    
+    // Modal left col components
     const modalGeneId = document.getElementById('modal-gene-id');
     const modalGeneSymbol = document.getElementById('modal-gene-symbol');
     const modalGeneName = document.getElementById('modal-gene-name');
-    const modalTimeline = document.getElementById('modal-timeline');
+    const modalTimelineHover = document.getElementById('modal-timeline-hover');
+    const modalTimelineSegments = document.getElementById('modal-timeline-segments');
     const modalStageStart = document.getElementById('modal-stage-start');
     const modalStageEnd = document.getElementById('modal-stage-end');
     const modalTissues = document.getElementById('modal-tissues');
-    const modalGoBody = document.getElementById('modal-go-body');
-    const modalDiseaseBody = document.getElementById('modal-disease-body');
-    const modalExprBody = document.getElementById('modal-expr-body');
+    const modalHumanOrth = document.getElementById('modal-human-orth');
+    const modalDiseases = document.getElementById('modal-diseases');
     const modalLinkExpression = document.getElementById('modal-link-expression');
 
-    function toStr(v){ return v==null ? '' : String(v).trim(); }
+    // Modal right col components
+    const modalGoBody = document.getElementById('modal-go-body');
+    const modalExprBody = document.getElementById('modal-expr-body');
 
-    function buildStageOrder(sheet){
-      const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
-      const order=[]; const idxMap=new Map();
-      rows.forEach(row=>{
-        row.forEach(cell=>{
-          const v=toStr(cell);
-          if(!v) return;
-          const name=v.split(':')[0].trim();
-          if(name && !idxMap.has(name)){
-            idxMap.set(name,order.length);
-            order.push(name);
-          }
+    // Utility for prefixes
+    function getPrefix(sym) {
+      if (!sym) return 'other';
+      const c = sym[0].toLowerCase();
+      if (/[a-z0-9]/.test(c)) return c;
+      return 'other';
+    }
+
+    // Load initial JSON data
+    async function loadDatabase() {
+      elNote.textContent = 'Loading database files from server…';
+      try {
+        const [stageResp, summaryResp] = await Promise.all([
+          fetch('stage_order.json').then(r => r.ok ? r.json() : []),
+          fetch('summary.json').then(r => r.ok ? r.json() : {})
+        ]);
+
+        state.stageOrder = stageResp;
+        stageResp.forEach((name, idx) => {
+          state.stageIndex.set(name, idx);
         });
-      });
-      state.stageOrder=order;
-      state.stageIndex=idxMap;
-      // populate stage filter
-      elFilterStage.innerHTML = '<option value="">Any stage</option>' +
-        order.map(s => `<option value="${s}">${s}</option>`).join('');
-    }
 
-    function rowsFromSheet(sheet){
-      const arr = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null});
-      const header = (arr[0]||[]).map(toStr);
-      const out = [];
-      for(let r=1;r<arr.length;r++){
-        const row = arr[r];
-        if(!row || row.every(v => v==null || String(v).trim()==='')) continue;
-        const obj={};
-        header.forEach((h,i)=>{ obj[h||`col_${i}`] = row[i]; });
-        out.push(obj);
-      }
-      return out;
-    }
+        // Set stage filter
+        elFilterStage.innerHTML = '<option value="">Any stage</option>' +
+          stageResp.map(s => `<option value="${s}">${s}</option>`).join('');
 
-    function normaliseExpression(sheet){
-      const rows = rowsFromSheet(sheet);
-      state.rowsExpression = rows.map(r => ({
-        geneId: toStr(r['Gene ID']),
-        geneSymbol: toStr(r['Gene Symbol']),
-        fishName: toStr(r['Fish Name']),
-        superStructure: toStr(r['Super Structure Name']),
-        subStructure: toStr(r['Sub Structure Name']),
-        startStage: toStr(r['Start Stage']),
-        endStage: toStr(r['End Stage']),
-        assay: toStr(r['Assay']),
-        assayMmoId: toStr(r['Assay MMO ID']),
-        publicationId: toStr(r['Publication ID']),
-        probeId: toStr(r['Probe ID']),
-        antibodyId: toStr(r['Antibody ID']),
-        fishId: toStr(r['Fish ID'])
-      })).filter(r => r.geneSymbol);
+        state.summaryCatalog = summaryResp;
 
-      // populate fish dropdown
-      const fishSet = new Set();
-      state.rowsExpression.forEach(r => { if (r.fishName) fishSet.add(r.fishName); });
-      const sortedFish = Array.from(fishSet).sort((a,b) => a.localeCompare(b));
-      elFilterFish.innerHTML = '<option value="">Any line</option>' +
-        sortedFish.map(f => `<option value="${f}">${f}</option>`).join('');
-    }
+        // Set fish filter list
+        const fishSet = new Set();
+        Object.values(summaryResp).forEach(g => {
+          (g.fish || []).forEach(f => { if (f) fishSet.add(f); });
+        });
+        const sortedFish = Array.from(fishSet).sort();
+        elFilterFish.innerHTML = '<option value="">Any line</option>' +
+          sortedFish.map(f => `<option value="${f}">${f}</option>`).join('');
 
-    function buildSummaryByGene(sheet){
-      const rows = rowsFromSheet(sheet);
-      const map = new Map();
-      rows.forEach(r => {
-        const sym = toStr(r['Gene Symbol']);
-        if (!sym) return;
-        const rec = {
-          geneSymbol: sym,
-          superStructure: toStr(r['Super Structure Name']),
-          startStage: toStr(r['Start Stage']),
-          endStage: toStr(r['End Stage']),
-          assay: toStr(r['Assay'])
-        };
-        if (!map.has(sym)) map.set(sym, []);
-        map.get(sym).push(rec);
-      });
-      state.summaryByGene = map;
-    }
-
-    function normaliseDisease(sheet){
-      const rows = rowsFromSheet(sheet);
-      const map = new Map();
-      rows.forEach(r => {
-        const sym = toStr(r['Zebrafish Gene Symbol']);
-        if (!sym) return;
-        const rec = {
-          zebrafishGeneId: toStr(r['Zebrafish Gene ID']),
-          geneSymbol: sym,
-          humanGeneId: toStr(r['Human Ortholog Entrez Gene Id']),
-          humanGeneSymbol: toStr(r['Human Ortholog Symbol']),
-          doName: toStr(r['DO Term Name']),
-          doId: toStr(r['DO Term ID']),
-          omimName: toStr(r['OMIM Term Name']),
-          omimId: toStr(r['OMIM ID']),
-          evidenceCode: toStr(r['Evidence Code']),
-          publication: toStr(r['Publication'])
-        };
-        if (!map.has(sym)) map.set(sym, []);
-        map.get(sym).push(rec);
-      });
-      state.geneToDisease = map;
-    }
-
-    function normaliseGo(sheet){
-      const rows = rowsFromSheet(sheet);
-      const map = new Map();
-      const markerMap = new Map();
-      rows.forEach(r => {
-        const sym = toStr(r['Gene Symbol']);
-        if (!sym) return;
-        const rec = {
-          geneSymbol: sym,
-          goId: toStr(r['GO Term ID']),
-          evidence: toStr(r['GO Evidence Code']),
-          refId: toStr(r['Reference ID']),
-          ontology: toStr(r['Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component']),
-          markerName: toStr(r['Marker Name'])
-        };
-        if (!map.has(sym)) map.set(sym, []);
-        map.get(sym).push(rec);
-        if (rec.markerName && !markerMap.has(sym)) markerMap.set(sym, rec.markerName);
-      });
-      state.geneToGo = map;
-      state.markerNameByGene = markerMap;
-    }
-
-    async function loadWorkbook(){
-      elNote.textContent = 'Loading Excel file…';
-      try{
-        const resp = await fetch('Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx');
-        if(!resp.ok) throw new Error('HTTP '+resp.status);
-        const buf = await resp.arrayBuffer();
-        const wb = XLSX.read(buf,{type:'array'});
-        buildStageOrder(wb.Sheets['Stage Order']);
-        normaliseExpression(wb.Sheets['20260518_zf_wt_expression']);
-        buildSummaryByGene(wb.Sheets['20260518_wtexpression_Summary']);
-        normaliseDisease(wb.Sheets['20260519_gene2DiseaseOrthology']);
-        normaliseGo(wb.Sheets['20260519_GeneOntology']);
         renderResults();
-        if (focusParam === 'gene' && qParam) {
-          const sym = qParam;
-          const row = state.rowsExpression.find(r => r.geneSymbol === sym);
-          if (row) openModal(sym, row);
+
+        // Exact match redirection logic
+        const qLower = decodeURIComponent(qParam).trim().toLowerCase();
+        if (qLower) {
+          const matchGene = Object.keys(state.summaryCatalog).find(k => k.toLowerCase() === qLower);
+          if (matchGene) {
+            openModal(matchGene);
+          }
         }
-      }catch(e){console.error(e); elNote.textContent='Failed to load Excel file.';}
+      } catch (e) {
+        console.error('Failed to load preloaded databases', e);
+        elNote.textContent = 'Failed to load pre-compiled databases. Please check the network.';
+      }
     }
 
-    function matchesFilters(row){
+    // Check filters
+    function matchesFilters(g) {
       const q = elFilterGene.value.trim().toLowerCase();
-      const s = elFilterStruct.value.trim().toLowerCase();
-      const f = elFilterFish.value;  // exact from dropdown
+      const t = elFilterStruct.value.trim().toLowerCase();
+      const f = elFilterFish.value;
       const stage = elFilterStage.value;
-      if(q){
-        const t=(row.geneSymbol+' '+row.geneId+' '+row.fishName).toLowerCase();
-        if(!t.includes(q)) return false;
+
+      if (q) {
+        const matchSym = g.symbol.toLowerCase().includes(q);
+        const matchId = g.id.toLowerCase().includes(q);
+        const matchName = g.name.toLowerCase().includes(q);
+        if (!matchSym && !matchId && !matchName) return false;
       }
-      if(s){
-        const t=(row.superStructure+' '+row.subStructure).toLowerCase();
-        if(!t.includes(s)) return false;
+
+      if (t) {
+        const matchTissue = g.tissues.some(tName => tName.toLowerCase().includes(t));
+        if (!matchTissue) return false;
       }
-      if(f){
-        if((row.fishName||'') !== f) return false;
+
+      if (f) {
+        if (!g.fish.includes(f)) return false;
       }
-      if(stage && state.summaryByGene.size){
-        const summaries = state.summaryByGene.get(row.geneSymbol) || [];
+
+      if (stage) {
         const idxStage = state.stageIndex.get(stage);
-        if (idxStage != null) {
-          let ok=false;
-          summaries.forEach(rec=>{
-            const a = state.stageIndex.get(rec.startStage);
-            const b = state.stageIndex.get(rec.endStage);
-            if(a!=null && b!=null && idxStage>=a && idxStage<=b) ok=true;
-          });
-          if(!ok) return false;
+        if (idxStage !== undefined && !g.stages.includes(idxStage)) {
+          return false;
         }
       }
+
       return true;
     }
 
-    function renderResults(){
-      elBody.innerHTML='';
-      if(!state.rowsExpression.length){elNote.textContent='No rows loaded yet.';return;}
-      const filtered = state.rowsExpression.filter(matchesFilters).slice(0,200);
-      if(!filtered.length){elNote.textContent='No rows match these filters.';return;}
-      const frag=document.createDocumentFragment();
+    // Render results grid list (Deduplicated, each gene symbol listed exactly once)
+    function renderResults() {
+      elBody.innerHTML = '';
+      const allGenes = Object.values(state.summaryCatalog);
+      if (!allGenes.length) {
+        elNote.textContent = 'No genes found in catalog summary.';
+        return;
+      }
+
+      const filtered = allGenes.filter(matchesFilters);
+      if (!filtered.length) {
+        elNote.textContent = 'No matching genes for these filters.';
+        return;
+      }
+
+      // Limit results list length for optimal DOM performance
+      const listLimit = filtered.slice(0, 150);
       const structFilter = elFilterStruct.value.trim().toLowerCase();
 
-      filtered.forEach(row=>{
-        const hasDisease=(state.geneToDisease.get(row.geneSymbol)||[]).length>0;
-        const hasGo=(state.geneToGo.get(row.geneSymbol)||[]).length>0;
-        const summaryList = state.summaryByGene.get(row.geneSymbol)||[];
-
-        const tissueSet = new Set();
-        summaryList.forEach(s => { if (s.superStructure) tissueSet.add(s.superStructure); });
-        const tissueList = Array.from(tissueSet);
+      const frag = document.createDocumentFragment();
+      listLimit.forEach(g => {
+        // Tissues prioritization: pull matched tissue to top of top three
+        const tissueList = [...g.tissues];
         if (structFilter) {
-          tissueList.sort((a,b) => {
+          tissueList.sort((a, b) => {
             const aHas = a.toLowerCase().includes(structFilter);
             const bHas = b.toLowerCase().includes(structFilter);
             if (aHas && !bHas) return -1;
@@ -563,174 +561,247 @@
         } else {
           tissueList.sort();
         }
-        const topThree = tissueList.slice(0,3);
+
+        const topThree = tissueList.slice(0, 3);
         const extraCount = tissueList.length - topThree.length;
-        const tissueLabel = topThree.join(', ') + (extraCount>0 ? ` (+${extraCount} more)` : '');
+        const tissueLabel = topThree.join(', ') + (extraCount > 0 ? ` (+${extraCount} more)` : '');
 
-        const firstSummary = summaryList[0];
-        const stageLabel = firstSummary ? `${firstSummary.startStage} → ${firstSummary.endStage}` : `${row.startStage} → ${row.endStage}`;
+        const stageLabel = (g.startStage && g.endStage) ? `${g.startStage} → ${g.endStage}` : '—';
+        const assayLabel = g.assays.length ? g.assays.slice(0, 2).map(a => `<span class="badge-assay">${a}</span>`).join(' ') : '—';
 
-        const el=document.createElement('button');
-        el.type='button';
-        el.className='table-row';
-        el.dataset.gene = row.geneSymbol;
-        el.innerHTML=`
-          <div><div>${row.geneSymbol||'–'}</div><div class="sub">${row.fishName||''}</div></div>
-          <div><div>${tissueLabel || row.superStructure || '–'}</div><div class="sub">${row.subStructure||''}</div></div>
-          <div><div>${stageLabel||'–'}</div><div class="sub">summary sheet</div></div>
-          <div><span class="badge-assay">${row.assay||'Assay'}</span></div>
-          <div><div class="sub">${row.publicationId||''}</div><div class="sub">${hasDisease?'<span class="pill-small">Disease</span>':''} ${hasGo?'<span class="pill-small">GO</span>':''}</div></div>`;
-        el.addEventListener('click',()=>openModal(row.geneSymbol,row));
-        frag.appendChild(el);
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'table-row';
+        row.dataset.gene = g.symbol;
+        row.innerHTML = `
+          <div>
+            <div class="gene-symbol-title">${g.symbol}</div>
+            <div class="sub">${g.name || '—'}</div>
+          </div>
+          <div>
+            <div>${tissueLabel || '—'}</div>
+          </div>
+          <div>
+            <div>${stageLabel}</div>
+            <div class="sub">${g.stages.length} stages expressed</div>
+          </div>
+          <div>
+            <div>${assayLabel}</div>
+          </div>
+          <div>
+            ${g.hasDisease ? '<span class="pill-small">Disease</span>' : ''}
+            ${g.hasGo ? '<span class="pill-small">GO</span>' : ''}
+          </div>
+        `;
+        row.addEventListener('click', () => openModal(g.symbol));
+        frag.appendChild(row);
       });
+
       elBody.appendChild(frag);
-      elNote.textContent = `Showing ${filtered.length} of ${state.rowsExpression.length} expression rows.`;
+      elNote.textContent = `Showing ${listLimit.length} of ${filtered.length} matching genes. (Total database catalog: ${allGenes.length} genes).`;
     }
 
-    function openModal(geneSymbol, exampleRow){
+    // Lazy load split gene databases from prefix files
+    async function fetchSplitDetails(geneSymbol) {
+      const prefix = getPrefix(geneSymbol);
+      
+      if (!cache.expression.has(prefix)) {
+        try {
+          const [exprData, goData, disData] = await Promise.all([
+            fetch(`data/expression_${prefix}.json`).then(r => r.ok ? r.json() : {}),
+            fetch(`data/go_${prefix}.json`).then(r => r.ok ? r.json() : {}),
+            fetch(`data/disease_${prefix}.json`).then(r => r.ok ? r.json() : {})
+          ]);
+          cache.expression.set(prefix, exprData);
+          cache.go.set(prefix, goData);
+          cache.disease.set(prefix, disData);
+        } catch (e) {
+          console.error(`Failed to load split files for prefix ${prefix}`, e);
+          return { expression: [], go: null, disease: null };
+        }
+      }
+
+      return {
+        expression: cache.expression.get(prefix)[geneSymbol] || [],
+        go: cache.go.get(prefix)[geneSymbol] || null,
+        disease: cache.disease.get(prefix)[geneSymbol] || null
+      };
+    }
+
+    // Open landscape details modal
+    async function openModal(geneSymbol) {
       state.activeGene = geneSymbol;
-      const fullName = state.markerNameByGene.get(geneSymbol) || '';
-      modalGeneSymbol.textContent = geneSymbol;
-      modalGeneName.textContent = fullName || '—';
-      const geneId = exampleRow.geneId || '';
-      modalGeneId.textContent = geneId || '—';
-      if(geneId && geneId.startsWith('ZDB-')){
-        modalGeneId.href = `https://zfin.org/${geneId}`;
-      } else if(geneId){
-        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneId)}&fq=type%3Agene`;
-      } else {
-        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=type%3Agene`;
-      }
-
-      const goListRaw = state.geneToGo.get(geneSymbol)||[];
-      const goById = new Map();
-      goListRaw.forEach(g=>{
-        const key = g.goId || g.ontology || 'other';
-        if(!goById.has(key)) goById.set(key,[]);
-        goById.get(key).push(g);
-      });
-      modalGoBody.innerHTML = '';
-      goById.forEach((list,key)=>{
-        const first=list[0];
-        const aspect = (first.ontology||'').includes('Biological Process') ? 'Biological Process'
-                     : (first.ontology||'').includes('Molecular Function') ? 'Molecular Function'
-                     : (first.ontology||'').includes('Cellular Component') ? 'Cellular Component'
-                     : '';
-        const evid = Array.from(new Set(list.map(x=>x.evidence).filter(Boolean))).join(', ');
-        const defUrl = first.goId ? `https://www.ebi.ac.uk/QuickGO/term/${first.goId}` : '';
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${first.goId||''}</td>
-          <td>${aspect}</td>
-          <td>${evid}</td>
-          <td>${defUrl?`<a href="${defUrl}" target="_blank" rel="noopener noreferrer">View in QuickGO</a>`:''}</td>`;
-        modalGoBody.appendChild(tr);
-      });
-
-      const allExpr = state.rowsExpression.filter(r=>r.geneSymbol===geneSymbol);
-      let minIdx=0,maxIdx=state.stageOrder.length-1;
-      let sName='Zygote (1-cell)', eName='Adult';
-      const exprSpanIndices=[];
-      const tissueSet=new Set();
-      allExpr.forEach(r=>{
-        if(r.superStructure) tissueSet.add(r.superStructure);
-        const a=state.stageIndex.get(r.startStage);
-        const b=state.stageIndex.get(r.endStage);
-        if(a!=null && b!=null) exprSpanIndices.push([a,b]);
-      });
-      if(exprSpanIndices.length){
-        minIdx=Math.min(...exprSpanIndices.map(p=>p[0]));
-        maxIdx=Math.max(...exprSpanIndices.map(p=>p[1]));
-        sName=state.stageOrder[minIdx]||sName;
-        eName=state.stageOrder[maxIdx]||eName;
-      }
-      const total=state.stageOrder.length||1;
-      const left=(minIdx/total)*100;
-      const right=100-((maxIdx+1)/total)*100;
-      modalTimeline.style.left=left.toFixed(1)+'%';
-      modalTimeline.style.right=right.toFixed(1)+'%';
-      modalStageStart.textContent=sName;
-      modalStageEnd.textContent=eName;
-
-      modalTissues.innerHTML='';
-      Array.from(tissueSet).sort().forEach(t=>{
-        const li=document.createElement('li');
-        li.textContent=t;
-        modalTissues.appendChild(li);
-      });
-
-      const dList = state.geneToDisease.get(geneSymbol)||[];
-      const humanSet=new Set();
-      const diseaseMap=new Map();
-      dList.forEach(d=>{
-        if(d.humanGeneSymbol) humanSet.add(d.humanGeneSymbol);
-        const key=d.doName||d.omimName||'other';
-        if(!diseaseMap.has(key)) diseaseMap.set(key,[]);
-        diseaseMap.get(key).push(d);
-      });
-      const humans=Array.from(humanSet).sort();
-      const diseaseLines=[];
-      diseaseMap.forEach((list,key)=>{
-        const first=list[0];
-        const label=first.doName||first.omimName||key;
-        const omim=first.omimName?` (${first.omimName})`:'';
-        diseaseLines.push(label+omim);
-      });
-      modalDiseaseBody.innerHTML='';
-      const humanRow=document.createElement('div');
-      humanRow.className='facet-item';
-      humanRow.innerHTML=`<span class="facet-label">Known human orthologs</span><span>${humans.join(', ')||'—'}</span>`;
-      modalDiseaseBody.appendChild(humanRow);
-      const diseaseRow=document.createElement('div');
-      diseaseRow.className='facet-item';
-      diseaseRow.innerHTML=`<span class="facet-label">Known diseases</span><span>${diseaseLines.join('; ')||'—'}</span>`;
-      modalDiseaseBody.appendChild(diseaseRow);
-
-      modalExprBody.innerHTML='';
-      allExpr.forEach(r=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`
-          <td>${r.startStage||''}</td>
-          <td>${r.endStage||''}</td>
-          <td>${r.superStructure||''}</td>
-          <td>${r.subStructure||''}</td>
-          <td>${r.assay||''}</td>
-          <td>${r.fishName||''}</td>
-          <td>${r.publicationId||''}</td>`;
-        modalExprBody.appendChild(tr);
-      });
-
-      modalLinkExpression.onclick=()=>{
-        const url=`https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"&category=Expression`;
-        window.open(url,'_blank','noopener');
+      
+      const summaryInfo = state.summaryCatalog[geneSymbol] || {
+        symbol: geneSymbol, id: '', name: '', tissues: [], stages: [], startStage: 'Zygote (1-cell)', endStage: 'Adult'
       };
 
+      // Set base headers immediately from memory catalog
+      modalGeneSymbol.textContent = geneSymbol;
+      modalGeneName.textContent = summaryInfo.name || '—';
+      modalGeneId.textContent = summaryInfo.id || '—';
+      if (summaryInfo.id && summaryInfo.id.startsWith('ZDB-')) {
+        modalGeneId.href = `https://zfin.org/${summaryInfo.id}`;
+      } else {
+        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}`;
+      }
+
+      // Render timeline segmented bar immediately
+      renderSegmentedTimeline(summaryInfo.stages);
+
+      // Render tissues expressed in
+      modalTissues.innerHTML = '';
+      if (summaryInfo.tissues && summaryInfo.tissues.length) {
+        summaryInfo.tissues.sort().forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          modalTissues.appendChild(li);
+        });
+      } else {
+        modalTissues.innerHTML = '<li>not known</li>';
+      }
+
+      // Set up ZFIN outer link
+      modalLinkExpression.onclick = () => {
+        window.open(`https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"`, '_blank', 'noopener');
+      };
+
+      // Show loader in table bodies
+      modalGoBody.innerHTML = '<tr><td colspan="3">Loading GO annotations from split database…</td></tr>';
+      modalExprBody.innerHTML = '<tr><td colspan="7">Loading detailed expression rows…</td></tr>';
+      modalHumanOrth.textContent = 'Loading…';
+      modalDiseases.textContent = 'Loading…';
+
+      // Open modal
       modalBackdrop.classList.add('visible');
-      modalBackdrop.setAttribute('aria-hidden','false');
+      modalBackdrop.setAttribute('aria-hidden', 'false');
+
+      // Fetch lazy split files in background
+      const details = await fetchSplitDetails(geneSymbol);
+
+      // Render orthology (Issue 7 & 10: Human orthologs & diseases with em-dashes and not known fallback)
+      if (details.disease) {
+        modalHumanOrth.textContent = details.disease.orth.length ? details.disease.orth.join(', ') : 'not known';
+        modalDiseases.textContent = details.disease.dis.length ? details.disease.dis.join('; ') : 'not known';
+      } else {
+        modalHumanOrth.textContent = 'not known';
+        modalDiseases.textContent = 'not known';
+      }
+
+      // Render GO annotations table (Issue 5 & 10: GO term ID, Aspect descriptive name, and QuickGO definition url)
+      modalGoBody.innerHTML = '';
+      if (details.go && details.go.go && details.go.go.length) {
+        details.go.go.forEach(g => {
+          const aspectName = g.o || '—';
+          const quickGoUrl = `https://www.ebi.ac.uk/QuickGO/term/${g.id}`;
+          
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><a class="go-link" href="${quickGoUrl}" target="_blank" rel="noopener noreferrer">${g.id}</a></td>
+            <td>${aspectName}</td>
+            <td><a class="go-link" href="${quickGoUrl}" target="_blank" rel="noopener noreferrer">View Term</a></td>
+          `;
+          modalGoBody.appendChild(tr);
+        });
+      } else {
+        modalGoBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No GO annotations in database</td></tr>';
+      }
+
+      // Render Detailed Expression table (Issue 8: chronologically sort by Start Stage order)
+      modalExprBody.innerHTML = '';
+      if (details.expression && details.expression.length) {
+        // Sort chronologically using global stage index
+        const sortedExpr = [...details.expression].sort((a, b) => {
+          const idxA = state.stageIndex.get(a.s) ?? 999;
+          const idxB = state.stageIndex.get(b.s) ?? 999;
+          return idxA - idxB;
+        });
+
+        sortedExpr.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${r.s}</strong></td>
+            <td>${r.e}</td>
+            <td>${r.t || '—'}</td>
+            <td>${r.sub || '—'}</td>
+            <td><span class="badge-assay">${r.a || '—'}</span></td>
+            <td>${r.f || '—'}</td>
+            <td><a href="https://zfin.org/${r.p}" target="_blank" rel="noopener noreferrer">${r.p || '—'}</a></td>
+          `;
+          modalExprBody.appendChild(tr);
+        });
+      } else {
+        modalExprBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No detailed wild-type expression records</td></tr>';
+      }
     }
 
-    function closeModal(){
+    // Render CSS segmented grid developmental timeline
+    function renderSegmentedTimeline(activeStageIndices) {
+      modalTimelineSegments.innerHTML = '';
+      if (!state.stageOrder.length) return;
+
+      const indicesSet = new Set(activeStageIndices || []);
+      
+      state.stageOrder.forEach((stageName, idx) => {
+        const seg = document.createElement('div');
+        seg.className = 'timeline-segment';
+        if (indicesSet.has(idx)) {
+          seg.classList.add('active');
+        }
+        
+        // Tooltip using standard title attribute for browser compatibility
+        seg.title = `${stageName} (${indicesSet.has(idx) ? 'expressed' : 'not expressed'})`;
+
+        // Interactive mouse hover events for high precision PC browsers
+        seg.addEventListener('mouseenter', () => {
+          modalTimelineHover.textContent = `Stage: ${stageName} [${indicesSet.has(idx) ? 'EXPRESSED' : 'NOT EXPRESSED'}]`;
+          modalTimelineHover.style.color = indicesSet.has(idx) ? 'var(--color-accent)' : 'var(--color-text-faint)';
+        });
+        seg.addEventListener('mouseleave', () => {
+          modalTimelineHover.textContent = 'Hover over segments to explore stages';
+          modalTimelineHover.style.color = 'var(--color-text-muted)';
+        });
+
+        modalTimelineSegments.appendChild(seg);
+      });
+
+      // Update start and end text limits
+      if (activeStageIndices && activeStageIndices.length) {
+        const minIdx = Math.min(...activeStageIndices);
+        const maxIdx = Math.max(...activeStageIndices);
+        modalStageStart.textContent = state.stageOrder[minIdx] || 'Zygote (1-cell)';
+        modalStageEnd.textContent = state.stageOrder[maxIdx] || 'Adult';
+      } else {
+        modalStageStart.textContent = state.stageOrder[0] || 'Zygote (1-cell)';
+        modalStageEnd.textContent = state.stageOrder[state.stageOrder.length - 1] || 'Adult';
+      }
+    }
+
+    function closeModal() {
       modalBackdrop.classList.remove('visible');
-      modalBackdrop.setAttribute('aria-hidden','true');
+      modalBackdrop.setAttribute('aria-hidden', 'true');
+      state.activeGene = null;
     }
 
     modalClose.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', e=>{ if(e.target===modalBackdrop) closeModal(); });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+    modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    elFilterGene.addEventListener('input',renderResults);
-    elFilterStage.addEventListener('change',renderResults);
-    elFilterStruct.addEventListener('input',renderResults);
-    elFilterFish.addEventListener('change',renderResults);
-    elBtnClear.addEventListener('click',()=>{
-      elFilterGene.value='';
-      elFilterStage.value='';
-      elFilterStruct.value='';
-      elFilterFish.value='';
+    // Interactive filter updates
+    elFilterGene.addEventListener('input', renderResults);
+    elFilterStage.addEventListener('change', renderResults);
+    elFilterStruct.addEventListener('input', renderResults);
+    elFilterFish.addEventListener('change', renderResults);
+    elBtnClear.addEventListener('click', () => {
+      elFilterGene.value = '';
+      elFilterStage.value = '';
+      elFilterStruct.value = '';
+      elFilterFish.value = '';
       renderResults();
     });
 
-    loadWorkbook();
+    // Run loader
+    loadDatabase();
   </script>
 </body>
 </html>
