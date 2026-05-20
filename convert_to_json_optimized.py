@@ -9,25 +9,30 @@ print("Starting optimized Excel conversion with split files...")
 # Ensure data directory exists
 os.makedirs("data", exist_ok=True)
 
+import re
+
+# Mapping to recover gene symbols that Excel auto-corrupted to dates.
+# E.g. MARCH1 → 2026-03-01, SEPT2 → 2026-09-02. Gene symbols are supreme.
+_MONTH_GENE_MAP = {
+    '01': 'jan', '02': 'feb', '03': 'march', '04': 'apr',
+    '05': 'may', '06': 'jun', '07': 'jul', '08': 'aug',
+    '09': 'sept', '10': 'oct', '11': 'nov', '12': 'dec'
+}
+_DATE_PATTERN = re.compile(r'^\d{4}-(\d{2})-(\d{2})(?:\s+00:00:00)?$')
+
 def clean_val(val):
+    """Clean cell value. Gene symbols are supreme — recover any Excel date corruption."""
     if pd.isna(val):
         return ""
-    if isinstance(val, (datetime.datetime, datetime.date, pd.Timestamp)):
-        # Excel auto-conversion of march1 / sept1 / etc.
-        month_map = {
-            1: "jan", 2: "feb", 3: "march", 4: "apr", 5: "may", 6: "jun",
-            7: "jul", 8: "aug", 9: "sept", 10: "oct", 11: "nov", 12: "dec"
-        }
-        try:
-            m = val.month
-            d = val.day
-            prefix = month_map.get(m)
-            if prefix:
-                return f"{prefix}{d}"
-        except Exception:
-            pass
-        return val.isoformat()
-    return str(val).strip()
+    s = str(val).strip()
+    # Recover gene symbols from Excel date corruption (e.g. "2026-03-01 00:00:00" → "march1")
+    m = _DATE_PATTERN.match(s)
+    if m:
+        month_str, day_str = m.group(1), m.group(2)
+        prefix = _MONTH_GENE_MAP.get(month_str)
+        if prefix:
+            return f"{prefix}{int(day_str)}"
+    return s
 
 def get_prefix(sym):
     if not sym:
@@ -39,7 +44,7 @@ def get_prefix(sym):
 
 # 1. Stage Order
 print("Processing Stage Order...")
-df_stage = pd.read_excel(excel_file, sheet_name="Stage Order", header=None)
+df_stage = pd.read_excel(excel_file, sheet_name="Stage Order", header=None, dtype=str)
 stage_order = []
 stage_index = {}
 for col in df_stage.columns:
@@ -57,9 +62,10 @@ print(f"Saved stage_order.json ({len(stage_order)} stages)")
 
 # 2. Load Gene Ontology (for marker names and hasGo)
 print("Loading 20260519_GeneOntology...")
-df_go = pd.read_excel(excel_file, sheet_name="20260519_GeneOntology")
+df_go = pd.read_excel(excel_file, sheet_name="20260519_GeneOntology", dtype=str)
 go_grouped = {}
 marker_names = {} # geneSymbol_lower -> full name
+gene_ids = {}     # geneSymbol_lower -> ZFIN Gene/Marker ID (fallback source)
 
 for _, row in df_go.iterrows():
     sym = clean_val(row.get('Gene Symbol'))
@@ -70,6 +76,10 @@ for _, row in df_go.iterrows():
     go_id = clean_val(row.get('GO Term ID'))
     ontology = clean_val(row.get('Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component'))
     marker_name = clean_val(row.get('Marker Name'))
+    marker_id = clean_val(row.get('Marker ID'))  # ZFIN Gene ID from GO sheet
+    
+    if marker_id and marker_id.startswith('ZDB-') and sym_lower not in gene_ids:
+        gene_ids[sym_lower] = marker_id
     
     if marker_name:
         marker_names[sym_lower] = marker_name
@@ -110,7 +120,7 @@ print(f"Saved split go_{{char}}.json files ({len(go_split)} prefixes)")
 
 # 3. Load Disease Orthology (for human orthologs and diseases)
 print("Loading 20260519_gene2DiseaseOrthology...")
-df_dis = pd.read_excel(excel_file, sheet_name="20260519_gene2DiseaseOrthology")
+df_dis = pd.read_excel(excel_file, sheet_name="20260519_gene2DiseaseOrthology", dtype=str)
 disease_grouped = {}
 
 for _, row in df_dis.iterrows():
@@ -118,6 +128,10 @@ for _, row in df_dis.iterrows():
     if not sym:
         continue
     sym_lower = sym.lower()
+    
+    gene_id_dis = clean_val(row.get('Zebrafish Gene ID'))  # ZFIN Gene ID from Disease sheet
+    if gene_id_dis and gene_id_dis.startswith('ZDB-') and sym_lower not in gene_ids:
+        gene_ids[sym_lower] = gene_id_dis
         
     human_sym = clean_val(row.get('Human Ortholog Symbol'))
     do_name = clean_val(row.get('DO Term Name'))
@@ -154,7 +168,7 @@ print(f"Saved split disease_{{char}}.json files ({len(disease_split)} prefixes)"
 
 # 4. Load Detailed Expression
 print("Loading 20260518_zf_wt_expression...")
-df_exp = pd.read_excel(excel_file, sheet_name="20260518_zf_wt_expression")
+df_exp = pd.read_excel(excel_file, sheet_name="20260518_zf_wt_expression", dtype=str)
 expr_grouped = {}
 expr_stages = {} # geneSymbol_lower -> set of stage indices
 
@@ -216,9 +230,12 @@ summary_catalog = {}
 all_genes = set(expr_grouped.keys()).union(go_grouped.keys()).union(disease_grouped.keys())
 
 for sym_lower in all_genes:
+    # Cascading Gene ID lookup: expression > GO sheet > Disease sheet
     gene_id = ""
     if sym_lower in expr_grouped and len(expr_grouped[sym_lower]) > 0:
         gene_id = expr_grouped[sym_lower][0]["id"]
+    if not gene_id:
+        gene_id = gene_ids.get(sym_lower, "")
     
     name = marker_names.get(sym_lower, "")
     if not name and sym_lower in go_grouped:
@@ -269,6 +286,8 @@ print(f"Saved summary.json ({len(summary_catalog)} genes in catalog)")
 print("Building preloaded vocabulary hints.json...")
 vocab_symbols = set()
 vocab_tissues = set()
+vocab_diseases = set()
+vocab_orthologs = set()
 name_to_symbol = {}
 
 for sym_lower, data in summary_catalog.items():
@@ -281,18 +300,24 @@ for sym_lower, data in summary_catalog.items():
 
 for sym_lower, data in disease_grouped.items():
     for orth in data["orth"]:
-        vocab_symbols.add(orth)
+        vocab_orthologs.add(orth)
         name_to_symbol[orth.lower()] = sym_lower
+    for dis in data["dis"]:
+        if dis:
+            vocab_diseases.add(dis)
+            name_to_symbol[dis.lower()] = sym_lower
 
 hints_data = {
     "geneSymbols": sorted(list(vocab_symbols)),
     "tissues": sorted(list(vocab_tissues)),
+    "diseases": sorted(list(vocab_diseases)),
+    "orthologs": sorted(list(vocab_orthologs)),
     "nameToSymbol": name_to_symbol
 }
 
 with open("hints.json", "w", encoding="utf-8") as f:
     json.dump(hints_data, f, ensure_ascii=False)
-print(f"Saved hints.json ({len(hints_data['geneSymbols'])} symbols, {len(hints_data['tissues'])} tissues)")
+print(f"Saved hints.json ({len(hints_data['geneSymbols'])} symbols, {len(hints_data['tissues'])} tissues, {len(hints_data['diseases'])} diseases, {len(hints_data['orthologs'])} orthologs)")
 
 # Clean up large files that we replaced
 for large_file in ["go.json", "disease.json", "expression.json"]:

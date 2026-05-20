@@ -352,7 +352,7 @@
 
     <section class="filters-row-2" aria-label="Tissue include/exclude filters">
       <div style="flex:1 1 45%;">
-        <div class="field-label">Include tissues <span style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--color-text-faint);">(gene must be expressed in ALL listed tissues)</span></div>
+        <div class="field-label">Include tissues <span style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--color-text-faint);">(gene must be expressed in ANY listed tissue)</span></div>
         <div class="tissue-input-wrap">
           <input id="filter-include-tissue" class="input" type="search" placeholder="Type tissue name, press Enter to add..." autocomplete="off" />
           <div id="include-tissue-suggest" class="tissue-suggest"></div>
@@ -524,11 +524,10 @@
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get('q') || '';
     const focusParam = params.get('focus') || '';
-    const modeParam = params.get('mode') || 'expression';
 
     document.getElementById('filter-gene').value = decodeURIComponent(qParam);
     document.getElementById('page-lede').textContent = qParam
-      ? `Query = "${decodeURIComponent(qParam)}" (mode: ${modeParam})`
+      ? `Query = "${decodeURIComponent(qParam)}"`
       : 'Showing all matching genes (aggregated results).';
 
     const state = {
@@ -779,12 +778,12 @@
         if (!hasOverlap) return false;
       }
 
-      // Include tissues filter: gene must be expressed in ALL listed tissues
+      // Include tissues filter: gene must be expressed in ANY listed tissue
       if (includedTissues.length > 0) {
-        var allMatch = includedTissues.every(function(inc) {
+        var anyMatch = includedTissues.some(function(inc) {
           return g.tissues.some(function(tName) { return tName.toLowerCase().includes(inc); });
         });
-        if (!allMatch) return false;
+        if (!anyMatch) return false;
       }
 
       // Exclude tissues filter: hide gene if expressed in ANY listed tissue

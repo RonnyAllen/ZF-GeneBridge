@@ -21,10 +21,10 @@ ZF-GeneBridge brings together five layers of zebrafish gene annotation — **dev
 
 Instead of navigating multiple ZFIN query forms, you get a unified local tool where you can:
 
-- 🔍 **Search** any gene by symbol, name, or ZFIN ID
-- 📊 **Filter** by developmental stage range, tissue, fish line — and exclude unwanted tissues
-- 🧬 **View** a detailed gene context card with GO annotations, developmental timeline, human orthologs, and disease associations
-- 📋 **Sort** results by gene name, tissue count, or developmental breadth
+- 🔍 **Search** by gene symbol, gene name, ZFIN ID, human ortholog, or disease name
+- 📊 **Filter** results by developmental stage range, tissue include/exclude, and fish line
+- 🧬 **View** a detailed gene card with GO annotations, developmental timeline, human orthologs, and disease associations
+- 📋 **Sort** results by gene name, tissue count, or developmental span breadth
 - 🌙 **Toggle** between light and dark modes
 
 ---
@@ -63,7 +63,7 @@ Instead of navigating multiple ZFIN query forms, you get a unified local tool wh
    http://localhost:8000
    ```
 
-4. **Search for a gene** — type a gene symbol (e.g., `tp53`, `sox10`, `pparg`) and explore.
+4. **Search for a gene** — type a gene symbol (e.g., `tp53`, `sox10`, `pparg`), a human ortholog (e.g., `TP53`, `BRCA2`), a disease name, or free text and explore.
 
 ### Option 2: Use the Raw Excel Workbook
 
@@ -75,13 +75,22 @@ Open `Latest_ZF_GeneExpression_Gene2Disease_GO_Collated.xlsx` in Excel, Google S
 
 ### 🔎 Search & Landing Page (`index.html`)
 
-- **Smart autocomplete**: Type any gene symbol, name, or ZFIN ID — the search bar provides instant suggestions from all 24,007 genes.
-- **Mode selector**: Choose between Expression, Disease, or GO search modes.
+- **Smart autocomplete**: Type to get instant suggestions from five categories:
+
+  | Suggestion Type | Example |
+  |----------------|---------|
+  | **Gene Symbol** | `tp53`, `sox10`, `shha` |
+  | **Gene Name** | `tumor protein p53`, `SRY-box transcription factor 10` |
+  | **Human Ortholog** | `TP53`, `BRCA2`, `EGFR` |
+  | **Disease** | `breast cancer`, `Alzheimer disease`, `retinitis pigmentosa` |
+  | **Tissue** | `brain`, `liver`, `retinal ganglion cell layer` |
+
+- **Direct navigation**: Exact gene matches open the gene context modal directly.
 - **Premium design**: Clean, responsive layout with dark/light theme toggle.
 
 ### 📋 Results & Filtering Page (`results.html`)
 
-The results page offers a powerful, interactive table of matching genes with advanced filtering and sorting:
+The results page shows an interactive table of matching genes with advanced filtering and sorting:
 
 #### Filters
 
@@ -91,7 +100,7 @@ The results page offers a powerful, interactive table of matching genes with adv
 | **Start stage (from)** | Dropdown | Set the earliest developmental stage of interest |
 | **End stage (to)** | Dropdown | Set the latest developmental stage of interest |
 | **Fish line** | Dropdown | Filter by wild-type strain (e.g., AB, TU, WIK) |
-| **Include tissues** | Tag input + autocomplete | Gene must be expressed in **all** listed tissues (AND logic) |
+| **Include tissues** | Tag input + autocomplete | Gene must be expressed in **any** listed tissue (OR logic) |
 | **Exclude tissues** | Tag input + autocomplete | Gene is hidden if expressed in **any** listed tissue (OR logic) |
 
 > **Tissue autocomplete**: As you type, a dropdown suggests matching tissue names from the database. Click a suggestion or press Enter to add it as a tag. Comma-separated input is supported (e.g., `brain, eye, heart`). Each tag can be removed with the × button.
@@ -137,7 +146,8 @@ ZF-GeneBridge/
 │
 ├── summary.json                        # Pre-compiled gene index (24,007 genes)
 ├── stage_order.json                    # Ordered list of 44 developmental stages
-├── hints.json                          # Autocomplete search hints
+├── hints.json                          # Autocomplete hints (genes, tissues,
+│                                       #   orthologs, diseases, gene names)
 │
 ├── data/                               # Split JSON files for lazy loading
 │   ├── expression_a.json ... z.json    # Expression records by gene prefix
@@ -173,7 +183,7 @@ graph LR
     A["Excel Workbook<br/>(35 MB)"] -->|convert_to_json_optimized.py| B["summary.json<br/>(gene index)"]
     A -->|convert_to_json_optimized.py| C["data/*.json<br/>(split files)"]
     A -->|convert_to_json_optimized.py| D["stage_order.json"]
-    A -->|convert_to_json_optimized.py| E["hints.json"]
+    A -->|convert_to_json_optimized.py| E["hints.json<br/>(genes, tissues,<br/>orthologs, diseases)"]
 
     F["index.html"] -->|autocomplete| E
     F -->|search redirect| G["results.html"]
@@ -183,8 +193,20 @@ graph LR
 ```
 
 The web interface uses a **two-phase loading** strategy:
-1. **Eager load**: `summary.json` and `stage_order.json` are fetched on page load (~11 MB total). These power the results table and filters.
+1. **Eager load**: `summary.json` and `stage_order.json` are fetched on page load (~11 MB total). These power the results table, filters, and tissue autocomplete.
 2. **Lazy load**: When a user clicks a gene, the detailed data (`expression_*.json`, `go_*.json`, `disease_*.json`) is fetched on demand by prefix letter, then cached for subsequent lookups.
+
+### Data Linkage
+
+Each gene in the database is connected to its annotations through a unified key — the **lowercased gene symbol**. The compiler (`convert_to_json_optimized.py`) extracts data from all five Excel sheets and links them into a single catalog:
+
+- **Gene identity**: Gene ID sourced from the expression sheet first, with fallbacks to the GO sheet (`Marker ID`) and Disease sheet (`Zebrafish Gene ID`) to ensure maximum coverage.
+- **GO annotations**: Matched by gene symbol from the GeneOntology sheet; each GO term includes its ID and ontology aspect.
+- **Disease associations**: Matched by gene symbol from the gene2DiseaseOrthology sheet; includes human ortholog symbols and DO/OMIM disease names.
+- **Expression records**: Matched by gene symbol from the zf_wt_expression sheet; includes tissue, sub-structure, stage range, assay type, fish line, and publication.
+- **Stage indexing**: All start/end stages in expression records are mapped to the canonical 44-stage order for timeline rendering and stage-range filtering.
+
+> **Note on gene symbols**: Gene symbols are treated as the supreme identifier and are never reinterpreted. The converter does not attempt to auto-convert gene symbols that may resemble dates (e.g., `MARCH1`, `SEPT1`).
 
 ---
 
@@ -200,6 +222,7 @@ This will:
 - Parse all five sheets from the Excel workbook
 - Generate `summary.json`, `hints.json`, `stage_order.json`
 - Split detailed data into `data/expression_*.json`, `data/go_*.json`, `data/disease_*.json` (one file per starting letter)
+- Build the autocomplete vocabulary with gene symbols, gene names, tissues, human orthologs, and disease names
 
 To verify the compiled database:
 
@@ -228,6 +251,7 @@ All underlying records were obtained from the **Zebrafish Information Network ([
 - The **expression summary** provides aggregated counts; the **detailed expression sheet** contains traceable, evidence-level observations. Analyses requiring assay type, publication source, or strain-specific context should use the detailed records.
 - **Orthology-based disease mapping** is useful for prioritization but should not be treated as direct proof of conserved disease mechanism. Functional validation remains essential.
 - **GO annotations** reflect ZFIN's curated and electronic annotations as of the last update date. Users performing enrichment analyses should check for updates from ZFIN directly.
+- Not all genes have data in every category. Of the 24,007 genes, approximately 14,500 have wild-type expression records, 22,000 have GO annotations, and 5,750 have disease orthology. Genes without data in a given section will show "not known" or "No records" in the gene context modal.
 
 ---
 
@@ -237,10 +261,11 @@ All underlying records were obtained from the **Zebrafish Information Network ([
 |----------|---------------|
 | Stage-specific expression profiling | Expression summary + Stage order |
 | Tissue-specific gene discovery | Results filter (include/exclude tissues) |
-| Human disease gene prioritization | Gene-to-disease orthology |
+| Human disease gene prioritization | Gene-to-disease orthology + search by disease name |
 | GO enrichment / functional interpretation | Gene Ontology sheet |
 | Assay-level evidence review | Detailed expression table in gene modal |
 | Candidate gene list building | Combine all filters + sort by tissue count or span |
+| Cross-species translation | Search by human ortholog symbol (e.g., `TP53`, `BRCA2`) |
 
 ---
 

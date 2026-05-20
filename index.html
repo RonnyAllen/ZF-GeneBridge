@@ -172,10 +172,7 @@
       opacity: 0.9;
     }
 
-    .mode-row{display:flex;gap:var(--space-4);align-items:center;margin-bottom:var(--space-4);}
-    .mode-group{display:inline-flex;padding:0.25rem;border-radius:var(--radius-full);background:var(--color-surface-2);border:2px solid var(--color-border);}
-    .mode-pill{border-radius:var(--radius-full);padding:0.35rem 1rem;font-size:var(--text-xs);border:none;background:transparent;color:var(--color-text-muted);cursor:pointer;font-weight:700;transition:background var(--transition-fast), color var(--transition-fast);}
-    .mode-pill[data-active="true"]{background:var(--color-accent);color:var(--btn-primary-fg);}
+
 
     .cta-row{margin-top:var(--space-5);display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;}
     .btn-primary,.btn-ghost{border-radius:var(--radius-full);padding:0.75rem 1.6rem;font-size:var(--text-sm);border:2px solid transparent;cursor:pointer;font-weight:700;transition:background var(--transition-fast),color var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}
@@ -215,20 +212,13 @@
           <div id="suggestions-box" class="suggestions-dropdown" style="display: none;"></div>
         </div>
 
-        <div class="mode-row">
-          <span class="field-label" style="margin-bottom:0;">Mode</span>
-          <div class="mode-group" role="tablist" aria-label="Query mode">
-            <button class="mode-pill" type="button" data-mode="expression" data-active="true">Expression-centric</button>
-            <button class="mode-pill" type="button" data-mode="disease">Disease-centric</button>
-            <button class="mode-pill" type="button" data-mode="go">GO-centric</button>
-          </div>
-        </div>
+
 
         <div class="cta-row">
           <button class="btn-primary" type="submit">View results</button>
           <button class="btn-ghost" type="button" id="btn-load-hints">Preload suggestion vocabulary</button>
         </div>
-        <p class="hint-note">Suggestions include zebrafish symbols, full gene names, tissues, and human ortholog symbols.</p>
+        <p class="hint-note">Suggestions include zebrafish gene symbols, full gene names, tissues, human ortholog symbols, and known diseases.</p>
       </form>
     </section>
   </main>
@@ -269,7 +259,6 @@
 
     const queryInput = document.getElementById('query-input');
     const suggestionsBox = document.getElementById('suggestions-box');
-    const modeButtons = document.querySelectorAll('.mode-pill');
     const form = document.getElementById('query-form');
     const btnLoadHints = document.getElementById('btn-load-hints');
 
@@ -277,23 +266,13 @@
       loaded: false,
       symbols: new Set(),
       tissues: new Set(),
+      diseases: new Set(),
+      orthologs: new Set(),
       geneSymbols: new Set(),
       nameToSymbol: {}
     };
 
-    function setMode(mode) {
-      modeButtons.forEach(btn => {
-        const active = btn.dataset.mode === mode;
-        btn.dataset.active = active ? 'true' : 'false';
-      });
-      localStorage.setItem('zconnect_mode', mode);
-    }
 
-    const savedMode = localStorage.getItem('zconnect_mode') || 'expression';
-    setMode(savedMode);
-    modeButtons.forEach(btn => {
-      btn.addEventListener('click', () => setMode(btn.dataset.mode));
-    });
 
     async function loadHints() {
       if (hintState.loaded) return;
@@ -304,15 +283,18 @@
 
         hintState.geneSymbols = new Set((data.geneSymbols || []).map(s => s.toLowerCase()));
         hintState.tissues = new Set(data.tissues || []);
+        hintState.diseases = new Set(data.diseases || []);
+        hintState.orthologs = new Set((data.orthologs || []).map(s => s.toLowerCase()));
         hintState.nameToSymbol = data.nameToSymbol || {};
 
+        // Build master symbol set for autocomplete
         hintState.symbols = new Set();
         (data.geneSymbols || []).forEach(s => hintState.symbols.add(s));
         (data.tissues || []).forEach(t => hintState.symbols.add(t));
+        (data.orthologs || []).forEach(o => hintState.symbols.add(o));
+        (data.diseases || []).forEach(d => hintState.symbols.add(d));
         Object.keys(data.nameToSymbol || {}).forEach(k => {
           hintState.symbols.add(k);
-          const sym = data.nameToSymbol[k];
-          if (sym) hintState.symbols.add(sym);
         });
 
         hintState.loaded = true;
@@ -385,12 +367,16 @@
         const sLower = s.toLowerCase();
         if (sLower.includes(q)) {
           let type = "Gene Symbol";
-          if (hintState.tissues.has(s)) {
+          if (hintState.diseases.has(s)) {
+            type = "Disease";
+          } else if (hintState.tissues.has(s)) {
             type = "Tissue";
+          } else if (hintState.orthologs.has(sLower)) {
+            type = "Human Ortholog";
           } else if (hintState.nameToSymbol[sLower]) {
             const zSym = hintState.nameToSymbol[sLower];
             if (zSym && zSym.toLowerCase() !== sLower) {
-              type = s.toUpperCase() === s ? "Human Ortholog" : "Gene Name";
+              type = "Gene Name";
             }
           }
           matches.push({ text: s, type });
@@ -427,7 +413,6 @@
       const q = queryInput.value.trim();
       if (!q) return;
       const qLower = q.toLowerCase();
-      const mode = localStorage.getItem('zconnect_mode') || 'expression';
 
       // Check if perfect case-insensitive match for a gene symbol
       if (hintState.geneSymbols && hintState.geneSymbols.has(qLower)) {
@@ -442,7 +427,7 @@
         return;
       }
 
-      window.location.href = `results.html?q=${encodeURIComponent(q)}&mode=${mode}`;
+      window.location.href = `results.html?q=${encodeURIComponent(q)}`;
     }
 
     form.addEventListener('submit', handleSubmit);
