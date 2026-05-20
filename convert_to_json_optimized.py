@@ -13,6 +13,19 @@ def clean_val(val):
     if pd.isna(val):
         return ""
     if isinstance(val, (datetime.datetime, datetime.date, pd.Timestamp)):
+        # Excel auto-conversion of march1 / sept1 / etc.
+        month_map = {
+            1: "jan", 2: "feb", 3: "march", 4: "apr", 5: "may", 6: "jun",
+            7: "jul", 8: "aug", 9: "sept", 10: "oct", 11: "nov", 12: "dec"
+        }
+        try:
+            m = val.month
+            d = val.day
+            prefix = month_map.get(m)
+            if prefix:
+                return f"{prefix}{d}"
+        except Exception:
+            pass
         return val.isoformat()
     return str(val).strip()
 
@@ -33,7 +46,7 @@ for col in df_stage.columns:
     for val in df_stage[col].dropna():
         v = str(val).strip()
         if v:
-            name = v.split(':')[0].strip() if ':' in v else v.strip()
+            name = v  # Kept full sub-stage name intact (do not split on ':')
             if name and name not in stage_order:
                 stage_index[name] = len(stage_order)
                 stage_order.append(name)
@@ -46,27 +59,28 @@ print(f"Saved stage_order.json ({len(stage_order)} stages)")
 print("Loading 20260519_GeneOntology...")
 df_go = pd.read_excel(excel_file, sheet_name="20260519_GeneOntology")
 go_grouped = {}
-marker_names = {} # geneSymbol -> full name
+marker_names = {} # geneSymbol_lower -> full name
 
 for _, row in df_go.iterrows():
     sym = clean_val(row.get('Gene Symbol'))
     if not sym:
         continue
+    sym_lower = sym.lower()
     
     go_id = clean_val(row.get('GO Term ID'))
     ontology = clean_val(row.get('Ontology: P=Biological Process; F=Molecular Function; C=Cellular Component'))
     marker_name = clean_val(row.get('Marker Name'))
     
     if marker_name:
-        marker_names[sym] = marker_name
+        marker_names[sym_lower] = marker_name
         
-    if sym not in go_grouped:
-        go_grouped[sym] = {
+    if sym_lower not in go_grouped:
+        go_grouped[sym_lower] = {
             "name": marker_name,
             "go": []
         }
-    elif marker_name and not go_grouped[sym]["name"]:
-        go_grouped[sym]["name"] = marker_name
+    elif marker_name and not go_grouped[sym_lower]["name"]:
+        go_grouped[sym_lower]["name"] = marker_name
         
     if go_id:
         aspect = "Biological Process"
@@ -75,19 +89,19 @@ for _, row in df_go.iterrows():
         elif "Cellular Component" in ontology:
             aspect = "Cellular Component"
             
-        if not any(x['id'] == go_id for x in go_grouped[sym]["go"]):
-            go_grouped[sym]["go"].append({
+        if not any(x['id'] == go_id for x in go_grouped[sym_lower]["go"]):
+            go_grouped[sym_lower]["go"].append({
                 "id": go_id,
                 "o": aspect
             })
 
 # Split go.json into go_{char}.json
 go_split = {}
-for sym, val in go_grouped.items():
-    prefix = get_prefix(sym)
+for sym_lower, val in go_grouped.items():
+    prefix = get_prefix(sym_lower)
     if prefix not in go_split:
         go_split[prefix] = {}
-    go_split[prefix][sym] = val
+    go_split[prefix][sym_lower] = val
 
 for prefix, data in go_split.items():
     with open(f"data/go_{prefix}.json", "w", encoding="utf-8") as f:
@@ -103,34 +117,35 @@ for _, row in df_dis.iterrows():
     sym = clean_val(row.get('Zebrafish Gene Symbol'))
     if not sym:
         continue
+    sym_lower = sym.lower()
         
     human_sym = clean_val(row.get('Human Ortholog Symbol'))
     do_name = clean_val(row.get('DO Term Name'))
     omim_name = clean_val(row.get('OMIM Term Name'))
     
-    if sym not in disease_grouped:
-        disease_grouped[sym] = {
+    if sym_lower not in disease_grouped:
+        disease_grouped[sym_lower] = {
             "orth": [],
             "dis": []
         }
         
-    if human_sym and human_sym not in disease_grouped[sym]["orth"]:
-        disease_grouped[sym]["orth"].append(human_sym)
+    if human_sym and human_sym not in disease_grouped[sym_lower]["orth"]:
+        disease_grouped[sym_lower]["orth"].append(human_sym)
         
     dis_label = do_name
     if omim_name:
         dis_label = f"{do_name} ({omim_name})" if do_name else omim_name
     
-    if dis_label and dis_label not in disease_grouped[sym]["dis"]:
-        disease_grouped[sym]["dis"].append(dis_label)
+    if dis_label and dis_label not in disease_grouped[sym_lower]["dis"]:
+        disease_grouped[sym_lower]["dis"].append(dis_label)
 
 # Split disease.json into disease_{char}.json
 disease_split = {}
-for sym, val in disease_grouped.items():
-    prefix = get_prefix(sym)
+for sym_lower, val in disease_grouped.items():
+    prefix = get_prefix(sym_lower)
     if prefix not in disease_split:
         disease_split[prefix] = {}
-    disease_split[prefix][sym] = val
+    disease_split[prefix][sym_lower] = val
 
 for prefix, data in disease_split.items():
     with open(f"data/disease_{prefix}.json", "w", encoding="utf-8") as f:
@@ -141,12 +156,13 @@ print(f"Saved split disease_{{char}}.json files ({len(disease_split)} prefixes)"
 print("Loading 20260518_zf_wt_expression...")
 df_exp = pd.read_excel(excel_file, sheet_name="20260518_zf_wt_expression")
 expr_grouped = {}
-expr_stages = {} # geneSymbol -> set of stage indices
+expr_stages = {} # geneSymbol_lower -> set of stage indices
 
 for _, row in df_exp.iterrows():
     sym = clean_val(row.get('Gene Symbol'))
     if not sym:
         continue
+    sym_lower = sym.lower()
         
     gene_id = clean_val(row.get('Gene ID'))
     fish_name = clean_val(row.get('Fish Name'))
@@ -157,10 +173,10 @@ for _, row in df_exp.iterrows():
     assay = clean_val(row.get('Assay'))
     publication = clean_val(row.get('Publication ID'))
     
-    if sym not in expr_grouped:
-        expr_grouped[sym] = []
+    if sym_lower not in expr_grouped:
+        expr_grouped[sym_lower] = []
         
-    expr_grouped[sym].append({
+    expr_grouped[sym_lower].append({
         "s": start_stage,
         "e": end_stage,
         "t": super_struct,
@@ -171,22 +187,22 @@ for _, row in df_exp.iterrows():
         "id": gene_id
     })
     
-    if sym not in expr_stages:
-        expr_stages[sym] = set()
+    if sym_lower not in expr_stages:
+        expr_stages[sym_lower] = set()
         
     idx_s = stage_index.get(start_stage)
     idx_e = stage_index.get(end_stage)
     if idx_s is not None and idx_e is not None:
         for i in range(idx_s, idx_e + 1):
-            expr_stages[sym].add(i)
+            expr_stages[sym_lower].add(i)
 
 # Split expression.json into expression_{char}.json
 expr_split = {}
-for sym, val in expr_grouped.items():
-    prefix = get_prefix(sym)
+for sym_lower, val in expr_grouped.items():
+    prefix = get_prefix(sym_lower)
     if prefix not in expr_split:
         expr_split[prefix] = {}
-    expr_split[prefix][sym] = val
+    expr_split[prefix][sym_lower] = val
 
 for prefix, data in expr_split.items():
     with open(f"data/expression_{prefix}.json", "w", encoding="utf-8") as f:
@@ -199,22 +215,22 @@ summary_catalog = {}
 
 all_genes = set(expr_grouped.keys()).union(go_grouped.keys()).union(disease_grouped.keys())
 
-for sym in all_genes:
+for sym_lower in all_genes:
     gene_id = ""
-    if sym in expr_grouped and len(expr_grouped[sym]) > 0:
-        gene_id = expr_grouped[sym][0]["id"]
+    if sym_lower in expr_grouped and len(expr_grouped[sym_lower]) > 0:
+        gene_id = expr_grouped[sym_lower][0]["id"]
     
-    name = marker_names.get(sym, "")
-    if not name and sym in go_grouped:
-        name = go_grouped[sym]["name"]
+    name = marker_names.get(sym_lower, "")
+    if not name and sym_lower in go_grouped:
+        name = go_grouped[sym_lower]["name"]
         
     tissues = set()
     fish_lines = set()
     assays = set()
     pubs = set()
     
-    if sym in expr_grouped:
-        for r in expr_grouped[sym]:
+    if sym_lower in expr_grouped:
+        for r in expr_grouped[sym_lower]:
             if r["t"]: tissues.add(r["t"])
             if r["f"]: fish_lines.add(r["f"])
             if r["a"]: assays.add(r["a"])
@@ -222,7 +238,7 @@ for sym in all_genes:
             
     start_idx = None
     end_idx = None
-    indices = expr_stages.get(sym, set())
+    indices = expr_stages.get(sym_lower, set())
     if indices:
         start_idx = min(indices)
         end_idx = max(indices)
@@ -230,19 +246,19 @@ for sym in all_genes:
     start_stage = stage_order[start_idx] if start_idx is not None and start_idx < len(stage_order) else ""
     end_stage = stage_order[end_idx] if end_idx is not None and end_idx < len(stage_order) else ""
     
-    summary_catalog[sym] = {
-        "symbol": sym,
+    summary_catalog[sym_lower] = {
+        "symbol": sym_lower,
         "id": gene_id,
         "name": name,
         "fish": list(fish_lines),
         "tissues": list(tissues),
         "startStage": start_stage,
         "endStage": end_stage,
-        "stages": list(indices),
+        "stages": sorted(list(indices)),
         "assays": list(assays),
         "pubs": list(pubs),
-        "hasDisease": sym in disease_grouped,
-        "hasGo": sym in go_grouped
+        "hasDisease": sym_lower in disease_grouped,
+        "hasGo": sym_lower in go_grouped
     }
 
 with open("summary.json", "w", encoding="utf-8") as f:
@@ -255,18 +271,18 @@ vocab_symbols = set()
 vocab_tissues = set()
 name_to_symbol = {}
 
-for sym, data in summary_catalog.items():
-    vocab_symbols.add(sym)
+for sym_lower, data in summary_catalog.items():
+    vocab_symbols.add(sym_lower)
     if data["name"]:
-        name_to_symbol[data["name"].lower()] = sym
+        name_to_symbol[data["name"].lower()] = sym_lower
         
     for t in data["tissues"]:
         vocab_tissues.add(t)
 
-for sym, data in disease_grouped.items():
+for sym_lower, data in disease_grouped.items():
     for orth in data["orth"]:
         vocab_symbols.add(orth)
-        name_to_symbol[orth.lower()] = sym
+        name_to_symbol[orth.lower()] = sym_lower
 
 hints_data = {
     "geneSymbols": sorted(list(vocab_symbols)),

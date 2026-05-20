@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
+      color-scheme: light;
       --text-xs:   clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
       --text-sm:   clamp(0.875rem,0.80rem + 0.35vw, 1rem);
       --text-base: clamp(1rem,   0.95rem + 0.25vw, 1.125rem);
@@ -49,6 +50,7 @@
     }
 
     [data-theme="dark"] {
+      color-scheme: dark;
       --color-bg:       #050506;
       --color-surface:  #0e0f12; /* Deep dark background surface */
       --color-surface-2:#15171b;
@@ -114,25 +116,91 @@
     .table-header-row{font-size:var(--text-xs);color:var(--color-text-muted);background:rgba(0,0,0,0.04);border-bottom:2px solid var(--color-border);font-weight:800;text-transform:uppercase;letter-spacing:0.08em;}
     [data-theme="dark"] .table-header-row {background:rgba(255,255,255,0.04);}
     .table-body{max-height:600px;overflow-y:auto;font-size:var(--text-sm);}
-    .table-row{border-top:1px solid var(--color-border);cursor:pointer;transition:background var(--transition-fast),transform var(--transition-fast);text-align:left;background:var(--color-surface);}
+    button, select, input, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+    option {
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+    ::placeholder {
+      color: var(--color-text-faint);
+      opacity: 0.8;
+    }
+
+    .table-row{
+      border-top:1px solid var(--color-border);
+      cursor:pointer;
+      transition:background var(--transition-fast),transform var(--transition-fast);
+      text-align:left;
+      background:var(--color-surface);
+      color:var(--color-text);
+      font-family:var(--font-body);
+      font-weight:600;
+    }
     .table-row:hover{background:rgba(1,94,99,0.08);transform:translateY(-1px);}
     [data-theme="dark"] .table-row:hover{background:rgba(93,178,191,0.08);}
     .gene-symbol-title{font-size:var(--text-base);font-weight:800;color:var(--color-accent);}
     .sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:600;}
     .badge-assay{font-size:var(--text-xs);padding:0.2rem 0.6rem;border-radius:var(--radius-full);background:rgba(1,94,99,0.1);color:var(--color-accent);display:inline-flex;align-items:center;font-weight:700;}
     [data-theme="dark"] .badge-assay{background:rgba(93,178,191,0.15);}
-    .pill-small{font-size:var(--text-xs);padding:0.2rem 0.6rem;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface-2);font-weight:700;display:inline-block;margin-right:0.2rem;margin-bottom:0.2rem;}
+    .pill-small{font-size:var(--text-xs);padding:0.2rem 0.6rem;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text-muted);font-weight:700;display:inline-block;margin-right:0.2rem;margin-bottom:0.2rem;}
     .note{margin-top:0.6rem;font-size:var(--text-xs);color:var(--color-text-faint);font-weight:700;}
 
-    /* Beautiful Landscape Oriented Modal Styling */
+    /* Beautiful and Spacious Single-Column Modal Styling */
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:var(--space-6) var(--space-4);z-index:100;backdrop-filter:blur(3px);}
     .modal-backdrop.visible{display:flex;}
-    .modal{max-width:1150px;width:100%;background:var(--color-surface);border:2px solid var(--color-border);border-radius:1.25rem;padding:var(--space-6);box-shadow:var(--shadow-lg);position:relative;max-height:92vh;overflow:auto;}
-    .modal-close{position:absolute;top:1rem;right:1rem;border-radius:var(--radius-full);width:36px;height:36px;border:2px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--color-text);transition:background var(--transition-fast);}
+    .modal{
+      width: 80%;
+      height: 80%;
+      max-width: 1200px;
+      max-height: 80vh;
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+    .modal-close{
+      position:absolute;
+      top:1.5rem;
+      right:1.5rem;
+      border-radius:var(--radius-full);
+      width:36px;
+      height:36px;
+      border:2px solid var(--color-border);
+      background:var(--color-surface-2);
+      cursor:pointer;
+      font-size:1.4rem;
+      line-height:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--color-text);
+      transition:background var(--transition-fast);
+      z-index: 10;
+    }
     .modal-close:hover{background:var(--color-accent);color:var(--btn-primary-fg);border-color:var(--color-accent);}
 
-    .modal-grid{display:grid;grid-template-columns:44% 56%;gap:var(--space-6);align-items:start;}
-    @media(max-width:900px){.modal-grid{grid-template-columns:1fr;gap:var(--space-4);}}
+    @media(max-width:768px){
+      .modal {
+        width: 95%;
+        height: 90%;
+        max-height: 90vh;
+        padding: 1.5rem;
+        gap: 1.2rem;
+      }
+      .modal-close {
+        top: 1rem;
+        right: 1rem;
+      }
+    }
 
     .gene-header-main{display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:0.5rem;}
     .gene-field{display:flex;align-items:baseline;gap:var(--space-3);font-size:var(--text-base);}
@@ -250,111 +318,109 @@
     </section>
   </main>
 
-  <!-- Premium Landscape Oriented Modal -->
+  <!-- Premium Spacious Gene Context Modal -->
   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-gene-symbol">
       <button class="modal-close" type="button" aria-label="Close" id="modal-close">×</button>
 
-      <div class="modal-grid">
-        <!-- LEFT COLUMN (44%) -->
-        <div class="modal-col-left">
-          <div class="gene-header-main">
-            <div class="gene-field">
-              <span class="gene-label">Gene ID</span>
-              <a id="modal-gene-id" href="#" target="_blank" rel="noopener noreferrer" class="gene-value-link">Loading…</a>
-            </div>
-            <div class="gene-field">
-              <span class="gene-label">Gene Symbol</span>
-              <span id="modal-gene-symbol" class="gene-value">Loading…</span>
-            </div>
-            <div class="gene-field">
-              <span class="gene-label">Gene Name</span>
-              <span id="modal-gene-name" class="gene-value">Loading…</span>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="detail-section">
-            <div class="detail-title">Developmental span</div>
-            <div class="timeline-hover-label" id="modal-timeline-hover">Hover over segments to explore stages</div>
-            <div class="timeline-segments" id="modal-timeline-segments"></div>
-            <div class="timeline-labels">
-              <span id="modal-stage-start">Zygote (1-cell)</span>
-              <span id="modal-stage-end">Adult</span>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="detail-section">
-            <div class="detail-title">Expressed in</div>
-            <ul id="modal-tissues" class="tissues-list">
-              <li>Loading…</li>
-            </ul>
-          </div>
-
-          <div class="action-block" style="margin: 1.5rem 0;">
-            <button type="button" class="btn-primary-large" id="modal-link-expression">View Expression Matches in ZFIN</button>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="orthology-section">
-            <div class="orth-item">
-              <strong>Known human orthologs</strong><span class="em-dash">&mdash;</span><span id="modal-human-orth">Loading…</span>
-            </div>
-            <div class="orth-item">
-              <strong>Known diseases</strong><span class="em-dash">&mdash;</span><span id="modal-diseases">Loading…</span>
-            </div>
-          </div>
+      <!-- 1. Gene Details Header -->
+      <div class="gene-header-main">
+        <div class="gene-field">
+          <span class="gene-label">Gene ID</span>
+          <a id="modal-gene-id" href="#" target="_blank" rel="noopener noreferrer" class="gene-value-link">Loading…</a>
         </div>
-
-        <!-- RIGHT COLUMN (56%) -->
-        <div class="modal-col-right">
-          <div class="detail-section" style="margin-top: 0;">
-            <div class="detail-title">Gene Ontology annotations</div>
-            <div class="go-table-wrapper">
-              <table class="go-table">
-                <thead>
-                  <tr>
-                    <th style="width: 25%;">GO Term ID</th>
-                    <th style="width: 50%;">Biological Process / Molecular Function / Cellular Component</th>
-                    <th style="width: 25%;">QuickGO Definition</th>
-                  </tr>
-                </thead>
-                <tbody id="modal-go-body">
-                  <tr><td colspan="3">Loading GO annotations…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="detail-section">
-            <div class="detail-title">Detailed developmental expression</div>
-            <div class="expr-table-wrapper">
-              <table class="expr-table">
-                <thead>
-                  <tr>
-                    <th>Stage start</th>
-                    <th>Stage end</th>
-                    <th>Tissue</th>
-                    <th>Sub-structure</th>
-                    <th>Assay</th>
-                    <th>Fish line</th>
-                    <th>Publication</th>
-                  </tr>
-                </thead>
-                <tbody id="modal-expr-body">
-                  <tr><td colspan="7">Loading detailed expression rows…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div class="gene-field">
+          <span class="gene-label">Gene Symbol</span>
+          <span id="modal-gene-symbol" class="gene-value">Loading…</span>
+        </div>
+        <div class="gene-field">
+          <span class="gene-label">Gene Name</span>
+          <span id="modal-gene-name" class="gene-value">Loading…</span>
         </div>
       </div>
+
+      <hr class="divider" />
+
+      <!-- 2. Gene Ontology Annotations Table -->
+      <div class="detail-section">
+        <div class="detail-title">Gene Ontology annotations</div>
+        <div class="go-table-wrapper">
+          <table class="go-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">GO Term ID</th>
+                <th style="width: 40%;">Meaning (QuickGO)</th>
+                <th style="width: 35%;">Category (Aspect)</th>
+              </tr>
+            </thead>
+            <tbody id="modal-go-body">
+              <tr><td colspan="3">Loading GO annotations…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- 3. Developmental Span, Tissues List, and Button -->
+      <div class="detail-section">
+        <div class="detail-title">Developmental span</div>
+        <div class="timeline-hover-label" id="modal-timeline-hover">Hover over segments to explore stages</div>
+        <div class="timeline-segments" id="modal-timeline-segments"></div>
+        <div class="timeline-labels">
+          <span id="modal-stage-start">Zygote (1-cell)</span>
+          <span id="modal-stage-end">Adult</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-title">Tissues</div>
+        <ul id="modal-tissues" class="tissues-list">
+          <li>Loading…</li>
+        </ul>
+      </div>
+
+      <div class="action-block" style="margin: 0.5rem 0;">
+        <button type="button" class="btn-primary-large" id="modal-link-expression">View Expression Matches in ZFIN</button>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- 4. Known Human Orthologs & Diseases -->
+      <div class="orthology-section">
+        <div class="orth-item">
+          <strong>Known Human Orthologs</strong><span class="em-dash">&mdash;</span><span id="modal-human-orth">Loading…</span>
+        </div>
+        <div class="orth-item">
+          <strong>Known Diseases</strong><span class="em-dash">&mdash;</span><span id="modal-diseases">Loading…</span>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- 5. Detailed Developmental Expression Table -->
+      <div class="detail-section">
+        <div class="detail-title">Detailed developmental expression</div>
+        <div class="expr-table-wrapper">
+          <table class="expr-table">
+            <thead>
+              <tr>
+                <th>Stage start</th>
+                <th>Stage end</th>
+                <th>Tissue</th>
+                <th>Sub-structure</th>
+                <th>Assay</th>
+                <th>Fish line</th>
+                <th>Publication</th>
+              </tr>
+            </thead>
+            <tbody id="modal-expr-body">
+              <tr><td colspan="7">Loading detailed expression rows…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -603,7 +669,8 @@
 
     // Lazy load split gene databases from prefix files
     async function fetchSplitDetails(geneSymbol) {
-      const prefix = getPrefix(geneSymbol);
+      const symLower = geneSymbol.toLowerCase();
+      const prefix = getPrefix(symLower);
       
       if (!cache.expression.has(prefix)) {
         try {
@@ -622,28 +689,29 @@
       }
 
       return {
-        expression: cache.expression.get(prefix)[geneSymbol] || [],
-        go: cache.go.get(prefix)[geneSymbol] || null,
-        disease: cache.disease.get(prefix)[geneSymbol] || null
+        expression: cache.expression.get(prefix)[symLower] || [],
+        go: cache.go.get(prefix)[symLower] || null,
+        disease: cache.disease.get(prefix)[symLower] || null
       };
     }
 
     // Open landscape details modal
     async function openModal(geneSymbol) {
-      state.activeGene = geneSymbol;
+      const symLower = geneSymbol.toLowerCase();
+      state.activeGene = symLower;
       
-      const summaryInfo = state.summaryCatalog[geneSymbol] || {
+      const summaryInfo = state.summaryCatalog[symLower] || {
         symbol: geneSymbol, id: '', name: '', tissues: [], stages: [], startStage: 'Zygote (1-cell)', endStage: 'Adult'
       };
 
       // Set base headers immediately from memory catalog
-      modalGeneSymbol.textContent = geneSymbol;
+      modalGeneSymbol.textContent = summaryInfo.symbol || symLower;
       modalGeneName.textContent = summaryInfo.name || '—';
       modalGeneId.textContent = summaryInfo.id || '—';
       if (summaryInfo.id && summaryInfo.id.startsWith('ZDB-')) {
         modalGeneId.href = `https://zfin.org/${summaryInfo.id}`;
       } else {
-        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}`;
+        modalGeneId.href = `https://zfin.org/search?q=${encodeURIComponent(symLower)}`;
       }
 
       // Render timeline segmented bar immediately
@@ -663,7 +731,7 @@
 
       // Set up ZFIN outer link
       modalLinkExpression.onclick = () => {
-        window.open(`https://zfin.org/search?q=${encodeURIComponent(geneSymbol)}&fq=category%3A"Expression"`, '_blank', 'noopener');
+        window.open(`https://zfin.org/search?q=${encodeURIComponent(symLower)}&fq=category%3A"Expression"`, '_blank', 'noopener');
       };
 
       // Show loader in table bodies
@@ -677,7 +745,7 @@
       modalBackdrop.setAttribute('aria-hidden', 'false');
 
       // Fetch lazy split files in background
-      const details = await fetchSplitDetails(geneSymbol);
+      const details = await fetchSplitDetails(symLower);
 
       // Render orthology (Issue 7 & 10: Human orthologs & diseases with em-dashes and not known fallback)
       if (details.disease) {
@@ -698,8 +766,8 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><a class="go-link" href="${quickGoUrl}" target="_blank" rel="noopener noreferrer">${g.id}</a></td>
+            <td><a class="go-link" href="${quickGoUrl}" target="_blank" rel="noopener noreferrer">View Term Meaning &rarr;</a></td>
             <td>${aspectName}</td>
-            <td><a class="go-link" href="${quickGoUrl}" target="_blank" rel="noopener noreferrer">View Term</a></td>
           `;
           modalGoBody.appendChild(tr);
         });
